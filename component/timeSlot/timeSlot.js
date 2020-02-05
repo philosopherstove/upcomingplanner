@@ -49,7 +49,7 @@ UP.component.timeSlot.func.create_append_itemTile = async(me)=>{
     // let minValues = await UP.component.timeSlot.func.create_html_minValues();
 
     let html = `
-        <div class="itemTile">
+        <div class="itemTile zIndex2">
             <span class="dot"></span>
             <input class="itemField background_white" spellcheck="false" onkeyup="UP.component.timeSlot.func.action_enterSubmit()">
             <div class="minValues">
@@ -155,9 +155,10 @@ UP.component.timeSlot.func.init_component = ()=>{
 TRANSITION
 **********/
 UP.component.timeSlot.func.transition_hideItemTile = ()=>{
-    // tile - hide
+    // tile - hide tile, remove zIndex class
     let tile = UP.component.timeSlot.state.editting[1];
         tile.classList.add("hideItemTile");
+        tile.classList.remove("zIndex2");
     // input - background swap, readonly
     let input = tile.children[1];
         input.classList.add("background_main");
