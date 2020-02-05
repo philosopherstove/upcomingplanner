@@ -1,0 +1,140 @@
+.background_main {
+	background-color: var(--background_main);
+}
+
+.background_white {
+	background-color: white;
+}
+
+.timeSlots {
+	width: 250px;
+	height: 81%;
+	margin-top: 11px;
+	padding-top: 15px;
+	overflow-y: scroll;
+
+	/* border: 1px solid black; */
+}
+.timeSlots::before {
+	display: block;
+	position: absolute;
+	top: 91px;
+	content: "";
+	width: 240px;
+	height: 1px;
+	margin-left: calc(50% - 155px);
+	background-color: rgb(176,192,205);
+}
+
+.slot {
+	position: relative;
+}
+
+.slot:not(:nth-of-type(1)) {
+	margin-top: 15px;
+}
+
+.slotHeader {
+	position: relative;
+	height: 20px;
+	display: flex;
+
+	/* border: 1px solid red; */
+}
+
+.spacing {
+	margin-left: 8px;
+}
+
+.time {
+	margin-left: 11px;
+	font-family: Avenir Next;
+	font-size: 14px;
+	font-weight: 600;
+	letter-spacing: -0.5px;
+	color: var(--blue_1);
+}
+
+.addButton {
+	position: absolute;
+	right: 11px;
+	width: 33px;
+	height: 23px;
+	background-image: url('plusSymbol.svg');
+	background-repeat: no-repeat;
+	background-position-x: 8px;
+	background-position-y: 2px;
+
+	/*border: 1px solid black;*/
+}
+
+.blurTile {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgb(236,236,236);
+	opacity: 0.8;
+	z-index: 1;
+}
+
+.itemTile {
+	display: flex;
+	position: relative;
+	width: 250px;
+	border-radius: 6px;
+	background-color: white;
+	box-shadow: 0 0.75px 0.75px 0 rgba(0,0,0,0.2);
+	z-index: 2;
+}
+.hideItemTile {
+	background-color: rgba(0,0,0,0);
+	box-shadow: none;
+}
+
+.itemTile .dot {
+	display: block;
+	position: absolute;
+	top: 16px;
+	width: 5px;
+	height: 5px;
+	margin-left: 26px;
+	background-image: url('dot.svg');
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+.itemField {
+	width: 134px;
+	height: 22px;
+	margin-top: 7px;
+	margin-left: 50px;
+	padding: 2px;
+	font-family: var(--font_main);
+	font-size: 13px;
+	font-weight: 500;
+	letter-spacing: 0.2px;
+	overflow-x: hidden;
+	outline: none;
+}
+
+.minValues {
+	width: 16px;
+	height: 36px;
+	color: var(--blue_1);
+	font-family: var(--font_main);
+	font-size: 13px;
+	font-weight: 500;
+	letter-spacing: 0.2px;
+
+	border: 1px solid red;
+}
+
+.trashIcon {
+	width: 16px;
+	height: 16px;
+	margin-top: 11px;
+	margin-left: 13px;
+	background-image: url('trashIcon.svg');
+	background-repeat: no-repeat;
+	background-size: contain;
+}
