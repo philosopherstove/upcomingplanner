@@ -55,7 +55,7 @@ UP.component.timeSlot.func.create_append_itemTile = async(me)=>{
             <div class="minValues">
 
             </div>
-            <div class="trashIcon"></div>
+            <div class="trashIcon" onclick="UP.component.timeSlot.func.transition_removeItem();"></div>
         </div>
     `; // this exculdes minValues
 
@@ -209,7 +209,6 @@ UP.component.timeSlot.func = {};
 
     ACTION
         UP.component.timeSlot.func.action_enterSubmit = (input)=>{
-        UP.component.timeSlot.func.action_removeItem = ()=>{
 
     CREATE
         UP.component.timeSlot.func.create_append_itemTile = async(me)=>{
@@ -226,5 +225,6 @@ UP.component.timeSlot.func = {};
 
     TRANSITION
         UP.component.timeSlot.func.transition_hideItemTile = ()=>{
+        UP.component.timeSlot.func.transition_removeItem = ()=>{
 
 */
