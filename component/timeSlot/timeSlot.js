@@ -22,12 +22,12 @@ app.component.timeSlot.func.action.enterSubmit = ()=>{
     // field NOT empty & either hit enter or clicked off(target blurTile)
     if(edittingItemValue.trim().length > 0
     &&(event.key === "Enter" || event.target.classList.contains("blurTile")) ){
-        app.component.timeSlot.func.transition_hideItemTile();
+        app.component.timeSlot.func.transition.hideItemTile();
     }
     else // field empty
     if(edittingItemValue.trim().length === 0
     &&(event.key === "Enter" || event.target.classList.contains("blurTile")) ){
-        app.component.timeSlot.func.transition_removeItem();
+        app.component.timeSlot.func.transition.removeItem();
     }
 };
 
@@ -141,47 +141,60 @@ app.component.timeSlot.func.init.component = ()=>{
 };
 
 
-/*********
-TRANSITION
-**********/
-app.component.timeSlot.func.transition_hideItemTile = ()=>{
-    // tile - hide tile, remove zIndex class
-    let tile = app.component.timeSlot.state.editting[1];
-        tile.classList.add("hideItemTile");
-        tile.classList.remove("zIndex2");
-    // field - background color swap, editable(readonly)
-    let field = tile.children[1];
-        field.classList.add("background_main");
-        field.classList.remove("background_white");
-        field.setAttribute("readonly", "readonly");
-    // min, trash, blur tile - displayNone
-    let min = tile.children[2];
-        min.classList.add("displayNone");
-    let trash = tile.children[3];
-        trash.classList.add("displayNone");
-    let blurTile = document.querySelector(".blurTile");
-        blurTile.classList.add("displayNone");
-    // headerTime - remove zIndex2
-    let headerTime = tile.parentNode.previousElementSibling.children[0]
-        headerTime.classList.remove("zIndex2");
+/* TRANSITION */
+app.component.timeSlot.func.transition = {};
+app.component.timeSlot.func.transition.hideItemTile = ()=>{
+    // TRANSITION
+    app.component.timeSlot.func.transition.hideItemTile_tile();
+    app.component.timeSlot.func.transition.hideItemTile_field();
+    app.component.timeSlot.func.transition.hideItem_min();
+    app.component.timeSlot.func.transition.hideItemTile_trash();
+    app.component.timeSlot.func.transition.hideItemTile_blurTile();
+    app.component.timeSlot.func.transition.hideItemTile_headerTime();
     // STATE - (timeSlot edittingItem OFF)
     app.component.timeSlot.state.editting = [false, null];
 };
 
-// app.comp.timeSlot.func.trans.hideItemTile = ()=>{
-//     app.comp.timeSlot.func.trans.hideItemTile_tile();
-//     app.comp.timeSlot.func.trans.hideItemTile_background();
-//     app.comp.timeSlot.func.trans.hideItemTile_min();
-//     app.comp.timeSlot.func.trans.hideItemTile_trash();
-//     app.comp.timeSlot.func.trans.hideItemTile_blurTile();
-//     app.comp.timeSlot.func.trans.hideItemTile_headerTime();
-//     };
-// };
+
+app.component.timeSlot.func.transition.hideItemTile_blurTile = ()=>{
+    let blurTile = document.querySelector(".blurTile");
+        blurTile.classList.add("displayNone");
+};
 
 
+app.component.timeSlot.func.transition.hideItemTile_field = ()=>{
+    let field = tile.children[1];
+        field.classList.add("background_main");
+        field.classList.remove("background_white");
+        field.setAttribute("readonly", "readonly");
+};
 
 
-app.component.timeSlot.func.transition_removeItem = ()=>{
+app.component.timeSlot.func.transition.hideItemTile_headerTime = ()=>{
+    let headerTime = tile.parentNode.previousElementSibling.children[0]
+        headerTime.classList.remove("zIndex2");
+};
+
+
+app.component.timeSlot.func.transition.hideItem_min = ()=>{
+    let min = tile.children[2];
+        min.classList.add("displayNone");
+};
+
+
+app.component.timeSlot.func.transition.hideItemTile_tile = ()=>{
+    let tile = app.component.timeSlot.state.editting[1];
+        tile.classList.add("hideItemTile");
+        tile.classList.remove("zIndex2");
+};
+
+app.component.timeSlot.func.transition.hideItemTile_trash = ()=>{
+    let trash = tile.children[3];
+        trash.classList.add("displayNone");
+};
+
+
+app.component.timeSlot.func.transition.removeItem = ()=>{
     event.stopPropagation();
     /* hide - blurTile */
     let blurTile = document.querySelector(".blurTile");
@@ -196,7 +209,7 @@ app.component.timeSlot.func.transition_removeItem = ()=>{
 };
 
 
-app.component.timeSlot.func.transition_showItem = (me)=>{
+app.component.timeSlot.func.transition.showItem = (me)=>{
     console.log("show item", me);
     event.stopPropagation();
     // if state editing off,
@@ -251,7 +264,15 @@ app.component.timeSlot.func = {};
         app.component.timeSlot.func.init.component = ()=>{
 
     TRANSITION
-        app.component.timeSlot.func.transition_hideItemTile = ()=>{
-        app.component.timeSlot.func.transition_removeItem = ()=>{
+        app.component.timeSlot.func.transition.hideItemTile = ()=>{
+        app.component.timeSlot.func.transition.hideItemTile_blurTile = ()=>{
+        app.component.timeSlot.func.transition.hideItemTile_field = ()=>{
+        app.component.timeSlot.func.transition.hideItemTile_headerTime = ()=>{
+        app.component.timeSlot.func.transition.hideItem_min = ()=>{
+        app.component.timeSlot.func.transition.hideItemTile_tile = ()=>{
+        app.component.timeSlot.func.transition.hideItemTile_trash = ()=>{
+
+        app.component.timeSlot.func.transition.removeItem = ()=>{
+        app.component.timeSlot.func.transition.showItem = (me)=>{
 
 */
