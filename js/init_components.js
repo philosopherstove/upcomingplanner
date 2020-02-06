@@ -1,4 +1,4 @@
 window.addEventListener('DOMContentLoaded', ()=>{
-    UP.component.dayDropper.func.init_component();
-    UP.component.timeSlot.func.init_component();
+    app.component.dayDropper.func.init.component();
+    app.component.timeSlot.func.init.component();
 });

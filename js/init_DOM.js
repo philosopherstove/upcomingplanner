@@ -11,8 +11,8 @@ async function init_DOM(){
         <div class="app">
 
             <div class="addPage">
-                <div class="blurTile displayNone" onclick="UP.component.timeSlot.func.action_enterSubmit()"></div>
-                <div class="dropper" onclick="UP.component.dayDropper.func.action_openDropdown()">
+                <div class="blurTile displayNone" onclick="app.component.timeSlot.func.action.enterSubmit()"></div>
+                <div class="dropper" onclick="app.component.dayDropper.func.action.openDropdown()">
                     <p class="currDay_text"></p>
                     <p class="items_daysCountdown">(2 items - today)</p>
                     <div class="downArrow"></div>

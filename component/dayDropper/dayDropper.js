@@ -1,62 +1,48 @@
-/********
-component
-*********/
-UP.component.dayDropper = {};
+/* COMPONENT */
+app.component.dayDropper = {};
+
+/* ASSOCIATED */
+app.component.dayDropper.associated = {};
+app.component.dayDropper.associated.menu = document.querySelector(".dropdownMenu_day");
+/* STATE */
+app.component.dayDropper.state = {};
+app.component.dayDropper.state.open = false;
+/* FUNC */
+app.component.dayDropper.func = {};
 
 
-/*********
-associated
-**********/
-UP.component.dayDropper.associated = {};
-UP.component.dayDropper.associated.menu = document.querySelector(".dropdownMenu_day");
 
-
-/****
-state
-*****/
-UP.component.dayDropper.state = {};
-UP.component.dayDropper.state.open = false;
-
-
-/********
-functions
-*********/
-UP.component.dayDropper.func = {};
-
-/*****
-ACTION
-******/
-UP.component.dayDropper.func.action_closeDropdown = ()=>{
-    if(UP.component.dayDropper.state.open === true){
-        UP.component.dayDropper.associated.menu.classList.add("displayNone");
-        UP.component.dayDropper.state.open = false;
+/* ACTION */
+app.component.dayDropper.func.action = {};
+app.component.dayDropper.func.action.closeDropdown = ()=>{
+    if(app.component.dayDropper.state.open === true){
+       app.component.dayDropper.associated.menu.classList.add("displayNone");
+       app.component.dayDropper.state.open = false;
     };
 };
 
 
-UP.component.dayDropper.func.action_openDropdown = ()=>{
-    if(UP.component.dayDropper.state.open === false){
-        event.stopPropagation();
-        UP.component.dayDropper.associated.menu.classList.remove("displayNone");
-        UP.component.dayDropper.state.open = true;
+app.component.dayDropper.func.action.openDropdown = ()=>{
+    if(app.component.dayDropper.state.open === false){
+       event.stopPropagation();
+       app.component.dayDropper.associated.menu.classList.remove("displayNone");
+       app.component.dayDropper.state.open = true;
     };
 };
 
 
-/****
-APPLY
-*****/
-UP.component.dayDropper.func.apply_currDayStr_toElement = ()=>{
-    let currDay_str  = UP.component.dayDropper.func.get_currDay_str();
+/* APPLY */
+app.component.dayDropper.func.apply = {};
+app.component.dayDropper.func.apply.currDayStr_toElement = ()=>{
+    let currDay_str  = app.component.dayDropper.func.get.currDay_str();
     let currDay_text = document.querySelector(".currDay_text");
         currDay_text.innerHTML = currDay_str;
 };
 
 
-/*****
-CREATE
-******/
-UP.component.dayDropper.func.create_append_htmlInsideDropdown = ()=>{
+/* CREATEAPPEND */
+app.component.dayDropper.func.createAppend = {};
+app.component.dayDropper.func.createAppend.htmlInsideDropdown = ()=>{
     let html           = "";
     let lookAheadRange = 365;
     let now_ms         = Date.now();
@@ -106,16 +92,15 @@ UP.component.dayDropper.func.create_append_htmlInsideDropdown = ()=>{
         incr_ms += msInADay;
 
         if(i === lookAheadRange - 1){
-            UP.component.dayDropper.associated.menu.insertAdjacentHTML("beforeend", html);
+            app.component.dayDropper.associated.menu.insertAdjacentHTML("beforeend", html);
         };
     };
 };
 
 
-/**
-GET
-***/
-UP.component.dayDropper.func.get_currDay_str = ()=>{
+/* GET */
+app.component.dayDropper.func.get = {};
+app.component.dayDropper.func.get.currDay_str = ()=>{
     let now_ms          = Date.now();
     let now_full        = `${new Date(now_ms)}`;
     let splits          = now_full.split(" ");
@@ -127,26 +112,23 @@ UP.component.dayDropper.func.get_currDay_str = ()=>{
 };
 
 
-/***
-GIVE
-****/
-UP.component.dayDropper.func.give_body_listenerToCloseDropdown = ()=>{
+/* GIVE */
+app.component.dayDropper.func.give = {};
+app.component.dayDropper.func.give.body_listenerToCloseDropdown = ()=>{
     let docBody = document.body;
         docBody.addEventListener('click', ()=>{
-            UP.component.dayDropper.func.action_closeDropdown();
+            app.component.dayDropper.func.action.closeDropdown();
         });
 };
 
 
-/***
-INIT
-****/
-UP.component.dayDropper.func.init_component = async()=>{
-    UP.component.dayDropper.func.apply_currDayStr_toElement();
-    UP.component.dayDropper.func.create_append_htmlInsideDropdown();
-    UP.component.dayDropper.func.give_body_listenerToCloseDropdown();
+/* INIT */
+app.component.dayDropper.func.init = {};
+app.component.dayDropper.func.init.component = async()=>{
+    app.component.dayDropper.func.apply.currDayStr_toElement();
+    app.component.dayDropper.func.createAppend.htmlInsideDropdown();
+    app.component.dayDropper.func.give.body_listenerToCloseDropdown();
 };
-
 
 
 
@@ -154,30 +136,30 @@ UP.component.dayDropper.func.init_component = async()=>{
 
 TABLE OF CONTENTS
 
-UP.component.dayDropper = {};
+app.component.dayDropper = {};
 
-UP.component.dayDropper.associated = {};
+app.component.dayDropper.associated = {};
 
-UP.component.dayDropper.state = {};
+app.component.dayDropper.state = {};
 
-UP.component.dayDropper.func = {};
+app.component.dayDropper.func = {};
     ACTION
-        UP.component.dayDropper.func.action_closeDropdown = ()=>{
-        UP.component.dayDropper.func.action_openDropdown = ()=>{
+        app.component.dayDropper.func.action.closeDropdown = ()=>{
+        app.component.dayDropper.func.action.openDropdown = ()=>{
 
     APPLY
-        UP.component.dayDropper.func.apply_currDayStr_toElement = ()=>{
+        app.component.dayDropper.func.apply.currDayStr_toElement = ()=>{
 
-    CREATE
-        UP.component.dayDropper.func.create_append_htmlInsideDropdown = ()=>{
+    CREATEAPPEND
+        app.component.dayDropper.func.createAppend.htmlInsideDropdown = ()=>{
 
     GET
-        UP.component.dayDropper.func.get_currDay_str = ()=>{
+        app.component.dayDropper.func.get.currDay_str = ()=>{
 
     GIVE
-        UP.component.dayDropper.func.give_body_listenerToCloseDropdown = ()=>{
+        app.component.dayDropper.func.give.body_listenerToCloseDropdown = ()=>{
 
     INIT
-        UP.component.dayDropper.func.init_component = async()=>{
+        app.component.dayDropper.func.init.component = async()=>{
 
 */
