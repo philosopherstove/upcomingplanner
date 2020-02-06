@@ -144,17 +144,17 @@ app.component.timeSlot.func.init.component = ()=>{
 /* TRANSITION */
 app.component.timeSlot.func.transition = {};
 app.component.timeSlot.func.transition.hideItemTile = ()=>{
+    let item = app.component.timeSlot.state.editting[1];
     // TRANSITION
-    app.component.timeSlot.func.transition.hideItemTile_tile();
-    app.component.timeSlot.func.transition.hideItemTile_field();
-    app.component.timeSlot.func.transition.hideItem_min();
-    app.component.timeSlot.func.transition.hideItemTile_trash();
     app.component.timeSlot.func.transition.hideItemTile_blurTile();
-    app.component.timeSlot.func.transition.hideItemTile_headerTime();
+    app.component.timeSlot.func.transition.hideItemTile_field(item);
+    app.component.timeSlot.func.transition.hideItemTile_headerTime(item);
+    app.component.timeSlot.func.transition.hideItem_min(item);
+    app.component.timeSlot.func.transition.hideItemTile_tile();
+    app.component.timeSlot.func.transition.hideItemTile_trash(item);
     // STATE - (timeSlot edittingItem OFF)
     app.component.timeSlot.state.editting = [false, null];
 };
-
 
 app.component.timeSlot.func.transition.hideItemTile_blurTile = ()=>{
     let blurTile = document.querySelector(".blurTile");
@@ -162,22 +162,22 @@ app.component.timeSlot.func.transition.hideItemTile_blurTile = ()=>{
 };
 
 
-app.component.timeSlot.func.transition.hideItemTile_field = ()=>{
-    let field = tile.children[1];
+app.component.timeSlot.func.transition.hideItemTile_field = (item)=>{
+    let field = item.children[1];
         field.classList.add("background_main");
         field.classList.remove("background_white");
         field.setAttribute("readonly", "readonly");
 };
 
 
-app.component.timeSlot.func.transition.hideItemTile_headerTime = ()=>{
-    let headerTime = tile.parentNode.previousElementSibling.children[0]
+app.component.timeSlot.func.transition.hideItemTile_headerTime = (item)=>{
+    let headerTime = item.parentNode.previousElementSibling.children[0]
         headerTime.classList.remove("zIndex2");
 };
 
 
-app.component.timeSlot.func.transition.hideItem_min = ()=>{
-    let min = tile.children[2];
+app.component.timeSlot.func.transition.hideItem_min = (item)=>{
+    let min = item.children[2];
         min.classList.add("displayNone");
 };
 
@@ -188,50 +188,74 @@ app.component.timeSlot.func.transition.hideItemTile_tile = ()=>{
         tile.classList.remove("zIndex2");
 };
 
-app.component.timeSlot.func.transition.hideItemTile_trash = ()=>{
-    let trash = tile.children[3];
+app.component.timeSlot.func.transition.hideItemTile_trash = (item)=>{
+    let trash = item.children[3];
         trash.classList.add("displayNone");
 };
 
 
 app.component.timeSlot.func.transition.removeItem = ()=>{
     event.stopPropagation();
-    /* hide - blurTile */
-    let blurTile = document.querySelector(".blurTile");
-        blurTile.classList.add("displayNone");
-    /* zindex - headerTime */
-    let timeHeader = app.component.timeSlot.state.editting[1].parentNode.previousElementSibling.children[0];
-        timeHeader.classList.remove("zIndex2");
-    /* remove item */
+    /* TRANSITION */
+    app.component.timeSlot.func.transition.removeItem_blurTile();
+    app.component.timeSlot.func.transition.removeItem_headerTime();
+    /* REMOVE ELEMENT */
     app.component.timeSlot.state.editting[1].remove();
     /* STATE - (editting OFF) */
     app.component.timeSlot.state.editting = [false, null];
 };
 
 
-app.component.timeSlot.func.transition.showItem = (me)=>{
-    console.log("show item", me);
+app.component.timeSlot.func.transition.removeItem_blurTile = ()=>{
+    let blurTile = document.querySelector(".blurTile");
+        blurTile.classList.add("displayNone");
+};
+
+
+app.component.timeSlot.func.transition.removeItem_headerTime = ()=>{
+    let timeHeader = app.component.timeSlot.state.editting[1].parentNode.previousElementSibling.children[0];
+        timeHeader.classList.remove("zIndex2");
+};
+
+
+app.component.timeSlot.func.transition.showItem = (item)=>{
     event.stopPropagation();
-    // if state editing off,
+    // CASE = if state editing off
     if(app.component.timeSlot.state.editting[0] === false){
-        // STATE - timeSlot editting ON
-        app.component.timeSlot.state.editting = [true, me];
-        // blurTile - display
-        let blurTile = document.querySelector(".blurTile");
-            blurTile.classList.remove("displayNone");
-        // item - remove hide class
-        me.classList.remove("hideItemTile");
-        // item - increase z index
-        me.classList.add("zIndex2");
-        // field - background color swap, field editable(remove readonly)
-        let field = me.children[1];
-            field.classList.add("background_white");
-            field.classList.remove("background_main");
-            field.removeAttribute("readonly");
-        // trash - display
-        let trash = me.children[3];
-            trash .classList.remove("displayNone");
+        // STATE (timeSlot editting ON)
+        app.component.timeSlot.state.editting = [true, item];
+        // TRANSITION
+        app.component.timeSlot.func.transition.showItem_blurTile();
+        app.component.timeSlot.func.transition.showItem_tile(item);
+        app.component.timeSlot.func.transition.showItem_field(item);
+        app.component.timeSlot.func.transition.showItem_trash(item);
     };
+};
+
+
+app.component.timeSlot.func.transition.showItem_blurTile = ()=>{
+    let blurTile = document.querySelector(".blurTile");
+        blurTile.classList.remove("displayNone");
+};
+
+
+app.component.timeSlot.func.transition.showItem_tile = (tile)=>{
+    tile.classList.remove("hideItemTile");
+    tile.classList.add("zIndex2");
+};
+
+
+app.component.timeSlot.func.transition.showItem_field = (tile)=>{
+    let field = tile.children[1];
+        field.classList.add("background_white");
+        field.classList.remove("background_main");
+        field.removeAttribute("readonly");
+};
+
+
+app.component.timeSlot.func.transition.showItem_trash = (tile)=>{
+    let trash = tile.children[3];
+        trash.classList.remove("displayNone");
 };
 
 
@@ -266,11 +290,11 @@ app.component.timeSlot.func = {};
     TRANSITION
         app.component.timeSlot.func.transition.hideItemTile = ()=>{
         app.component.timeSlot.func.transition.hideItemTile_blurTile = ()=>{
-        app.component.timeSlot.func.transition.hideItemTile_field = ()=>{
-        app.component.timeSlot.func.transition.hideItemTile_headerTime = ()=>{
-        app.component.timeSlot.func.transition.hideItem_min = ()=>{
+        app.component.timeSlot.func.transition.hideItemTile_field = (tile)=>{
+        app.component.timeSlot.func.transition.hideItemTile_headerTime = (tile)=>{
+        app.component.timeSlot.func.transition.hideItem_min = (tile)=>{
         app.component.timeSlot.func.transition.hideItemTile_tile = ()=>{
-        app.component.timeSlot.func.transition.hideItemTile_trash = ()=>{
+        app.component.timeSlot.func.transition.hideItemTile_trash = (tile)=>{
 
         app.component.timeSlot.func.transition.removeItem = ()=>{
         app.component.timeSlot.func.transition.showItem = (me)=>{
