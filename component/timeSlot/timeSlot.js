@@ -38,13 +38,16 @@ app.component.timeSlot.func.transition.showItem_trash = (tile)=>{
 /* COMPONENT */
 app.component.timeSlot = {};
 
+
 /* SETTING */
 app.component.timeSlot.setting = {};
 app.component.timeSlot.setting.element = document.querySelector(".timeSlots");
 
+
 /* STATE */
 app.component.timeSlot.state = {};
 app.component.timeSlot.state.editting = [false, null];
+
 
 /* FUNC */
 app.component.timeSlot.func = {};
