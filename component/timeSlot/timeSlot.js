@@ -94,21 +94,21 @@ app.component.timeSlot.func.create.html_minValues = ()=>{
 
 
 app.component.timeSlot.func.create.timeSlot = (hr, hr12, AMorPM)=>{
-    let spacingClass           = "";
+    let spacingClass = "";
     if(hr12 < 10){spacingClass = "spacing";}
 	let html = `
-		<div class="slot">
-			<div class="slotHeader" onclick="app.component.timeSlot.func.createAppend.itemTile(this)">
-				<p class="time" data_hour="${hr}">
-					<span class="${spacingClass}">${hr12}</span>
-					<span>${AMorPM}</span>
-				</p>
-				<div class="addButton"></div>
-			</div>
-			<div class="slotBody"></div>
-		</div>
-	`;
-	return html;
+        <div class="slot">
+            <div class="slotHeader" onclick="app.component.timeSlot.func.createAppend.itemTile(this)">
+                <p class="time" data_hour="${hr}">
+                    <span class="${spacingClass}">${hr12}</span>
+                    <span>${AMorPM}</span>
+                </p>
+                <div class="addButton"></div>
+            </div>
+            <div class="slotBody"></div>
+        </div>
+    `;
+    return html;
 };
 
 
@@ -219,8 +219,8 @@ app.component.timeSlot.func.transition.showItem = (item)=>{
         app.component.timeSlot.state.editting = [true, item];
         // TRANSITION
         app.component.timeSlot.func.transition.showItem_blurTile();
-        app.component.timeSlot.func.transition.showItem_tile(item);
         app.component.timeSlot.func.transition.showItem_field(item);
+        app.component.timeSlot.func.transition.showItem_tile(item);
         app.component.timeSlot.func.transition.showItem_trash(item);
     };
 };
@@ -232,17 +232,17 @@ app.component.timeSlot.func.transition.showItem_blurTile = ()=>{
 };
 
 
-app.component.timeSlot.func.transition.showItem_tile = (tile)=>{
-    tile.classList.remove("hideItemTile");
-    tile.classList.add("zIndex2");
-};
-
-
 app.component.timeSlot.func.transition.showItem_field = (tile)=>{
     let field = tile.children[1];
         field.classList.add("background_white");
         field.classList.remove("background_main");
         field.removeAttribute("readonly");
+};
+
+
+app.component.timeSlot.func.transition.showItem_tile = (tile)=>{
+    tile.classList.remove("hideItemTile");
+    tile.classList.add("zIndex2");
 };
 
 
@@ -255,41 +255,36 @@ app.component.timeSlot.func.transition.showItem_trash = (tile)=>{
 
 /*
 
-TABLE OF CONTENTS
-
 app.component.timeSlot = {};
 app.component.timeSlot.setting = {};
 app.component.timeSlot.state = {};
 app.component.timeSlot.func = {};
-
-    ACTION
-        app.component.timeSlot.func.action.enterSubmit = (input)=>{
-
-    CREATEAPPEND
-        app.component.timeSlot.func.createAppend.itemTile = async(me)=>{
-        app.component.timeSlot.func.createAppend.timeSlots = ()=>{
-
-    CREATE
-        app.component.timeSlot.func.create.html_minValues = ()=>{
-        app.component.timeSlot.func.create.timeSlot = (hr, hr12, AMorPM)=>{
-
-    GET
-        app.component.timeSlot.func.get.AMorPM = (hr)=>{
-        app.component.timeSlot.func.get.to12Hour = (hr)=>{
-
-    INIT
-        app.component.timeSlot.func.init.component = ()=>{
-
-    TRANSITION
-        app.component.timeSlot.func.transition.hideItemTile = ()=>{
-        app.component.timeSlot.func.transition.hideItemTile_blurTile = ()=>{
-        app.component.timeSlot.func.transition.hideItemTile_field = (tile)=>{
-        app.component.timeSlot.func.transition.hideItemTile_headerTime = (tile)=>{
-        app.component.timeSlot.func.transition.hideItem_min = (tile)=>{
-        app.component.timeSlot.func.transition.hideItemTile_tile = ()=>{
-        app.component.timeSlot.func.transition.hideItemTile_trash = (tile)=>{
-
-        app.component.timeSlot.func.transition.removeItem = ()=>{
-        app.component.timeSlot.func.transition.showItem = (me)=>{
+app.component.timeSlot.func.action = {};
+app.component.timeSlot.func.action.enterSubmit = ()=>{
+app.component.timeSlot.func.createAppend = {};
+app.component.timeSlot.func.createAppend.itemTile = async(me)=>{
+app.component.timeSlot.func.createAppend.timeSlots = ()=>{
+app.component.timeSlot.func.create = {};
+app.component.timeSlot.func.create.html_minValues = ()=>{
+app.component.timeSlot.func.create.timeSlot = (hr, hr12, AMorPM)=>{
+app.component.timeSlot.func.get = {};
+app.component.timeSlot.func.get.AMorPM = (hr)=>{
+app.component.timeSlot.func.get.to12Hour = (hr)=>{
+app.component.timeSlot.func.init = {};
+app.component.timeSlot.func.init.component = ()=>{
+app.component.timeSlot.func.transition = {};
+app.component.timeSlot.func.transition.hideItemTile = ()=>{
+app.component.timeSlot.func.transition.hideItemTile_blurTile = ()=>{
+app.component.timeSlot.func.transition.hideItemTile_field = (tile)=>{
+app.component.timeSlot.func.transition.hideItemTile_headerTime = (tile)=>{
+app.component.timeSlot.func.transition.hideItem_min = (tile)=>{
+app.component.timeSlot.func.transition.hideItemTile_tile = ()=>{
+app.component.timeSlot.func.transition.hideItemTile_trash = (tile)=>{
+app.component.timeSlot.func.transition.removeItem = ()=>{
+app.component.timeSlot.func.transition.showItem = (me)=>{
+app.component.timeSlot.func.transition.showItem_blurTile = ()=>{
+app.component.timeSlot.func.transition.showItem_field = (tile)=>{
+app.component.timeSlot.func.transition.showItem_tile = (tile)=>{
+app.component.timeSlot.func.transition.showItem_trash = (tile)=>{
 
 */
