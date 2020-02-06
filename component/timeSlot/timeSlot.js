@@ -35,7 +35,6 @@ app.component.timeSlot.func.transition.showItem_trash = (tile)=>{
 */
 
 
-
 /* COMPONENT */
 app.component.timeSlot = {};
 
@@ -49,7 +48,6 @@ app.component.timeSlot.state.editting = [false, null];
 
 /* FUNC */
 app.component.timeSlot.func = {};
-
 
 
 /* ACTION */

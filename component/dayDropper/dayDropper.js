@@ -15,7 +15,6 @@ app.component.dayDropper.func.init.component = async()=>{
 */
 
 
-
 /* COMPONENT */
 app.component.dayDropper = {};
 
