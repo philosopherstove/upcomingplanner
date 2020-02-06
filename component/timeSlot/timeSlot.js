@@ -18,17 +18,15 @@ app.component.timeSlot.func = {};
 app.component.timeSlot.func.action = {};
 app.component.timeSlot.func.action.enterSubmit = ()=>{
     let edittingItemValue = app.component.timeSlot.state.editting[1].children[1].value;
-
-    // field NOT empty & either hit enter or clicked off(target blurTile)
-    if(edittingItemValue.trim().length > 0
-    &&(event.key === "Enter" || event.target.classList.contains("blurTile")) ){
+    if(edittingItemValue.trim().length > 0 // field NOT empty
+    &&(event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
         app.component.timeSlot.func.transition.hideItemTile();
     }
-    else // field empty
-    if(edittingItemValue.trim().length === 0
-    &&(event.key === "Enter" || event.target.classList.contains("blurTile")) ){
+    else
+    if(edittingItemValue.trim().length === 0 // field empty
+    &&(event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
         app.component.timeSlot.func.transition.removeItem();
-    }
+    };
 };
 
 
@@ -36,19 +34,14 @@ app.component.timeSlot.func.action.enterSubmit = ()=>{
 app.component.timeSlot.func.createAppend = {};
 app.component.timeSlot.func.createAppend.itemTile = async(me)=>{
     if(app.component.timeSlot.state.editting[0] === true){ return; };
-    // let minValues = await app.component.timeSlot.func.create.html_minValues();
-
     let html = `
         <div class="itemTile zIndex2" onclick="app.component.timeSlot.func.transition.showItem(this)">
             <span class="dot"></span>
             <input class="itemField background_white" spellcheck="false" onkeyup="app.component.timeSlot.func.action.enterSubmit()">
-            <div class="minValues">
-
-            </div>
+            <div class="minValues"></div>
             <div class="trashIcon" onclick="app.component.timeSlot.func.transition.removeItem();"></div>
         </div>
-    `; // this exculdes minValues
-
+    `;
     /* append to slotBody */
     let slotBody = me.nextElementSibling;
         slotBody.insertAdjacentHTML("afterbegin", html);
