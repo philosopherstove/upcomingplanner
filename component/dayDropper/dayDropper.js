@@ -1,15 +1,37 @@
+/*
+
+app.component.dayDropper = {};
+app.component.dayDropper.associated = {};
+app.component.dayDropper.state = {};
+app.component.dayDropper.func = {};
+app.component.dayDropper.func.action.closeDropdown = ()=>{
+app.component.dayDropper.func.action.openDropdown = ()=>{
+app.component.dayDropper.func.apply.currDayStr_toElement = ()=>{
+app.component.dayDropper.func.createAppend.htmlInsideDropdown = ()=>{
+app.component.dayDropper.func.get.currDay_str = ()=>{
+app.component.dayDropper.func.give.body_listenerToCloseDropdown = ()=>{
+app.component.dayDropper.func.init.component = async()=>{
+
+*/
+
+
+
 /* COMPONENT */
 app.component.dayDropper = {};
+
 
 /* ASSOCIATED */
 app.component.dayDropper.associated = {};
 app.component.dayDropper.associated.menu = document.querySelector(".dropdownMenu_day");
+
+
 /* STATE */
 app.component.dayDropper.state = {};
 app.component.dayDropper.state.open = false;
+
+
 /* FUNC */
 app.component.dayDropper.func = {};
-
 
 
 /* ACTION */
@@ -129,37 +151,3 @@ app.component.dayDropper.func.init.component = async()=>{
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     app.component.dayDropper.func.give.body_listenerToCloseDropdown();
 };
-
-
-
-/*
-
-TABLE OF CONTENTS
-
-app.component.dayDropper = {};
-
-app.component.dayDropper.associated = {};
-
-app.component.dayDropper.state = {};
-
-app.component.dayDropper.func = {};
-    ACTION
-        app.component.dayDropper.func.action.closeDropdown = ()=>{
-        app.component.dayDropper.func.action.openDropdown = ()=>{
-
-    APPLY
-        app.component.dayDropper.func.apply.currDayStr_toElement = ()=>{
-
-    CREATEAPPEND
-        app.component.dayDropper.func.createAppend.htmlInsideDropdown = ()=>{
-
-    GET
-        app.component.dayDropper.func.get.currDay_str = ()=>{
-
-    GIVE
-        app.component.dayDropper.func.give.body_listenerToCloseDropdown = ()=>{
-
-    INIT
-        app.component.dayDropper.func.init.component = async()=>{
-
-*/
