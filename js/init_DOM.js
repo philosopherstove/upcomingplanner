@@ -9,18 +9,15 @@ async function init_DOM(){
 
     let html = `
         <div class="app">
-
             <div class="addPage">
-                <div class="blurTile displayNone" onclick="app.component.timeSlot.func.action.enterSubmit()"></div>
+                <div class="blurTile displayNone" onclick="app.component.item.func.action.submit()"></div>
                 <div class="dropper" onclick="app.component.dayDropper.func.action.openDropdown()">
                     <p class="currDay_text"></p>
                     <p class="items_daysCountdown">(2 items - today)</p>
                     <div class="downArrow"></div>
                 </div>
                 <div class="dropdownMenu_day displayNone"></div>
-                <div class="timeSlots">
-
-                </div>
+                <div class="timeSlots"></div>
             </div>
             <div class="upcomingPage"></div>
             <div class="footer></div>

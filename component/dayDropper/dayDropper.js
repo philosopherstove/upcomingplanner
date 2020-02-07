@@ -4,12 +4,18 @@ app.component.dayDropper = {};
 app.component.dayDropper.associated = {};
 app.component.dayDropper.state = {};
 app.component.dayDropper.func = {};
+
 app.component.dayDropper.func.action.closeDropdown = ()=>{
 app.component.dayDropper.func.action.openDropdown = ()=>{
+
 app.component.dayDropper.func.apply.currDayStr_toElement = ()=>{
+
 app.component.dayDropper.func.createAppend.htmlInsideDropdown = ()=>{
+
 app.component.dayDropper.func.get.currDay_str = ()=>{
+
 app.component.dayDropper.func.give.body_listenerToCloseDropdown = ()=>{
+
 app.component.dayDropper.func.init.component = async()=>{
 
 */
