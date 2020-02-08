@@ -32,6 +32,7 @@ app.component.dayDropper.associated.menu = document.querySelector(".dropdownMenu
 
 /* STATE */
 app.component.dayDropper.state = {};
+app.component.dayDropper.state.day  = null;
 app.component.dayDropper.state.open = false;
 
 
@@ -155,4 +156,6 @@ app.component.dayDropper.func.init.component = async()=>{
     app.component.dayDropper.func.apply.currDayStr_toElement();
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     app.component.dayDropper.func.give.body_listenerToCloseDropdown();
+    /* State - day - defaults to current day */
+    app.component.dayDropper.state.day = app.component.dayDropper.func.get.currDay_str();
 };
