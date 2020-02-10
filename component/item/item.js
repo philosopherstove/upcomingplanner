@@ -1,14 +1,13 @@
-/*
-
 app.component.item = {};
 app.component.item.objs = [];
 app.component.item.state = {};
+app.component.item.state.selected = [false, null];
 app.component.item.func = {};
 
+
+/* function hotkeys:
 app.component.item.func.action.submit = ()=>{
-
-app.component.item.func.create.componentObj = (inputObj)=>{
-
+app.component.item.func.create.componentObj = (item)=>{
 app.component.item.func.transition.hideItem = ()=>{
 app.component.item.func.transition.hideItem_blurTile = ()=>{
 app.component.item.func.transition.hideItem_field = (item)=>{
@@ -24,22 +23,7 @@ app.component.item.func.transition.showItem_blurTile = ()=>{
 app.component.item.func.transition.showItem_field = (tile)=>{
 app.component.item.func.transition.showItem_tile = (tile)=>{
 app.component.item.func.transition.showItem_trash = (tile)=>{
-
-
 */
-
-/* COMPONENT */
-app.component.item = {};
-
-/* OBJS */
-app.component.item.objs = [];
-
-/* STATE */
-app.component.item.state = {};
-app.component.item.state.selected = [false, null];
-
-/* FUNC */
-app.component.item.func = {};
 
 
 /* ACTION */
@@ -52,6 +36,8 @@ app.component.item.func.action.submit = ()=>{
         app.component.item.func.transition.hideItem();
         // create.componentObj() add to objs and data store
         app.component.item.func.create.componentObj(app.component.item.state.selected[1]);
+        // state - timeSlot (active OFF)
+        app.component.timeSlot.state.active = false;
         /* state - item (selected OFF) */
         app.component.item.state.selected = [false, null];
     }
@@ -87,15 +73,12 @@ app.component.item.func.transition = {};
 
 app.component.item.func.transition.hideItem = ()=>{
     let item = app.component.item.state.selected[1];
-    // TRANSITION
     app.component.item.func.transition.hideItem_blurTile();
     app.component.item.func.transition.hideItem_field(item);
     app.component.item.func.transition.hideItem_headerTime(item);
     app.component.item.func.transition.hideItem_min(item);
     app.component.item.func.transition.hideItem_tile();
     app.component.item.func.transition.hideItem_trash(item);
-    // STATE - (timeSlot edittingItem OFF)
-    app.component.timeSlot.state.active = [false, null];
 };
 
 app.component.item.func.transition.hideItem_blurTile = ()=>{
@@ -162,6 +145,7 @@ app.component.item.func.transition.removeItem_headerTime = ()=>{
     let timeHeader = app.component.item.state.selected[1].parentNode.previousElementSibling.children[0];
         timeHeader.classList.remove("zIndex2");
 };
+
 
 app.component.item.func.transition.showItem = (item)=>{
     event.stopPropagation();

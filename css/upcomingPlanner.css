@@ -133,6 +133,7 @@ body {
 	min-height: 390px;
 	max-height: 390px;
 	margin-top: 2px;
+    background-color: white;
 	border-radius: 2px;
 	border: 1px solid var(--blue_1);
 	box-shadow: var(--boxShadow_1);

@@ -1,38 +1,21 @@
-/*
-
 app.component.timeSlot = {};
 app.component.timeSlot.setting = {};
+app.component.timeSlot.setting.element = document.querySelector(".timeSlots");
 app.component.timeSlot.state = {};
+app.component.timeSlot.state.active = false;
 app.component.timeSlot.func = {};
 
+
+/* function hotkeys:
 app.component.timeSlot.func.createAppend.itemHTML = ()=>{
 app.component.timeSlot.func.create.minValuesHTML = ()=>{
 app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
-
 app.component.timeSlot.func.create.item = async(me)=>{
 app.component.timeSlot.func.createAppend.timeSlots = ()=>{
-
 app.component.timeSlot.func.get.AMorPM = (hr)=>{
 app.component.timeSlot.func.get.to12Hour = (hr)=>{
-
 app.component.timeSlot.func.init.component = ()=>{
-
 */
-
-
-/* COMPONENT */
-app.component.timeSlot = {};
-
-/* SETTING */
-app.component.timeSlot.setting = {};
-app.component.timeSlot.setting.element = document.querySelector(".timeSlots");
-
-/* STATE */
-app.component.timeSlot.state = {};
-app.component.timeSlot.state.active = false;
-
-/* FUNC */
-app.component.timeSlot.func = {};
 
 
 /* CREATE */
@@ -139,7 +122,6 @@ app.component.timeSlot.func.init = {};
 app.component.timeSlot.func.init.component = ()=>{
     app.component.timeSlot.func.createAppend.timeSlots();
 };
-
 
 
 /* TRANSITION */
