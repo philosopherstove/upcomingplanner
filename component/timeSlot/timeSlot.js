@@ -87,18 +87,21 @@ app.component.timeSlot.func.createAppend.itemHTML = (timeSlot)=>{
 };
 
 app.component.timeSlot.func.createAppend.timeSlots = ()=>{
-    let wrapper = document.createElement("div");
-    let hours   = 24;
-    for(let i = 0; i < hours; i++){
-        let hr            = i + 1;
-        let AMorPM        = app.component.timeSlot.func.get.AMorPM(hr);
-        let hr_12         = app.component.timeSlot.func.get.to12Hour(hr);
-        let html_timeSlot = app.component.timeSlot.func.create.timeSlotHTML(hr, hr_12, AMorPM);
-        wrapper.insertAdjacentHTML("beforeend", html_timeSlot);
-        if(i === hours - 1){
-            app.component.timeSlot.setting.element.appendChild(wrapper);
+    return new Promise((resolve)=>{
+        let wrapper = document.createElement("div");
+        let hours   = 24;
+        for(let i = 0; i < hours; i++){
+            let hr            = i + 1;
+            let AMorPM        = app.component.timeSlot.func.get.AMorPM(hr);
+            let hr_12         = app.component.timeSlot.func.get.to12Hour(hr);
+            let html_timeSlot = app.component.timeSlot.func.create.timeSlotHTML(hr, hr_12, AMorPM);
+            wrapper.insertAdjacentHTML("beforeend", html_timeSlot);
+            if(i === hours - 1){
+                app.component.timeSlot.setting.element.appendChild(wrapper);
+                resolve();
+            };
         };
-    };
+    });
 };
 
 

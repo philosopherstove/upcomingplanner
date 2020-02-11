@@ -58,7 +58,7 @@ app.component.item.func.create = {};
 app.component.item.func.create.componentObj = (item)=>{
     let obj = {};
         obj.associated = {};
-        obj.associated.day      = app.component.dayDropper.state.day;
+        obj.associated.day      = app.component.dayDropper.setting.day[0];
         obj.associated.timeSlot = item.parentNode.previousElementSibling.children[0].getAttribute("data_hour"); // 24hr
         obj.setting = {};
         obj.setting.text = item.children[1].value;
@@ -150,7 +150,7 @@ app.component.item.func.transition.removeItem_headerTime = ()=>{
 app.component.item.func.transition.showItem = (item)=>{
     event.stopPropagation();
     // CASE = if state editing off
-    if(app.component.timeSlot.state.active[0] === false){
+    if(app.component.timeSlot.state.active === false){
         // STATE - timeSlot (editting ON)
         app.component.timeSlot.state.active = true;
         // STATE - item (selected ON)
