@@ -73,13 +73,13 @@ app.component.item.func.create.componentObj = (item)=>{
 
 
 /* INIT */
-app.component.item.init = {};
+app.component.item.func.init = {};
 
-app.component.item.init.component = ()=>{
+app.component.item.func.init.component = ()=>{
     let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
-    app.component.items.objs = localStorageObj.items;
+    app.component.item.objs = localStorageObj.items;
 
-    // init component also involved
+    // init component also involves...
     // 1 - numberOfItemsString in dropdown
     // 2 - populate relevant items
 };

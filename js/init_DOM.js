@@ -26,6 +26,5 @@ async function init_DOM(){
     `;
 
     let body = document.body;
-        // body.classList.add(templateObj.bodyClass);
         body.insertAdjacentHTML("afterbegin", html);
 };
