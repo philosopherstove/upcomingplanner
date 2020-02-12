@@ -65,6 +65,23 @@ app.component.item.func.create.componentObj = (item)=>{
         obj.state = {};
         obj.state.selected = false;
     app.component.item.objs.push(obj);
+    // push to data store. For now, localStorage.
+    let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
+        localStorageObj.items.push(obj);
+    window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
+};
+
+
+/* INIT */
+app.component.item.init = {};
+
+app.component.item.init.component = ()=>{
+    let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
+    app.component.items.objs = localStorageObj.items;
+
+    // init component also involved
+    // 1 - numberOfItemsString in dropdown
+    // 2 - populate relevant items
 };
 
 

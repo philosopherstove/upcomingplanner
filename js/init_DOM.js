@@ -2,10 +2,11 @@ init_DOM();
 async function init_DOM(){
 
     // Init localStorage token if not present
-    // if(window.localStorage.getItem("UP") === null){
-    //     let obj = {};
-    //     window.localStorage.setItem("UP", JSON.stringify(obj));
-    // };
+    if(window.localStorage.getItem("upcomingPlanner") === null){
+        let obj = {};
+            obj.items = [];
+        window.localStorage.setItem("upcomingPlanner", JSON.stringify(obj));
+    };
 
     let html = `
         <div class="app">
@@ -27,5 +28,4 @@ async function init_DOM(){
     let body = document.body;
         // body.classList.add(templateObj.bodyClass);
         body.insertAdjacentHTML("afterbegin", html);
-
 };

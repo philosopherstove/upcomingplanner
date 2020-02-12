@@ -41,7 +41,7 @@ app.component.dayDropper.func.action.openDropdown = ()=>{
 /* CREATEAPPEND */
 app.component.dayDropper.func.createAppend = {};
 
-app.component.dayDropper.func.createAppend.htmlInsideDropdown = ()=>{
+app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
     // get startOfDay_text & startOfDay_ms
     let now_dateString  = new Date();
     let startOfDay_text = new Date(now_dateString.getFullYear(), now_dateString.getMonth(), now_dateString.getDate());
@@ -60,11 +60,11 @@ app.component.dayDropper.func.createAppend.htmlInsideDropdown = ()=>{
 		let dayNum     = splits[2];
         let day_text   = `${dayName} ${month} ${dayNum}`;
 
-        let numberOfItemsString;
-        // not found
-        numberOfItemsString = ``;
-        // else
-        // numberOfItemsString = `${} items - `;
+        let numberOfItems = await app.component.dayDropper.func.get.numberOfItems_for_day(incr_ms);
+        let numberOfItemsString = "";
+        if( numberOfItems > 0){
+            numberOfItemsString = `${numberOfItems} items - `;
+        };
 
         let daysUntilString;
         if(i === 0){ /* special case */
@@ -116,6 +116,26 @@ app.component.dayDropper.func.get.currentDay = ()=>{ // returns array holding no
 	let dayNum          = splits[2];
     let day_text        = `${dayName} ${month} ${dayNum}`;
     return [startOfDay_ms, day_text];
+};
+
+app.component.dayDropper.func.get.numberOfItems_for_day = (ms)=>{
+    return new Promise((resolve)=>{
+        let numberOfItems = 0;
+        if(app.component.item.objs.length === 0){
+            resolve()
+        }
+        else{
+            for(i in app.component.item.objs){
+                let obj = app.component.item.objs[i];
+                if(obj.associated.day === ms){
+                    numberOfItems++;
+                };
+                if(Number(i) === app.component.item.objs.length -1){
+                    resolve(numberOfItems);
+                };
+            };
+        }
+    });
 };
 
 
