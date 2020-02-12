@@ -11,11 +11,15 @@ app.component.dayDropper.func = {};
 /* function hotkeys:
 app.component.dayDropper.func.action.closeDropdown = ()=>{
 app.component.dayDropper.func.action.openDropdown = ()=>{
-app.component.dayDropper.func.createAppend.htmlInsideDropdown = ()=>{
+app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
+app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
 app.component.dayDropper.func.get.currentDay = ()=>{
+app.component.dayDropper.func.get.numberOfItems_for_day = (ms)=>{
 app.component.dayDropper.func.give.listenerToCloseDropdown_to_body = ()=>{
 app.component.dayDropper.func.give.currDayStr_to_dayDropperElement = ()=>{
+app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day_text)=>{
 app.component.dayDropper.func.init.component = async()=>{
+app.component.dayDropper.func.set.day = async(dayElement)=>{
 */
 
 
@@ -29,6 +33,15 @@ app.component.dayDropper.func.action.closeDropdown = ()=>{
     };
 };
 
+app.component.dayDropper.func.insertItemsForDay = (day_ms)=>{
+    for(i in app.component.item.objs){
+        let obj = app.component.item.objs[i];
+        if(obj.associated.day === day_ms){
+            app.component.dayDropper.func.createAppend.filledItem(obj);
+        };
+    };
+};
+
 app.component.dayDropper.func.action.openDropdown = ()=>{
     if(app.component.dayDropper.state.open === false){
        event.stopPropagation();
@@ -38,8 +51,25 @@ app.component.dayDropper.func.action.openDropdown = ()=>{
 };
 
 
+
+
 /* CREATEAPPEND */
 app.component.dayDropper.func.createAppend = {};
+
+app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
+    let hour     = obj.associated.timeSlot; // hour used to locate correct timeSlot
+    let timeSlot = document.querySelector(".timeSlots").children[0].children[hour-1].children[0];
+    let html = `
+        <div class="itemTile hideItemTile" onclick="app.component.item.func.transition.showItem(this)">
+            <span class="dot"></span>
+            <input class="itemField background_main" spellcheck="false" onkeyup="app.component.item.func.action.submit()" value="${obj.setting.text}">
+            <div class="minValues displayNone"></div>
+            <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem();"></div>
+        </div>
+    `;
+    let slotBody = timeSlot.nextElementSibling;
+        slotBody.insertAdjacentHTML("beforeend", html);
+};
 
 app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
     // get startOfDay_text & startOfDay_ms
@@ -187,29 +217,8 @@ app.component.dayDropper.func.set.day = async(dayElement)=>{
         timeSlotsWrap.remove();
     // createAppend new timeSlots
     await app.component.timeSlot.func.createAppend.timeSlots();
-    // loop itemObjs and insert relevant
-    for(i in app.component.item.objs){
-        let obj = app.component.item.objs[i];
-        if(obj.associated.day === day_ms){
-            app.component.dayDropper.func.createAppend.filledItem(obj);
-        };
-    };
+    // insert items for day
+    app.component.dayDropper.func.insertItemsForDay(day_ms);
     // update dropdown text for selected day
     app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement(day_text);
-};
-
-
-app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
-    let hour     = obj.associated.timeSlot; // hour used to locate correct timeSlot
-    let timeSlot = document.querySelector(".timeSlots").children[0].children[hour-1].children[0];
-    let html = `
-        <div class="itemTile hideItemTile" onclick="app.component.item.func.transition.showItem(this)">
-            <span class="dot"></span>
-            <input class="itemField background_main" spellcheck="false" onkeyup="app.component.item.func.action.submit()" value="${obj.setting.text}">
-            <div class="minValues displayNone"></div>
-            <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem();"></div>
-        </div>
-    `;
-    let slotBody = timeSlot.nextElementSibling;
-        slotBody.insertAdjacentHTML("beforeend", html);
 };

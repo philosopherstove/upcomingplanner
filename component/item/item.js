@@ -76,12 +76,17 @@ app.component.item.func.create.componentObj = (item)=>{
 app.component.item.func.init = {};
 
 app.component.item.func.init.component = ()=>{
+    // get item info from localStorage into item component objs array
     let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
     app.component.item.objs = localStorageObj.items;
+    // once itemObjs filled, insertItemsForDay (which involves looping itemObjs)
+    app.component.dayDropper.func.insertItemsForDay(app.component.dayDropper.setting.day[0]);
 
     // init component also involves...
     // 1 - numberOfItemsString in dropdown
     // 2 - populate relevant items
+    // let day_ms   = Number(dayElement.getAttribute("day_ms"));
+    // app.component.dayDropper.func.insertItemsForDay(day_ms);
 };
 
 
