@@ -6,9 +6,14 @@ app.component.dayDropper.setting.day = null;
 app.component.dayDropper.state = {};
 app.component.dayDropper.state.open = false;
 app.component.dayDropper.func = {};
+app.component.dayDropper.func.action = {};
+app.component.dayDropper.func.createAppend = {};
+app.component.dayDropper.func.get = {};
+app.component.dayDropper.func.give = {};
+app.component.dayDropper.func.init = {};
+app.component.dayDropper.func.set = {};
 
-
-/* function hotkeys:
+/* func hotkeys:
 app.component.dayDropper.func.action.closeDropdown = ()=>{
 app.component.dayDropper.func.action.openDropdown = ()=>{
 app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
@@ -22,10 +27,7 @@ app.component.dayDropper.func.init.component = async()=>{
 app.component.dayDropper.func.set.day = async(dayElement)=>{
 */
 
-
 /* ACTION */
-app.component.dayDropper.func.action = {};
-
 app.component.dayDropper.func.action.closeDropdown = ()=>{
     if(app.component.dayDropper.state.open === true){
        app.component.dayDropper.associated.menu.classList.add("displayNone");
@@ -36,7 +38,7 @@ app.component.dayDropper.func.action.closeDropdown = ()=>{
 app.component.dayDropper.func.insertItemsForDay = (day_ms)=>{
     for(i in app.component.item.objs){
         let obj = app.component.item.objs[i];
-        if(obj.associated.day === day_ms){
+        if( obj.associated.day === day_ms){
             app.component.dayDropper.func.createAppend.filledItem(obj);
         };
     };
@@ -50,12 +52,7 @@ app.component.dayDropper.func.action.openDropdown = ()=>{
     };
 };
 
-
-
-
 /* CREATEAPPEND */
-app.component.dayDropper.func.createAppend = {};
-
 app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
     let hour     = obj.associated.timeSlot; // hour used to locate correct timeSlot
     let timeSlot = document.querySelector(".timeSlots").children[0].children[hour-1].children[0];
@@ -71,11 +68,16 @@ app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
         slotBody.insertAdjacentHTML("beforeend", html);
 };
 
+/*
+
 app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
-    // get startOfDay_text & startOfDay_ms
-    let now_dateString  = new Date();
-    let startOfDay_text = new Date(now_dateString.getFullYear(), now_dateString.getMonth(), now_dateString.getDate());
-    let startOfDay_ms   = Date.parse(startOfDay_text);
+    let incr_ms = await app.component.dayDropper.func.get.currentDayMS();
+    app.component.dayDropper.func.
+};
+
+*/
+app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
+    let startOfDay_ms   = await app.component.dayDropper.func.get.currentDay()[0];
     let incr_ms         = startOfDay_ms;
     // other variables for year loop
     let html            = "";
@@ -85,9 +87,9 @@ app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
     for(let i = 0; i < lookAheadRange; i++){
         let dateString = `${new Date(incr_ms)}`;
         let splits     = dateString.split(" ");
-		let month      = splits[1];
-		let dayName    = splits[0];
-		let dayNum     = splits[2];
+        let month      = splits[1];
+        let dayName    = splits[0];
+        let dayNum     = splits[2];
         let day_text   = `${dayName} ${month} ${dayNum}`;
 
         let numberOfItems = await app.component.dayDropper.func.get.numberOfItems_for_day(incr_ms);
@@ -133,8 +135,6 @@ app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
 
 
 /* GET */
-app.component.dayDropper.func.get = {};
-
 app.component.dayDropper.func.get.currentDay = ()=>{ // returns array holding normalized days ms & text
     let now_dateString  = new Date();
     let startOfDay_text = new Date(now_dateString.getFullYear(), now_dateString.getMonth(), now_dateString.getDate());
@@ -142,8 +142,8 @@ app.component.dayDropper.func.get.currentDay = ()=>{ // returns array holding no
     let startOfDay_ms   = Date.parse(startOfDay_text);
     let splits          = startOfDay_text.split(" ");
     let month           = splits[1];
-	let dayName         = splits[0];
-	let dayNum          = splits[2];
+    let dayName         = splits[0];
+    let dayNum          = splits[2];
     let day_text        = `${dayName} ${month} ${dayNum}`;
     return [startOfDay_ms, day_text];
 };
@@ -152,12 +152,12 @@ app.component.dayDropper.func.get.numberOfItems_for_day = (ms)=>{
     return new Promise((resolve)=>{
         let numberOfItems = 0;
         if(app.component.item.objs.length === 0){
-            resolve()
+            resolve();
         }
         else{
             for(i in app.component.item.objs){
                 let obj = app.component.item.objs[i];
-                if(obj.associated.day === ms){
+                if( obj.associated.day === ms){
                     numberOfItems++;
                 };
                 if(Number(i) === app.component.item.objs.length -1){
@@ -170,8 +170,6 @@ app.component.dayDropper.func.get.numberOfItems_for_day = (ms)=>{
 
 
 /* GIVE */
-app.component.dayDropper.func.give = {};
-
 app.component.dayDropper.func.give.listenerToCloseDropdown_to_body = ()=>{
     let docBody = document.body;
         docBody.addEventListener('click', ()=>{
@@ -192,8 +190,6 @@ app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day
 
 
 /* INIT */
-app.component.dayDropper.func.init = {};
-
 app.component.dayDropper.func.init.component = async()=>{
     app.component.dayDropper.func.give.currDayStr_to_dayDropperElement();
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
@@ -204,8 +200,6 @@ app.component.dayDropper.func.init.component = async()=>{
 
 
 /* SET */
-app.component.dayDropper.func.set = {};
-
 app.component.dayDropper.func.set.day = async(dayElement)=>{
     // pull day ms & text from element
     let day_ms   = Number(dayElement.getAttribute("day_ms"));

@@ -79,14 +79,10 @@ app.component.item.func.init.component = ()=>{
     // get item info from localStorage into item component objs array
     let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
     app.component.item.objs = localStorageObj.items;
-    // once itemObjs filled, insertItemsForDay (which involves looping itemObjs)
+    // populate relevant items
     app.component.dayDropper.func.insertItemsForDay(app.component.dayDropper.setting.day[0]);
+    // numberOfItemsString in dropdown
 
-    // init component also involves...
-    // 1 - numberOfItemsString in dropdown
-    // 2 - populate relevant items
-    // let day_ms   = Number(dayElement.getAttribute("day_ms"));
-    // app.component.dayDropper.func.insertItemsForDay(day_ms);
 };
 
 
@@ -142,11 +138,24 @@ app.component.item.func.transition.removeItem = ()=>{
     /* TRANSITION */
     app.component.item.func.transition.removeItem_blurTile();
     app.component.item.func.transition.removeItem_headerTime();
+
+
+    /* UPDATE localStorage (before removing obj from item component array)*/
+    // let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
+    //     localStorageObj.items.push(obj);
+    // for(i in localStorageObj.items){
+    //     let obj = localStorageObj.items[i];
+    //     if( obj.associated.day === app.component.item.state.selected[1].children[1].value){
+    //         app.component.item.objs.splice(i,1);
+    //     };
+    // };
+
+
+
     /* REMOVE OBJ (must happen before remove element)*/
     for(i in app.component.item.objs){
         let obj = app.component.item.objs[i];
         if( obj.setting.text === app.component.item.state.selected[1].children[1].value){
-
             app.component.item.objs.splice(i,1);
         };
     };
