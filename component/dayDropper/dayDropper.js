@@ -6,16 +6,16 @@ app.component.dayDropper.setting.day = null;
 app.component.dayDropper.state = {};
 app.component.dayDropper.state.open = false;
 app.component.dayDropper.func = {};
-app.component.dayDropper.func.action = {};
+app.component.dayDropper.func.action       = {};
 app.component.dayDropper.func.createAppend = {};
-app.component.dayDropper.func.get = {};
-app.component.dayDropper.func.give = {};
-app.component.dayDropper.func.init = {};
-app.component.dayDropper.func.set = {};
+app.component.dayDropper.func.get          = {};
+app.component.dayDropper.func.give         = {};
+app.component.dayDropper.func.init         = {};
+app.component.dayDropper.func.set          = {};
 
 /* func hotkeys:
 app.component.dayDropper.func.action.closeDropdown = ()=>{
-app.component.dayDropper.func.insertItemsForDay = (day_ms)=>{
+app.component.dayDropper.func.action.insertItemsForDay = (day_ms)=>{
 app.component.dayDropper.func.action.openDropdown = ()=>{
 app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
 app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
@@ -37,7 +37,7 @@ app.component.dayDropper.func.action.closeDropdown = ()=>{
     };
 };
 
-app.component.dayDropper.func.insertItemsForDay = (day_ms)=>{
+app.component.dayDropper.func.action.insertItemsForDay = (day_ms)=>{
     for(i in app.component.item.objs){
         let obj = app.component.item.objs[i];
         if( obj.associated.day === day_ms){
@@ -56,17 +56,18 @@ app.component.dayDropper.func.action.openDropdown = ()=>{
 
 /* CREATEAPPEND */
 app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
-    let hour     = obj.associated.timeSlot; // hour used to locate correct timeSlot
-    let timeSlot = document.querySelector(".timeSlots").children[0].children[hour-1].children[0];
+    let createdId = obj.associated.createdId;
+    let itemText  = obj.setting.text;
+    let hour      = obj.associated.timeSlot; // hour used to locate correct slotBody to append to
     let html = `
-        <div class="itemTile hideItemTile" onclick="app.component.item.func.transition.showItem(this)">
+        <div class="itemTile hideItemTile" createdId="${createdId}" onclick="app.component.item.func.transition.showItem(this)">
             <span class="dot"></span>
-            <input class="itemField background_main" spellcheck="false" onkeyup="app.component.item.func.action.submit()" value="${obj.setting.text}">
+            <input class="itemField background_main" spellcheck="false" onkeyup="app.component.item.func.action.submit()" value="${itemText}">
             <div class="minValues displayNone"></div>
             <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem();"></div>
         </div>
     `;
-    let slotBody = timeSlot.nextElementSibling;
+    let slotBody = document.querySelector(".timeSlots").children[0].children[hour-1].children[0].nextElementSibling;
         slotBody.insertAdjacentHTML("beforeend", html);
 };
 
@@ -207,6 +208,6 @@ app.component.dayDropper.func.set.day = async(dayElement)=>{
     let timeSlotsWrap = document.querySelector(".timeSlots").children[0];
         timeSlotsWrap.remove(); // remove old timeSlots
     await app.component.timeSlot.func.createAppend.timeSlots(); // createAppend new timeSlots
-    app.component.dayDropper.func.insertItemsForDay(day_ms);
+    app.component.dayDropper.func.action.insertItemsForDay(day_ms);
     app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement(day_text); // update dropdown text for selected day
 };

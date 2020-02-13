@@ -4,11 +4,11 @@ app.component.timeSlot.setting.element = document.querySelector(".timeSlots");
 app.component.timeSlot.state = {};
 app.component.timeSlot.state.active = false;
 app.component.timeSlot.func = {};
-app.component.timeSlot.func.create = {};
+app.component.timeSlot.func.create       = {};
 app.component.timeSlot.func.createAppend = {};
-app.component.timeSlot.func.get = {};
-app.component.timeSlot.func.init = {};
-app.component.timeSlot.func.transition = {};
+app.component.timeSlot.func.get          = {};
+app.component.timeSlot.func.init         = {};
+app.component.timeSlot.func.transition   = {};
 
 /* func hotkeys:
 app.component.timeSlot.func.create.item = async(timeSlot)=>{
@@ -27,9 +27,8 @@ app.component.timeSlot.func.create.item = async(timeSlot)=>{
     if(app.component.timeSlot.state.active === true){ return; };
     await app.component.timeSlot.func.createAppend.itemHTML(timeSlot);
     app.component.timeSlot.func.transition.createdItem(timeSlot);
-    /* STATE - timeSlot (active ON) */
+    /* STATES - timeSlot (active ON), item (selected ON) */
     app.component.timeSlot.state.active = true;
-    /* STATE - item (selected ON)*/
     let item = timeSlot.nextElementSibling.children[0];
     app.component.item.state.selected = [true, item];
 };
@@ -69,8 +68,9 @@ app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
 /* CREATEAPPEND */
 app.component.timeSlot.func.createAppend.itemHTML = (timeSlot)=>{
     return new Promise((resolve)=>{
+        let createdId = Date.now();
         let html = `
-            <div class="itemTile zIndex2" onclick="app.component.item.func.transition.showItem(this)">
+            <div class="itemTile zIndex2" createdId="${createdId}" onclick="app.component.item.func.transition.showItem(this)">
                 <span class="dot"></span>
                 <input class="itemField background_white" spellcheck="false" onkeyup="app.component.item.func.action.submit()">
                 <div class="minValues"></div>

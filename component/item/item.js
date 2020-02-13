@@ -3,9 +3,10 @@ app.component.item.objs = [];
 app.component.item.state = {};
 app.component.item.state.selected = [false, null];
 app.component.item.func = {};
-app.component.item.func.action = {};
-app.component.item.func.create = {};
-app.component.item.func.init = {};
+app.component.item.func.action     = {};
+app.component.item.func.create     = {};
+app.component.item.func.get        = {};
+app.component.item.func.init       = {};
 app.component.item.func.transition = {};
 
 /* func hotkeys:
@@ -31,21 +32,20 @@ app.component.item.func.transition.showItem_trash = (tile)=>{
 /* ACTION */
 app.component.item.func.action.submit = ()=>{
     let fieldValue = app.component.item.state.selected[1].children[1].value;
-    if(fieldValue.trim().length > 0 // field NOT empty
-    &&(event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
+    if( fieldValue.trim().length > 0 // field NOT empty
+    && (event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
         app.component.item.func.transition.hideItem();
-        // create.componentObj() add to objs and data store
-        app.component.item.func.create.componentObj(app.component.item.state.selected[1]);
-        // state - timeSlot (active OFF)
+        app.component.item.func.create.componentObj(app.component.item.state.selected[1]); // add to objs array and data store
+        // STATES - timeSlot (active OFF), item (selected OFF)
         app.component.timeSlot.state.active = false;
-        /* state - item (selected OFF) */
-        app.component.item.state.selected = [false, null];
+        app.component.item.state.selected   = [false, null];
     }
     else
-    if(fieldValue.trim().length === 0 // field empty
-    &&(event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
+    if( fieldValue.trim().length === 0 // field empty
+    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
         app.component.item.func.transition.removeItem();
         // remove componentObj from objs and data store
+
         /* state - item (selected OFF) */
         app.component.item.state.selected = [false, null];
     };
@@ -55,8 +55,10 @@ app.component.item.func.action.submit = ()=>{
 app.component.item.func.create.componentObj = (item)=>{
     let obj = {};
         obj.associated = {};
-        obj.associated.day      = app.component.dayDropper.setting.day[0];
-        obj.associated.timeSlot = item.parentNode.previousElementSibling.children[0].getAttribute("data_hour"); // 24hr
+        obj.associated.createdId = Number(item.getAttribute("createdId"));
+        obj.associated.day       = app.component.dayDropper.setting.day[0];
+        obj.associated.element   = item;
+        obj.associated.timeSlot  = item.parentNode.previousElementSibling.children[0].getAttribute("data_hour"); // 24hr
         obj.setting = {};
         obj.setting.text = item.children[1].value;
         obj.state = {};
@@ -68,6 +70,19 @@ app.component.item.func.create.componentObj = (item)=>{
     window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
 };
 
+/* GET */
+app.component.item.func.get.itemObj_withCreatedId = (createdId)=>{
+    return new Promise((resolve)=>{
+        console.log('created id', createdId);
+        for(i in app.component.item.objs){
+            let obj = app.component.item.objs[i];
+            if( obj.associated.createdId === createdId){
+                resolve(obj);
+            };
+        };
+    });
+};
+
 /* INIT */
 app.component.item.func.init.component = ()=>{
     // get item info from localStorage into item component objs array
@@ -75,7 +90,7 @@ app.component.item.func.init.component = ()=>{
     app.component.item.objs = localStorageObj.items;
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     // populate relevant items
-    app.component.dayDropper.func.insertItemsForDay(app.component.dayDropper.setting.day[0]);
+    app.component.dayDropper.func.action.insertItemsForDay(app.component.dayDropper.setting.day[0]);
     // numberOfItemsString in dropdown
 
 };
@@ -129,33 +144,29 @@ app.component.item.func.transition.removeItem = ()=>{
     /* TRANSITION */
     app.component.item.func.transition.removeItem_blurTile();
     app.component.item.func.transition.removeItem_headerTime();
-
-
-    /* UPDATE localStorage (before removing obj from item component array)*/
-    // let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
-    //     localStorageObj.items.push(obj);
-    // for(i in localStorageObj.items){
-    //     let obj = localStorageObj.items[i];
-    //     if( obj.associated.day === app.component.item.state.selected[1].children[1].value){
-    //         app.component.item.objs.splice(i,1);
-    //     };
-    // };
-
-
-
-    /* REMOVE OBJ (must happen before remove element)*/
+    /* REMOVE OBJ FROM LOCALSTORAGE (must happen before removing obj from objs)*/
+    let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
+    let localStorageItemObjs = localStorageObj.items;
+    for(i in localStorageItemObjs){
+        let obj = localStorageItemObjs[i];
+        if( obj.associated.createdId === Number(app.component.item.state.selected[1].getAttribute("createdId"))){
+            localStorageItemObjs.splice(i,1);
+            localStorageObj.items = localStorageItemObjs;
+            window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
+        };
+    };
+    /* REMOVE OBJ FROM OBJS (must happen before remove element)*/
     for(i in app.component.item.objs){
         let obj = app.component.item.objs[i];
-        if( obj.setting.text === app.component.item.state.selected[1].children[1].value){
+        if( obj.associated.createdId === Number(app.component.item.state.selected[1].getAttribute("createdId"))){
             app.component.item.objs.splice(i,1);
         };
     };
     /* REMOVE ELEMENT */
     app.component.item.state.selected[1].remove();
-    /* STATE - (editting OFF) */
+    /* STATES - timeSlot (editting OFF, item (selected OFF)) */
     app.component.timeSlot.state.active = false;
-    /* STATE - item (selected OFF) */
-    app.component.item.state.selected = [false, null];
+    app.component.item.state.selected   = [false, null];
 };
 
 app.component.item.func.transition.removeItem_blurTile = ()=>{
@@ -168,10 +179,12 @@ app.component.item.func.transition.removeItem_headerTime = ()=>{
         timeHeader.classList.remove("zIndex2");
 };
 
-app.component.item.func.transition.showItem = (item)=>{
+app.component.item.func.transition.showItem = async(item)=>{
     event.stopPropagation();
+    // let createdId = Number(item.getAttribute("createdId"));
+    // let itemObj   = await app.component.item.func.get.itemObj_withCreatedId(createdId);
     // CASE = if state editing off
-    if(app.component.timeSlot.state.active === false){
+    if( app.component.timeSlot.state.active === false){
         // STATES - timeSlot (active ON), item (selected ON)
         app.component.timeSlot.state.active = true;
         app.component.item.state.selected   = [true, item];
