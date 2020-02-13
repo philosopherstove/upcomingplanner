@@ -4,30 +4,30 @@ app.component.timeSlot.setting.element = document.querySelector(".timeSlots");
 app.component.timeSlot.state = {};
 app.component.timeSlot.state.active = false;
 app.component.timeSlot.func = {};
+app.component.timeSlot.func.create = {};
+app.component.timeSlot.func.createAppend = {};
+app.component.timeSlot.func.get = {};
+app.component.timeSlot.func.init = {};
+app.component.timeSlot.func.transition = {};
 
-
-/* function hotkeys:
-app.component.timeSlot.func.createAppend.itemHTML = ()=>{
+/* func hotkeys:
+app.component.timeSlot.func.create.item = async(timeSlot)=>{
 app.component.timeSlot.func.create.minValuesHTML = ()=>{
 app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
-app.component.timeSlot.func.create.item = async(me)=>{
+app.component.timeSlot.func.createAppend.itemHTML = (timeSlot)=>{
 app.component.timeSlot.func.createAppend.timeSlots = ()=>{
 app.component.timeSlot.func.get.AMorPM = (hr)=>{
 app.component.timeSlot.func.get.to12Hour = (hr)=>{
 app.component.timeSlot.func.init.component = ()=>{
+app.component.timeSlot.func.transition.createdItem = (element)=>{
 */
 
-
 /* CREATE */
-app.component.timeSlot.func.create = {};
-
 app.component.timeSlot.func.create.item = async(timeSlot)=>{
     if(app.component.timeSlot.state.active === true){ return; };
-    /* createAppend - item */
     await app.component.timeSlot.func.createAppend.itemHTML(timeSlot);
-    /* transition - createItem (header zindex, field focus, blurTile) */
-    app.component.timeSlot.func.transition.createItem(timeSlot);
-    /* STATE - timeSlot (editting ON) */
+    app.component.timeSlot.func.transition.createdItem(timeSlot);
+    /* STATE - timeSlot (active ON) */
     app.component.timeSlot.state.active = true;
     /* STATE - item (selected ON)*/
     let item = timeSlot.nextElementSibling.children[0];
@@ -51,7 +51,7 @@ app.component.timeSlot.func.create.minValuesHTML = ()=>{
 app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
     let spacingClass = "";
     if(hr12 < 10){spacingClass = "spacing";}
-	let html = `
+    let html = `
         <div class="slot">
             <div class="slotHeader" onclick="app.component.timeSlot.func.create.item(this)">
                 <p class="time" data_hour="${hr}">
@@ -66,10 +66,7 @@ app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
     return html;
 };
 
-
 /* CREATEAPPEND */
-app.component.timeSlot.func.createAppend = {};
-
 app.component.timeSlot.func.createAppend.itemHTML = (timeSlot)=>{
     return new Promise((resolve)=>{
         let html = `
@@ -104,33 +101,32 @@ app.component.timeSlot.func.createAppend.timeSlots = ()=>{
     });
 };
 
-
 /* GET */
-app.component.timeSlot.func.get = {};
-
 app.component.timeSlot.func.get.AMorPM = (hr)=>{
-    if(hr < 13){return 'AM';}
-	else{return 'PM';};
+    if(hr < 13){
+        return 'AM';
+    }
+    else{
+        return 'PM';
+    };
 };
 
 app.component.timeSlot.func.get.to12Hour = (hr)=>{
-    if(hr > 12){return (hr - 12);}
-	else{return hr;};
+    if(hr > 12){
+        return (hr - 12);
+    }
+    else{
+        return hr;
+    };
 };
 
-
 /* INIT */
-app.component.timeSlot.func.init = {};
-
 app.component.timeSlot.func.init.component = ()=>{
     app.component.timeSlot.func.createAppend.timeSlots();
 };
 
-
 /* TRANSITION */
-app.component.timeSlot.func.transition = {};
-
-app.component.timeSlot.func.transition.createItem = (element)=>{
+app.component.timeSlot.func.transition.createdItem = (element)=>{
     /* focus on input text */
    let itemField = element.nextElementSibling.children[0].children[1];
        itemField.focus();

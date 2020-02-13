@@ -73,12 +73,10 @@ app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
 app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
     let startOfDay_ms   = app.component.dayDropper.func.get.day()[0];
     let incr_ms         = startOfDay_ms;
-    // other variables for year loop
     let html            = "";
     let lookAheadRange  = 365; // 1 year
     let msInADay        = 86400000;
-    // year loop
-    for(let i = 0; i < lookAheadRange; i++){
+    for(let i = 0; i < lookAheadRange; i++){ // year loop
         let dateString                = `${new Date(incr_ms)}`;
         let splits                    = dateString.split(" ");
         let month                     = splits[1];
@@ -197,25 +195,18 @@ app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day
 /* INIT */
 app.component.dayDropper.func.init.component = async()=>{
     app.component.dayDropper.func.give.currDayStr_to_dayDropperElement();
-    // app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     app.component.dayDropper.func.give.closeDropdownListener_to_body();
     app.component.dayDropper.setting.day = app.component.dayDropper.func.get.day(); /* SET - day(defaults to current day) */
 };
 
 /* SET */
 app.component.dayDropper.func.set.day = async(dayElement)=>{
-    // pull day ms & text from element
     let day_ms   = Number(dayElement.getAttribute("day_ms"));
     let day_text = dayElement.getAttribute("day_text");
-    // set day - dayDropper
-    app.component.dayDropper.setting.day = [day_ms, day_text];
-    // remove old timeSlots
+    app.component.dayDropper.setting.day = [day_ms, day_text]; // SET - dayDropper day
     let timeSlotsWrap = document.querySelector(".timeSlots").children[0];
-        timeSlotsWrap.remove();
-    // createAppend new timeSlots
-    await app.component.timeSlot.func.createAppend.timeSlots();
-    // insert items for day
+        timeSlotsWrap.remove(); // remove old timeSlots
+    await app.component.timeSlot.func.createAppend.timeSlots(); // createAppend new timeSlots
     app.component.dayDropper.func.insertItemsForDay(day_ms);
-    // update dropdown text for selected day
-    app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement(day_text);
+    app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement(day_text); // update dropdown text for selected day
 };

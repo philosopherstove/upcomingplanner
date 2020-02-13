@@ -3,9 +3,12 @@ app.component.item.objs = [];
 app.component.item.state = {};
 app.component.item.state.selected = [false, null];
 app.component.item.func = {};
+app.component.item.func.action = {};
+app.component.item.func.create = {};
+app.component.item.func.init = {};
+app.component.item.func.transition = {};
 
-
-/* function hotkeys:
+/* func hotkeys:
 app.component.item.func.action.submit = ()=>{
 app.component.item.func.create.componentObj = (item)=>{
 app.component.item.func.transition.hideItem = ()=>{
@@ -25,10 +28,7 @@ app.component.item.func.transition.showItem_tile = (tile)=>{
 app.component.item.func.transition.showItem_trash = (tile)=>{
 */
 
-
 /* ACTION */
-app.component.item.func.action = {};
-
 app.component.item.func.action.submit = ()=>{
     let fieldValue = app.component.item.state.selected[1].children[1].value;
     if(fieldValue.trim().length > 0 // field NOT empty
@@ -51,10 +51,7 @@ app.component.item.func.action.submit = ()=>{
     };
 };
 
-
 /* CREATE */
-app.component.item.func.create = {};
-
 app.component.item.func.create.componentObj = (item)=>{
     let obj = {};
         obj.associated = {};
@@ -72,8 +69,6 @@ app.component.item.func.create.componentObj = (item)=>{
 };
 
 /* INIT */
-app.component.item.func.init = {};
-
 app.component.item.func.init.component = ()=>{
     // get item info from localStorage into item component objs array
     let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
@@ -86,8 +81,6 @@ app.component.item.func.init.component = ()=>{
 };
 
 /* TRANSITION */
-app.component.item.func.transition = {};
-
 app.component.item.func.transition.hideItem = ()=>{
     let item = app.component.item.state.selected[1];
     app.component.item.func.transition.hideItem_blurTile();
@@ -130,7 +123,6 @@ app.component.item.func.transition.hideItem_trash = (item)=>{
     let trash = item.children[3];
         trash.classList.add("displayNone");
 };
-
 
 app.component.item.func.transition.removeItem = ()=>{
     event.stopPropagation();
@@ -176,16 +168,14 @@ app.component.item.func.transition.removeItem_headerTime = ()=>{
         timeHeader.classList.remove("zIndex2");
 };
 
-
 app.component.item.func.transition.showItem = (item)=>{
     event.stopPropagation();
     // CASE = if state editing off
     if(app.component.timeSlot.state.active === false){
-        // STATE - timeSlot (editting ON)
+        // STATES - timeSlot (active ON), item (selected ON)
         app.component.timeSlot.state.active = true;
-        // STATE - item (selected ON)
-        app.component.item.state.selected = [true, item];
-        // TRANSITION
+        app.component.item.state.selected   = [true, item];
+        // TRANSITIONS
         app.component.item.func.transition.showItem_blurTile();
         app.component.item.func.transition.showItem_field(item);
         app.component.item.func.transition.showItem_tile(item);
