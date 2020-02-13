@@ -18,9 +18,8 @@ app.component.dayDropper.func.action.closeDropdown = ()=>{
 app.component.dayDropper.func.action.openDropdown = ()=>{
 app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
 app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
-app.component.dayDropper.func.get.currentDay = ()=>{
-app.component.dayDropper.func.get.numberOfItems_for_day = (ms)=>{
-app.component.dayDropper.func.give.listenerToCloseDropdown_to_body = ()=>{
+app.component.dayDropper.func.get.numberOfItemsForDay = (ms)=>{
+app.component.dayDropper.func.give.closeDropdownListener_to_body = ()=>{
 app.component.dayDropper.func.give.currDayStr_to_dayDropperElement = ()=>{
 app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day_text)=>{
 app.component.dayDropper.func.init.component = async()=>{
@@ -68,16 +67,8 @@ app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
         slotBody.insertAdjacentHTML("beforeend", html);
 };
 
-/*
-
 app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
-    let incr_ms = await app.component.dayDropper.func.get.currentDayMS();
-    app.component.dayDropper.func.
-};
-
-*/
-app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
-    let startOfDay_ms   = await app.component.dayDropper.func.get.currentDay()[0];
+    let startOfDay_ms   = app.component.dayDropper.func.get.day()[0];
     let incr_ms         = startOfDay_ms;
     // other variables for year loop
     let html            = "";
@@ -92,7 +83,7 @@ app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
         let dayNum     = splits[2];
         let day_text   = `${dayName} ${month} ${dayNum}`;
 
-        let numberOfItems = await app.component.dayDropper.func.get.numberOfItems_for_day(incr_ms);
+        let numberOfItems = await app.component.dayDropper.func.get.numberOfItemsForDay(incr_ms);
         let numberOfItemsString = "";
         if( numberOfItems > 0){
             numberOfItemsString = `${numberOfItems} items - `;
@@ -133,10 +124,15 @@ app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
     };
 };
 
-
 /* GET */
-app.component.dayDropper.func.get.currentDay = ()=>{ // returns array holding normalized days ms & text
-    let now_dateString  = new Date();
+app.component.dayDropper.func.get.day = (ms)=>{ // returns array holding normalized days ms & text
+    let now_dateString;
+    if(ms === undefined){
+        now_dateString  = new Date();
+    }
+    else{
+        now_dateString  = new Date(ms);
+    };
     let startOfDay_text = new Date(now_dateString.getFullYear(), now_dateString.getMonth(), now_dateString.getDate());
         startOfDay_text = startOfDay_text.toString();
     let startOfDay_ms   = Date.parse(startOfDay_text);
@@ -148,7 +144,7 @@ app.component.dayDropper.func.get.currentDay = ()=>{ // returns array holding no
     return [startOfDay_ms, day_text];
 };
 
-app.component.dayDropper.func.get.numberOfItems_for_day = (ms)=>{
+app.component.dayDropper.func.get.numberOfItemsForDay = (ms)=>{
     return new Promise((resolve)=>{
         let numberOfItems = 0;
         if(app.component.item.objs.length === 0){
@@ -168,9 +164,8 @@ app.component.dayDropper.func.get.numberOfItems_for_day = (ms)=>{
     });
 };
 
-
 /* GIVE */
-app.component.dayDropper.func.give.listenerToCloseDropdown_to_body = ()=>{
+app.component.dayDropper.func.give.closeDropdownListener_to_body = ()=>{
     let docBody = document.body;
         docBody.addEventListener('click', ()=>{
             app.component.dayDropper.func.action.closeDropdown();
@@ -178,7 +173,7 @@ app.component.dayDropper.func.give.listenerToCloseDropdown_to_body = ()=>{
 };
 
 app.component.dayDropper.func.give.currDayStr_to_dayDropperElement = ()=>{
-    let currDay_str  = app.component.dayDropper.func.get.currentDay()[1];
+    let currDay_str  = app.component.dayDropper.func.get.day()[1];
     let currDay_text = document.querySelector(".currDay_text");
         currDay_text.innerHTML = currDay_str;
 };
@@ -188,16 +183,13 @@ app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day
         currDay_text.innerHTML = day_text;
 };
 
-
 /* INIT */
 app.component.dayDropper.func.init.component = async()=>{
     app.component.dayDropper.func.give.currDayStr_to_dayDropperElement();
-    app.component.dayDropper.func.createAppend.htmlInsideDropdown();
-    app.component.dayDropper.func.give.listenerToCloseDropdown_to_body();
-    /* State - day - defaults to current day */
-    app.component.dayDropper.setting.day = app.component.dayDropper.func.get.currentDay();
+    // app.component.dayDropper.func.createAppend.htmlInsideDropdown();
+    app.component.dayDropper.func.give.closeDropdownListener_to_body();
+    app.component.dayDropper.setting.day = app.component.dayDropper.func.get.day(); /* SET - day(defaults to current day) */
 };
-
 
 /* SET */
 app.component.dayDropper.func.set.day = async(dayElement)=>{

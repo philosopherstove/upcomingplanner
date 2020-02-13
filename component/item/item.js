@@ -71,7 +71,6 @@ app.component.item.func.create.componentObj = (item)=>{
     window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
 };
 
-
 /* INIT */
 app.component.item.func.init = {};
 
@@ -79,12 +78,12 @@ app.component.item.func.init.component = ()=>{
     // get item info from localStorage into item component objs array
     let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
     app.component.item.objs = localStorageObj.items;
+    app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     // populate relevant items
     app.component.dayDropper.func.insertItemsForDay(app.component.dayDropper.setting.day[0]);
     // numberOfItemsString in dropdown
 
 };
-
 
 /* TRANSITION */
 app.component.item.func.transition = {};
