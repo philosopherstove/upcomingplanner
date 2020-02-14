@@ -6,14 +6,16 @@ app.component.item.func = {};
 app.component.item.func.action     = {};
 app.component.item.func.create     = {};
 app.component.item.func.get        = {};
+app.component.item.func.give       = {};
 app.component.item.func.init       = {};
 app.component.item.func.remove     = {};
 app.component.item.func.transition = {};
 
 /* func hotkeys:
-app.component.item.func.action.submit = ()=>{
 app.component.item.func.create.componentObj = (item)=>{
-app.component.item.func.remove.item = ()=>{
+app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
+app.component.item.func.give.item_to_dataStore = ()=>{
+app.component.item.func.init.component = ()=>{
 app.component.item.func.remove.itemObj_fromLocalStorage = ()=>{
 app.component.item.func.remove.itemObj_fromItemObjs = ()=>{
 app.component.item.func.transition.hideItem = ()=>{
@@ -23,6 +25,7 @@ app.component.item.func.transition.hideItem_headerTime = (item)=>{
 app.component.item.func.transition.hideItem_min = (item)=>{
 app.component.item.func.transition.hideItem_tile = ()=>{
 app.component.item.func.transition.hideItem_trash = (item)=>{
+app.component.item.func.transition.removeItem = ()=>{
 app.component.item.func.transition.removeItem_blurTile = ()=>{
 app.component.item.func.transition.removeItem_headerTime = ()=>{
 app.component.item.func.transition.showItem = (item)=>{
@@ -31,28 +34,6 @@ app.component.item.func.transition.showItem_field = (tile)=>{
 app.component.item.func.transition.showItem_tile = (tile)=>{
 app.component.item.func.transition.showItem_trash = (tile)=>{
 */
-
-/* ACTION */
-app.component.item.func.action.submit = ()=>{
-    let fieldValue = app.component.item.state.selected[1].children[1].value;
-    if( fieldValue.trim().length > 0 // field NOT empty
-    && (event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
-        app.component.item.func.transition.hideItem();
-        app.component.item.func.create.componentObj(app.component.item.state.selected[1]); // add to objs array and data store
-        // STATES - timeSlot (active OFF), item (selected OFF)
-        app.component.timeSlot.state.active = false;
-        app.component.item.state.selected   = [false, null];
-    }
-    else
-    if( fieldValue.trim().length === 0 // field empty
-    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
-        app.component.item.func.remove.item();
-        // remove componentObj from objs and data store
-
-        /* state - item (selected OFF) */
-        app.component.item.state.selected = [false, null];
-    };
-};
 
 /* CREATE */
 app.component.item.func.create.componentObj = (item)=>{
@@ -74,7 +55,7 @@ app.component.item.func.create.componentObj = (item)=>{
 };
 
 /* GET */
-app.component.item.func.get.itemObj_withCreatedId = (createdId)=>{
+app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
     return new Promise((resolve)=>{
         console.log('created id', createdId);
         for(i in app.component.item.objs){
@@ -84,6 +65,21 @@ app.component.item.func.get.itemObj_withCreatedId = (createdId)=>{
             };
         };
     });
+};
+
+/* GIVE */
+app.component.item.func.give.item_to_dataStore = ()=>{
+    let fieldValue = app.component.item.state.selected[1].children[1].value;
+    if( fieldValue.trim().length > 0 // field NOT empty
+    && (event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
+        app.component.item.func.transition.hideItem();
+        app.component.item.func.create.componentObj(app.component.item.state.selected[1]); // add to objs array and data store
+    }
+    else
+    if( fieldValue.trim().length === 0 // field empty
+    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
+        app.component.item.func.transition.removeItem();
+    };
 };
 
 /* INIT */
@@ -99,21 +95,6 @@ app.component.item.func.init.component = ()=>{
 };
 
 /* REMOVE */
-app.component.item.func.remove.item = ()=>{
-    event.stopPropagation();
-    /* TRANSITION */
-    app.component.item.func.transition.removeItem_blurTile();
-    app.component.item.func.transition.removeItem_headerTime();
-    /* REMOVE - itemObj from localStorage & itemObjs */
-    app.component.item.func.remove.itemObj_fromLocalStorage(); // must happen before removing obj from objs
-    app.component.item.func.remove.itemObj_fromItemObjs();
-    /* REMOVE - element */
-    app.component.item.state.selected[1].remove();
-    /* STATES - timeSlot (editting OFF, item (selected OFF)) */
-    app.component.timeSlot.state.active = false;
-    app.component.item.state.selected   = [false, null];
-};
-
 app.component.item.func.remove.itemObj_fromLocalStorage = ()=>{
     let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
     let localStorageItemObjs = localStorageObj.items;
@@ -145,6 +126,9 @@ app.component.item.func.transition.hideItem = ()=>{
     app.component.item.func.transition.hideItem_min(item);
     app.component.item.func.transition.hideItem_tile();
     app.component.item.func.transition.hideItem_trash(item);
+    // STATES - timeSlot (active OFF), item (selected OFF)
+    app.component.timeSlot.state.active = false;
+    app.component.item.state.selected   = [false, null];
 };
 
 app.component.item.func.transition.hideItem_blurTile = ()=>{
@@ -178,6 +162,21 @@ app.component.item.func.transition.hideItem_tile = ()=>{
 app.component.item.func.transition.hideItem_trash = (item)=>{
     let trash = item.children[3];
         trash.classList.add("displayNone");
+};
+
+app.component.item.func.transition.removeItem = ()=>{
+    event.stopPropagation();
+    /* TRANSITION */
+    app.component.item.func.transition.removeItem_blurTile();
+    app.component.item.func.transition.removeItem_headerTime();
+    /* REMOVE - itemObj from localStorage & itemObjs */
+    app.component.item.func.remove.itemObj_fromLocalStorage(); // must happen before removing obj from objs
+    app.component.item.func.remove.itemObj_fromItemObjs();
+    /* REMOVE - element */
+    app.component.item.state.selected[1].remove();
+    /* STATES - timeSlot (editting OFF, item (selected OFF)) */
+    app.component.timeSlot.state.active = false;
+    app.component.item.state.selected   = [false, null];
 };
 
 app.component.item.func.transition.removeItem_blurTile = ()=>{

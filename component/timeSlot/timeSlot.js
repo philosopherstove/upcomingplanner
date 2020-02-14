@@ -72,9 +72,9 @@ app.component.timeSlot.func.createAppend.itemHTML = (timeSlot)=>{
         let html = `
             <div class="itemTile zIndex2" createdId="${createdId}" onclick="app.component.item.func.transition.showItem(this)">
                 <span class="dot"></span>
-                <input class="itemField background_white" spellcheck="false" onkeyup="app.component.item.func.action.submit()">
+                <input class="itemField background_white" spellcheck="false" onkeyup="app.component.item.func.give.item_to_dataStore()">
                 <div class="minValues"></div>
-                <div class="trashIcon" onclick="app.component.item.func.remove.item();"></div>
+                <div class="trashIcon" onclick="app.component.item.func.transition.removeItem();"></div>
             </div>
         `;
         let slotBody = timeSlot.nextElementSibling;

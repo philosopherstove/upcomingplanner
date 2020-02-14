@@ -11,7 +11,7 @@ async function init_DOM(){
     let html = `
         <div class="app">
             <div class="addPage">
-                <div class="blurTile displayNone" onclick="app.component.item.func.action.submit()"></div>
+                <div class="blurTile displayNone" onclick="app.component.item.func.give.item_to_dataStore()"></div>
                 <div class="dropper" onclick="app.component.dayDropper.func.transition.openDropdown()">
                     <p class="currDay_text"></p>
                     <p class="items_daysCountdown">(2 items - today)</p>
