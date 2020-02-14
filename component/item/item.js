@@ -72,8 +72,8 @@ app.component.item.func.give.item_to_dataStore = ()=>{
     let fieldValue = app.component.item.state.selected[1].children[1].value;
     if( fieldValue.trim().length > 0 // field NOT empty
     && (event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
-        app.component.item.func.transition.hideItem();
         app.component.item.func.create.componentObj(app.component.item.state.selected[1]); // add to objs array and data store
+        app.component.item.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
     }
     else
     if( fieldValue.trim().length === 0 // field empty
