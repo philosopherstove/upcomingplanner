@@ -64,7 +64,7 @@ app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
             <span class="dot"></span>
             <input class="itemField background_main" spellcheck="false" onkeyup="app.component.item.func.action.submit()" value="${itemText}">
             <div class="minValues displayNone"></div>
-            <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem();"></div>
+            <div class="trashIcon displayNone" onclick="app.component.item.func.remove.item();"></div>
         </div>
     `;
     let slotBody = document.querySelector(".timeSlots").children[0].children[hour-1].children[0].nextElementSibling;

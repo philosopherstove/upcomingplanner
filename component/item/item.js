@@ -7,11 +7,15 @@ app.component.item.func.action     = {};
 app.component.item.func.create     = {};
 app.component.item.func.get        = {};
 app.component.item.func.init       = {};
+app.component.item.func.remove     = {};
 app.component.item.func.transition = {};
 
 /* func hotkeys:
 app.component.item.func.action.submit = ()=>{
 app.component.item.func.create.componentObj = (item)=>{
+app.component.item.func.remove.item = ()=>{
+app.component.item.func.remove.itemObj_fromLocalStorage = ()=>{
+app.component.item.func.remove.itemObj_fromItemObjs = ()=>{
 app.component.item.func.transition.hideItem = ()=>{
 app.component.item.func.transition.hideItem_blurTile = ()=>{
 app.component.item.func.transition.hideItem_field = (item)=>{
@@ -19,7 +23,6 @@ app.component.item.func.transition.hideItem_headerTime = (item)=>{
 app.component.item.func.transition.hideItem_min = (item)=>{
 app.component.item.func.transition.hideItem_tile = ()=>{
 app.component.item.func.transition.hideItem_trash = (item)=>{
-app.component.item.func.transition.removeItem = ()=>{
 app.component.item.func.transition.removeItem_blurTile = ()=>{
 app.component.item.func.transition.removeItem_headerTime = ()=>{
 app.component.item.func.transition.showItem = (item)=>{
@@ -43,7 +46,7 @@ app.component.item.func.action.submit = ()=>{
     else
     if( fieldValue.trim().length === 0 // field empty
     &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
-        app.component.item.func.transition.removeItem();
+        app.component.item.func.remove.item();
         // remove componentObj from objs and data store
 
         /* state - item (selected OFF) */
@@ -95,6 +98,44 @@ app.component.item.func.init.component = ()=>{
 
 };
 
+/* REMOVE */
+app.component.item.func.remove.item = ()=>{
+    event.stopPropagation();
+    /* TRANSITION */
+    app.component.item.func.transition.removeItem_blurTile();
+    app.component.item.func.transition.removeItem_headerTime();
+    /* REMOVE - itemObj from localStorage & itemObjs */
+    app.component.item.func.remove.itemObj_fromLocalStorage(); // must happen before removing obj from objs
+    app.component.item.func.remove.itemObj_fromItemObjs();
+    /* REMOVE - element */
+    app.component.item.state.selected[1].remove();
+    /* STATES - timeSlot (editting OFF, item (selected OFF)) */
+    app.component.timeSlot.state.active = false;
+    app.component.item.state.selected   = [false, null];
+};
+
+app.component.item.func.remove.itemObj_fromLocalStorage = ()=>{
+    let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
+    let localStorageItemObjs = localStorageObj.items;
+    for(i in localStorageItemObjs){
+        let obj = localStorageItemObjs[i];
+        if( obj.associated.createdId === Number(app.component.item.state.selected[1].getAttribute("createdId"))){
+            localStorageItemObjs.splice(i,1);
+            localStorageObj.items = localStorageItemObjs;
+            window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
+        };
+    };
+};
+
+app.component.item.func.remove.itemObj_fromItemObjs = ()=>{
+    for(i in app.component.item.objs){
+        let obj = app.component.item.objs[i];
+        if( obj.associated.createdId === Number(app.component.item.state.selected[1].getAttribute("createdId"))){
+            app.component.item.objs.splice(i,1);
+        };
+    };
+};
+
 /* TRANSITION */
 app.component.item.func.transition.hideItem = ()=>{
     let item = app.component.item.state.selected[1];
@@ -139,36 +180,6 @@ app.component.item.func.transition.hideItem_trash = (item)=>{
         trash.classList.add("displayNone");
 };
 
-app.component.item.func.transition.removeItem = ()=>{
-    event.stopPropagation();
-    /* TRANSITION */
-    app.component.item.func.transition.removeItem_blurTile();
-    app.component.item.func.transition.removeItem_headerTime();
-    /* REMOVE OBJ FROM LOCALSTORAGE (must happen before removing obj from objs)*/
-    let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
-    let localStorageItemObjs = localStorageObj.items;
-    for(i in localStorageItemObjs){
-        let obj = localStorageItemObjs[i];
-        if( obj.associated.createdId === Number(app.component.item.state.selected[1].getAttribute("createdId"))){
-            localStorageItemObjs.splice(i,1);
-            localStorageObj.items = localStorageItemObjs;
-            window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
-        };
-    };
-    /* REMOVE OBJ FROM OBJS (must happen before remove element)*/
-    for(i in app.component.item.objs){
-        let obj = app.component.item.objs[i];
-        if( obj.associated.createdId === Number(app.component.item.state.selected[1].getAttribute("createdId"))){
-            app.component.item.objs.splice(i,1);
-        };
-    };
-    /* REMOVE ELEMENT */
-    app.component.item.state.selected[1].remove();
-    /* STATES - timeSlot (editting OFF, item (selected OFF)) */
-    app.component.timeSlot.state.active = false;
-    app.component.item.state.selected   = [false, null];
-};
-
 app.component.item.func.transition.removeItem_blurTile = ()=>{
     let blurTile = document.querySelector(".blurTile");
         blurTile.classList.add("displayNone");
@@ -181,8 +192,6 @@ app.component.item.func.transition.removeItem_headerTime = ()=>{
 
 app.component.item.func.transition.showItem = async(item)=>{
     event.stopPropagation();
-    // let createdId = Number(item.getAttribute("createdId"));
-    // let itemObj   = await app.component.item.func.get.itemObj_withCreatedId(createdId);
     // CASE = if state editing off
     if( app.component.timeSlot.state.active === false){
         // STATES - timeSlot (active ON), item (selected ON)

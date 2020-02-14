@@ -74,7 +74,7 @@ app.component.timeSlot.func.createAppend.itemHTML = (timeSlot)=>{
                 <span class="dot"></span>
                 <input class="itemField background_white" spellcheck="false" onkeyup="app.component.item.func.action.submit()">
                 <div class="minValues"></div>
-                <div class="trashIcon" onclick="app.component.item.func.transition.removeItem();"></div>
+                <div class="trashIcon" onclick="app.component.item.func.remove.item();"></div>
             </div>
         `;
         let slotBody = timeSlot.nextElementSibling;
