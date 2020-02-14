@@ -93,7 +93,7 @@ app.component.item.func.init.component = ()=>{
     app.component.item.objs = localStorageObj.items;
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     // populate relevant items
-    app.component.dayDropper.func.action.insertItemsForDay(app.component.dayDropper.setting.day[0]);
+    app.component.dayDropper.func.createAppend.itemsForDay(app.component.dayDropper.setting.day[0]);
     // numberOfItemsString in dropdown
 
 };

@@ -6,17 +6,15 @@ app.component.dayDropper.setting.day = null;
 app.component.dayDropper.state = {};
 app.component.dayDropper.state.open = false;
 app.component.dayDropper.func = {};
-app.component.dayDropper.func.action       = {};
 app.component.dayDropper.func.createAppend = {};
 app.component.dayDropper.func.get          = {};
 app.component.dayDropper.func.give         = {};
 app.component.dayDropper.func.init         = {};
 app.component.dayDropper.func.set          = {};
+app.component.dayDropper.func.transition   = {};
 
 /* func hotkeys:
-app.component.dayDropper.func.action.closeDropdown = ()=>{
-app.component.dayDropper.func.action.insertItemsForDay = (day_ms)=>{
-app.component.dayDropper.func.action.openDropdown = ()=>{
+app.component.dayDropper.func.createAppend.itemsForDay = (day_ms)=>{
 app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
 app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
 app.component.dayDropper.func.get.day = (ms)=>{
@@ -27,32 +25,9 @@ app.component.dayDropper.func.give.currDayStr_to_dayDropperElement = ()=>{
 app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day_text)=>{
 app.component.dayDropper.func.init.component = async()=>{
 app.component.dayDropper.func.set.day = async(dayElement)=>{
+app.component.dayDropper.func.transition.closeDropdown = ()=>{
+app.component.dayDropper.func.transition.openDropdown = ()=>{
 */
-
-/* ACTION */
-app.component.dayDropper.func.action.closeDropdown = ()=>{
-    if(app.component.dayDropper.state.open === true){
-       app.component.dayDropper.associated.menu.classList.add("displayNone");
-       app.component.dayDropper.state.open = false;
-    };
-};
-
-app.component.dayDropper.func.action.insertItemsForDay = (day_ms)=>{
-    for(i in app.component.item.objs){
-        let obj = app.component.item.objs[i];
-        if( obj.associated.day === day_ms){
-            app.component.dayDropper.func.createAppend.filledItem(obj);
-        };
-    };
-};
-
-app.component.dayDropper.func.action.openDropdown = ()=>{
-    if(app.component.dayDropper.state.open === false){
-       event.stopPropagation();
-       app.component.dayDropper.associated.menu.classList.remove("displayNone");
-       app.component.dayDropper.state.open = true;
-    };
-};
 
 /* CREATEAPPEND */
 app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
@@ -102,6 +77,15 @@ app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
         incr_ms += msInADay;
         if(i === lookAheadRange - 1){
             app.component.dayDropper.associated.menu.insertAdjacentHTML("beforeend", html);
+        };
+    };
+};
+
+app.component.dayDropper.func.createAppend.itemsForDay = (day_ms)=>{
+    for(i in app.component.item.objs){
+        let obj = app.component.item.objs[i];
+        if( obj.associated.day === day_ms){
+            app.component.dayDropper.func.createAppend.filledItem(obj);
         };
     };
 };
@@ -178,7 +162,7 @@ app.component.dayDropper.func.get.numberOfItemsForDayString = (ms)=>{
 app.component.dayDropper.func.give.closeDropdownListener_to_body = ()=>{
     let docBody = document.body;
         docBody.addEventListener('click', ()=>{
-            app.component.dayDropper.func.action.closeDropdown();
+            app.component.dayDropper.func.transition.closeDropdown();
         });
 };
 
@@ -208,6 +192,22 @@ app.component.dayDropper.func.set.day = async(dayElement)=>{
     let timeSlotsWrap = document.querySelector(".timeSlots").children[0];
         timeSlotsWrap.remove(); // remove old timeSlots
     await app.component.timeSlot.func.createAppend.timeSlots(); // createAppend new timeSlots
-    app.component.dayDropper.func.action.insertItemsForDay(day_ms);
+    app.component.dayDropper.func.createAppend.itemsForDay(day_ms);
     app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement(day_text); // update dropdown text for selected day
+};
+
+/* TRANSITION */
+app.component.dayDropper.func.transition.closeDropdown = ()=>{
+    if(app.component.dayDropper.state.open === true){
+       app.component.dayDropper.associated.menu.classList.add("displayNone");
+       app.component.dayDropper.state.open = false;
+    };
+};
+
+app.component.dayDropper.func.transition.openDropdown = ()=>{
+    if(app.component.dayDropper.state.open === false){
+       event.stopPropagation();
+       app.component.dayDropper.associated.menu.classList.remove("displayNone");
+       app.component.dayDropper.state.open = true;
+    };
 };

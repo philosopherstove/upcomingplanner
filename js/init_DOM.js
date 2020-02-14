@@ -12,7 +12,7 @@ async function init_DOM(){
         <div class="app">
             <div class="addPage">
                 <div class="blurTile displayNone" onclick="app.component.item.func.action.submit()"></div>
-                <div class="dropper" onclick="app.component.dayDropper.func.action.openDropdown()">
+                <div class="dropper" onclick="app.component.dayDropper.func.transition.openDropdown()">
                     <p class="currDay_text"></p>
                     <p class="items_daysCountdown">(2 items - today)</p>
                     <div class="downArrow"></div>
