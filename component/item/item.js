@@ -94,6 +94,8 @@ app.component.item.func.init.component = ()=>{
     app.component.dayDropper.func.createAppend.dayDropperText();
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     app.component.dayDropper.func.createAppend.itemsForDay(app.component.dayDropper.setting.day[0]);
+    app.component.item.func.remove.oldItemObjs_from_itemObjs();
+    app.component.item.func.remove.oldItemObjs_from_localStorage();
 };
 
 /* REMOVE */
@@ -120,11 +122,29 @@ app.component.item.func.remove.itemObj_from_localStorage = ()=>{
 };
 
 app.component.item.func.remove.oldItemObjs_from_itemObjs = ()=>{
-
+    let startOfToday_ms = app.component.dayDropper.setting.day[0];
+    for(let i = app.component.item.objs.length-1; i > -1; i--){
+        let obj = app.component.item.objs[i];
+        if( obj.associated.day < startOfToday_ms){
+            app.component.item.objs.splice(i,1);
+        };
+    };
 };
 
 app.component.item.func.remove.oldItemObjs_from_localStorage = ()=>{
-
+    let startOfToday_ms      = app.component.dayDropper.setting.day[0];
+    let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
+    let localStorageItemObjs = localStorageObj.items;
+    for(let i = localStorageItemObjs.length-1; i > -1; i--){
+        let obj = localStorageItemObjs[i];
+        if( obj.associated.day < startOfToday_ms){
+            localStorageItemObjs.splice(i,1);
+        };
+        if(i === 0){ // end of loop
+            localStorageObj.items = localStorageItemObjs;
+            window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
+        };
+    };
 };
 
 /* TRANSITION */
