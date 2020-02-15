@@ -19,6 +19,7 @@ app.component.item.func.give.item_to_dataStore = ()=>{
 app.component.item.func.init.component = ()=>{
 app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
 app.component.item.func.remove.itemObj_from_localStorage = ()=>{
+app.component.item.func.remove.itemObj = async()=>{
 app.component.item.func.remove.oldItemObjs_from_itemObjs = ()=>{
 app.component.item.func.remove.oldItemObjs_from_localStorage = ()=>{
 app.component.item.func.transition.hideItem = ()=>{
@@ -61,6 +62,9 @@ app.component.item.func.create.componentObj = (item)=>{
 app.component.item.func.get.isItemExist = ()=>{
     return new Promise((resolve)=>{
         let selectedItem = app.component.item.state.selected[1];
+        if(app.component.item.objs.length === 0){
+            resolve([false, null]);
+        };
         for(i in app.component.item.objs){
             let obj = app.component.item.objs[i];
             if( obj.associated.createdId === Number(selectedItem.getAttribute("createdId"))){
@@ -122,22 +126,39 @@ app.component.item.func.init.component = ()=>{
 };
 
 /* REMOVE */
+app.component.item.func.remove.itemObj = async()=>{
+    try{
+        await app.component.item.func.remove.itemObj_from_localStorage(); // using reject() on end cases instead of resolve() will cease try block operation. A bit better of an option since a rejection in the first function prevents execution of the second function.
+        await app.component.item.func.remove.itemObj_from_itemObjs();
+    }
+    catch(e){};
+};
+
 app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
-    return new Promise((resolve)=>{
+    return new Promise((resolve, reject)=>{
+        if(app.component.item.objs.length === 0){
+            reject();
+        };
         for(i in app.component.item.objs){
             let obj = app.component.item.objs[i];
             if( obj.associated.createdId === Number(app.component.item.state.selected[1].getAttribute("createdId"))){
                 app.component.item.objs.splice(i,1);
                 resolve();
             };
+            if(Number(i) === app.component.item.objs.length-1){
+                reject();
+            };
         };
     });
 };
 
 app.component.item.func.remove.itemObj_from_localStorage = ()=>{
-    return new Promise((resolve)=>{
+    return new Promise((resolve, reject)=>{
         let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
         let localStorageItemObjs = localStorageObj.items;
+        if( localStorageItemObjs.length === 0){
+            reject();
+        };
         for(i in localStorageItemObjs){
             let obj = localStorageItemObjs[i];
             if( obj.associated.createdId === Number(app.component.item.state.selected[1].getAttribute("createdId"))){
@@ -146,13 +167,11 @@ app.component.item.func.remove.itemObj_from_localStorage = ()=>{
                 window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
                 resolve();
             };
+            if(Number(i) === localStorageItemObjs.length-1){
+                reject();
+            };
         };
     });
-};
-
-app.component.item.func.remove.oldItemObj = async()=>{
-    await app.component.item.func.remove.itemObj_from_itemObjs();
-    await app.component.item.func.remove.itemObj_from_localStorage();
 };
 
 app.component.item.func.remove.oldItemObjs_from_itemObjs = ()=>{
@@ -263,8 +282,7 @@ app.component.item.func.transition.removeItem = async()=>{
     app.component.item.func.transition.removeItem_blurTile();
     app.component.item.func.transition.removeItem_headerTime();
     /* REMOVE - itemObj from localStorage & itemObjs */
-    await app.component.item.func.remove.itemObj_from_localStorage() // must happen before removing obj from objs
-    await app.component.item.func.remove.itemObj_from_itemObjs();
+    app.component.item.func.remove.itemObj();
     /* CREATEAPPEND - daydropper text, html inside dropdown  */
     app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
