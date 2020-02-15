@@ -16,8 +16,10 @@ app.component.item.func.create.componentObj = (item)=>{
 app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
 app.component.item.func.give.item_to_dataStore = ()=>{
 app.component.item.func.init.component = ()=>{
-app.component.item.func.remove.itemObj_fromLocalStorage = ()=>{
-app.component.item.func.remove.itemObj_fromItemObjs = ()=>{
+app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
+app.component.item.func.remove.itemObj_from_localStorage = ()=>{
+app.component.item.func.remove.oldItemObjs_from_itemObjs = ()=>{
+app.component.item.func.remove.oldItemObjs_from_localStorage = ()=>{
 app.component.item.func.transition.hideItem = ()=>{
 app.component.item.func.transition.hideItem_blurTile = ()=>{
 app.component.item.func.transition.hideItem_field = (item)=>{
@@ -95,7 +97,16 @@ app.component.item.func.init.component = ()=>{
 };
 
 /* REMOVE */
-app.component.item.func.remove.itemObj_fromLocalStorage = ()=>{
+app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
+    for(i in app.component.item.objs){
+        let obj = app.component.item.objs[i];
+        if( obj.associated.createdId === Number(app.component.item.state.selected[1].getAttribute("createdId"))){
+            app.component.item.objs.splice(i,1);
+        };
+    };
+};
+
+app.component.item.func.remove.itemObj_from_localStorage = ()=>{
     let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
     let localStorageItemObjs = localStorageObj.items;
     for(i in localStorageItemObjs){
@@ -108,13 +119,12 @@ app.component.item.func.remove.itemObj_fromLocalStorage = ()=>{
     };
 };
 
-app.component.item.func.remove.itemObj_fromItemObjs = ()=>{
-    for(i in app.component.item.objs){
-        let obj = app.component.item.objs[i];
-        if( obj.associated.createdId === Number(app.component.item.state.selected[1].getAttribute("createdId"))){
-            app.component.item.objs.splice(i,1);
-        };
-    };
+app.component.item.func.remove.oldItemObjs_from_itemObjs = ()=>{
+
+};
+
+app.component.item.func.remove.oldItemObjs_from_localStorage = ()=>{
+
 };
 
 /* TRANSITION */
@@ -170,8 +180,8 @@ app.component.item.func.transition.removeItem = ()=>{
     app.component.item.func.transition.removeItem_blurTile();
     app.component.item.func.transition.removeItem_headerTime();
     /* REMOVE - itemObj from localStorage & itemObjs */
-    app.component.item.func.remove.itemObj_fromLocalStorage(); // must happen before removing obj from objs
-    app.component.item.func.remove.itemObj_fromItemObjs();
+    app.component.item.func.remove.itemObj_from_localStorage(); // must happen before removing obj from objs
+    app.component.item.func.remove.itemObj_from_itemObjs();
     /* CREATEAPPEND - daydropper text, html inside dropdown  */
     let dayMS = app.component.dayDropper.setting.day[0];
     app.component.dayDropper.func.createAppend.dayDropperText(dayMS);
