@@ -9,6 +9,7 @@ app.component.item.func.get        = {};
 app.component.item.func.give       = {};
 app.component.item.func.init       = {};
 app.component.item.func.remove     = {};
+app.component.item.func.set        = {};
 app.component.item.func.transition = {};
 
 /* func hotkeys:
@@ -30,7 +31,7 @@ app.component.item.func.transition.hideItem_trash = (item)=>{
 app.component.item.func.transition.removeItem = ()=>{
 app.component.item.func.transition.removeItem_blurTile = ()=>{
 app.component.item.func.transition.removeItem_headerTime = ()=>{
-app.component.item.func.transition.showItem = (item)=>{
+app.component.item.func.transition.showItem = async(item)=>{
 app.component.item.func.transition.showItem_blurTile = ()=>{
 app.component.item.func.transition.showItem_field = (tile)=>{
 app.component.item.func.transition.showItem_tile = (tile)=>{
@@ -57,6 +58,21 @@ app.component.item.func.create.componentObj = (item)=>{
 };
 
 /* GET */
+app.component.item.func.get.isItemExist = ()=>{
+    return new Promise((resolve)=>{
+        let selectedItem = app.component.item.state.selected[1];
+        for(i in app.component.item.objs){
+            let obj = app.component.item.objs[i];
+            if( obj.associated.createdId === Number(selectedItem.getAttribute("createdId"))){
+                resolve([true, obj])
+            };
+            if(Number(i) === app.component.item.objs.length-1){ // end of loop
+                resolve([false, null]);
+            };
+        };
+    });
+};
+
 app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
     return new Promise((resolve)=>{
         for(i in app.component.item.objs){
@@ -69,14 +85,21 @@ app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
 };
 
 /* GIVE */
-app.component.item.func.give.item_to_dataStore = ()=>{
+app.component.item.func.give.item_to_dataStore = async()=>{
     let fieldValue = app.component.item.state.selected[1].children[1].value;
     if( fieldValue.trim().length > 0 // field NOT empty
-    && (event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
-        app.component.item.func.create.componentObj(app.component.item.state.selected[1]); // add to objs array and data store
-        let dayMS = app.component.dayDropper.setting.day[0];
-        app.component.dayDropper.func.createAppend.dayDropperText(dayMS);
-        app.component.dayDropper.func.createAppend.htmlInsideDropdown();
+    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
+        let isItemExist = await app.component.item.func.get.isItemExist();
+        if( isItemExist[0] === true){ // update old componentObj
+            let selectedObj = isItemExist[1];
+            await app.component.item.func.set.componentObj_in_objs(selectedObj, fieldValue);
+            await app.component.item.func.set.componentObj_in_localStorage(selectedObj, fieldValue);
+        }
+        else{ // create new componentObj
+            app.component.item.func.create.componentObj(app.component.item.state.selected[1]); // add to objs array and data store
+            app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
+            app.component.dayDropper.func.createAppend.htmlInsideDropdown();
+        };
         app.component.item.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
     }
     else
@@ -100,25 +123,36 @@ app.component.item.func.init.component = ()=>{
 
 /* REMOVE */
 app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
-    for(i in app.component.item.objs){
-        let obj = app.component.item.objs[i];
-        if( obj.associated.createdId === Number(app.component.item.state.selected[1].getAttribute("createdId"))){
-            app.component.item.objs.splice(i,1);
+    return new Promise((resolve)=>{
+        for(i in app.component.item.objs){
+            let obj = app.component.item.objs[i];
+            if( obj.associated.createdId === Number(app.component.item.state.selected[1].getAttribute("createdId"))){
+                app.component.item.objs.splice(i,1);
+                resolve();
+            };
         };
-    };
+    });
 };
 
 app.component.item.func.remove.itemObj_from_localStorage = ()=>{
-    let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
-    let localStorageItemObjs = localStorageObj.items;
-    for(i in localStorageItemObjs){
-        let obj = localStorageItemObjs[i];
-        if( obj.associated.createdId === Number(app.component.item.state.selected[1].getAttribute("createdId"))){
-            localStorageItemObjs.splice(i,1);
-            localStorageObj.items = localStorageItemObjs;
-            window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
+    return new Promise((resolve)=>{
+        let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
+        let localStorageItemObjs = localStorageObj.items;
+        for(i in localStorageItemObjs){
+            let obj = localStorageItemObjs[i];
+            if( obj.associated.createdId === Number(app.component.item.state.selected[1].getAttribute("createdId"))){
+                localStorageItemObjs.splice(i,1);
+                localStorageObj.items = localStorageItemObjs;
+                window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
+                resolve();
+            };
         };
-    };
+    });
+};
+
+app.component.item.func.remove.oldItemObj = async()=>{
+    await app.component.item.func.remove.itemObj_from_itemObjs();
+    await app.component.item.func.remove.itemObj_from_localStorage();
 };
 
 app.component.item.func.remove.oldItemObjs_from_itemObjs = ()=>{
@@ -145,6 +179,35 @@ app.component.item.func.remove.oldItemObjs_from_localStorage = ()=>{
             window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
         };
     };
+};
+
+/* SET */
+app.component.item.func.set.componentObj_in_objs = (selectedObj, fieldValue)=>{
+    return new Promise((resolve)=>{
+        for(i in app.component.item.objs){
+            let obj = app.component.item.objs[i];
+            if(obj.associated.createdId === selectedObj.associated.createdId){
+                obj.setting.text = fieldValue;
+                resolve();
+            };
+        };
+    });
+};
+
+app.component.item.func.set.componentObj_in_localStorage = (selectedObj, fieldValue)=>{
+    return new Promise((resolve)=>{
+        let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
+        let localStorageItemObjs = localStorageObj.items;
+        for(i in localStorageItemObjs){
+            let obj = localStorageItemObjs[i];
+            if( obj.associated.createdId === selectedObj.associated.createdId){
+                obj.setting.text = fieldValue;
+                localStorageObj.items = localStorageItemObjs;
+                window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
+                resolve();
+            };
+        };
+    });
 };
 
 /* TRANSITION */
@@ -194,17 +257,16 @@ app.component.item.func.transition.hideItem_trash = (item)=>{
         trash.classList.add("displayNone");
 };
 
-app.component.item.func.transition.removeItem = ()=>{
+app.component.item.func.transition.removeItem = async()=>{
     event.stopPropagation();
     /* TRANSITION */
     app.component.item.func.transition.removeItem_blurTile();
     app.component.item.func.transition.removeItem_headerTime();
     /* REMOVE - itemObj from localStorage & itemObjs */
-    app.component.item.func.remove.itemObj_from_localStorage(); // must happen before removing obj from objs
-    app.component.item.func.remove.itemObj_from_itemObjs();
+    await app.component.item.func.remove.itemObj_from_localStorage() // must happen before removing obj from objs
+    await app.component.item.func.remove.itemObj_from_itemObjs();
     /* CREATEAPPEND - daydropper text, html inside dropdown  */
-    let dayMS = app.component.dayDropper.setting.day[0];
-    app.component.dayDropper.func.createAppend.dayDropperText(dayMS);
+    app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     /* REMOVE - element */
     app.component.item.state.selected[1].remove();
