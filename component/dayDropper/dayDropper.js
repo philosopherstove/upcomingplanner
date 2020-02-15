@@ -14,6 +14,9 @@ app.component.dayDropper.func.set          = {};
 app.component.dayDropper.func.transition   = {};
 
 /* func hotkeys:
+app.component.dayDropper.func.createAppend.dayDropperText = (ms)=>{
+app.component.dayDropper.func.createAppend.dayDropperText_day = (dayText)=>{
+app.component.dayDropper.func.createAppend.dayDropperText_info = async(ms)=>{
 app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
 app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
 app.component.dayDropper.func.createAppend.itemsForDay = (day_ms)=>{
@@ -30,6 +33,26 @@ app.component.dayDropper.func.transition.openDropdown = ()=>{
 */
 
 /* CREATEAPPEND */
+app.component.dayDropper.func.createAppend.dayDropperText = (ms)=>{ // use in item.js init.component()
+    let day     = app.component.dayDropper.func.get.day(ms);
+    let dayMS   = day[0];
+    let dayText = day[1];
+    app.component.dayDropper.func.createAppend.dayDropperText_day(dayText);
+    app.component.dayDropper.func.createAppend.dayDropperText_info(dayMS);
+};
+
+app.component.dayDropper.func.createAppend.dayDropperText_day = (dayText)=>{
+    let currDay_text = document.querySelector(".currDay_text");
+        currDay_text.innerHTML = dayText;
+};
+
+app.component.dayDropper.func.createAppend.dayDropperText_info = async(ms)=>{
+    let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(ms);
+    let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(ms);
+    let items_daysCountdown       = document.querySelector(".items_daysCountdown");
+        items_daysCountdown.innerHTML = `${numberOfItemsForDayString}${daysUntilString}`;
+};
+
 app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
     let createdId = obj.associated.createdId;
     let itemText  = obj.setting.text;
@@ -60,7 +83,8 @@ app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
         let dayNum                    = splits[2];
         let day_text                  = `${dayName} ${month} ${dayNum}`;
         let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(incr_ms);
-        let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(i, startOfDay_ms, incr_ms, msInADay);
+        // let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(i, startOfDay_ms, incr_ms);
+        let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(incr_ms);
         let html_piece = `
             <p day_ms="${incr_ms}" day_text="${day_text}" onclick="app.component.dayDropper.func.set.day(this)">
                 <span class="dd_date">
@@ -91,7 +115,10 @@ app.component.dayDropper.func.createAppend.itemsForDay = (day_ms)=>{
 };
 
 /* GET */
-app.component.dayDropper.func.get.day = (ms)=>{ // returns array holding normalized days ms & text
+
+// will return day as [ms(startOfDay), `${dayName} ${month} ${dayNum}`]
+// if pass-in ms, will return for passed in day, otherwise, will do for current day
+app.component.dayDropper.func.get.day = (ms)=>{
     let now_dateString;
     if(ms === undefined){
         now_dateString  = new Date();
@@ -110,17 +137,19 @@ app.component.dayDropper.func.get.day = (ms)=>{ // returns array holding normali
     return [startOfDay_ms, day_text];
 };
 
-app.component.dayDropper.func.get.daysUntilString = (i, startOfDay_ms, incr_ms, msInADay)=>{
+app.component.dayDropper.func.get.daysUntilString = (ms)=>{
+    let msInADay  = 86400000;
+    let todayMS   = app.component.dayDropper.func.get.day()[0];
+    let daysUntil = (ms-todayMS)/msInADay;
     let daysUntilString;
-    if(i === 0){ /* special case */
+    if(daysUntil === 0){
         daysUntilString = `today`;
     }
     else
-    if(i === 1){ /* special case */
+    if(daysUntil === 1){
         daysUntilString = `in 1 day`;
     }
-    else{ /* norm */
-        let daysUntil = (incr_ms - startOfDay_ms) / msInADay ;
+    else{
         daysUntilString = `in ${daysUntil} days`;
     };
     return daysUntilString;
@@ -172,6 +201,20 @@ app.component.dayDropper.func.give.currDayStr_to_dayDropperElement = ()=>{
         currDay_text.innerHTML = currDay_str;
 };
 
+app.component.dayDropper.func.give.currNumberOfItems_to_dayDropperElement = ()=>{
+    let numberOfItems = 0;
+    for(i in app.component.item.objs){
+        let obj = app.component.item.objs[i];
+        if( obj.associated.day === app.component.dayDropper.setting.day[0]){
+            numberOfItems++;
+        };
+        if(Number(i) === app.component.item.objs.length-1){ // end of loop
+            let items_daysCountdown = document.querySelector(".items_daysCountdown");
+                items_daysCountdown.innerHTML = `{}`;
+        };
+    };
+};
+
 app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day_text)=>{
     let currDay_text = document.querySelector(".currDay_text");
         currDay_text.innerHTML = day_text;
@@ -179,7 +222,7 @@ app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day
 
 /* INIT */
 app.component.dayDropper.func.init.component = async()=>{
-    app.component.dayDropper.func.give.currDayStr_to_dayDropperElement();
+    // app.component.dayDropper.func.give.currDayStr_to_dayDropperElement();
     app.component.dayDropper.func.give.closeDropdownListener_to_body();
     app.component.dayDropper.setting.day = app.component.dayDropper.func.get.day(); /* SET - day(defaults to current day) */
 };

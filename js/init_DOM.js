@@ -14,7 +14,7 @@ async function init_DOM(){
                 <div class="blurTile displayNone" onclick="app.component.item.func.give.item_to_dataStore()"></div>
                 <div class="dropper" onclick="app.component.dayDropper.func.transition.openDropdown()">
                     <p class="currDay_text"></p>
-                    <p class="items_daysCountdown">(2 items - today)</p>
+                    <p class="items_daysCountdown"></p>
                     <div class="downArrow"></div>
                 </div>
                 <div class="dropdownMenu_day displayNone"></div>

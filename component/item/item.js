@@ -57,7 +57,6 @@ app.component.item.func.create.componentObj = (item)=>{
 /* GET */
 app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
     return new Promise((resolve)=>{
-        console.log('created id', createdId);
         for(i in app.component.item.objs){
             let obj = app.component.item.objs[i];
             if( obj.associated.createdId === createdId){
@@ -88,10 +87,8 @@ app.component.item.func.init.component = ()=>{
     let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
     app.component.item.objs = localStorageObj.items;
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
-    // populate relevant items
     app.component.dayDropper.func.createAppend.itemsForDay(app.component.dayDropper.setting.day[0]);
-    // numberOfItemsString in dropdown
-
+    app.component.dayDropper.func.createAppend.dayDropperText();
 };
 
 /* REMOVE */
