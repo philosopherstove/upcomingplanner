@@ -21,7 +21,7 @@ app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
 app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
 app.component.dayDropper.func.createAppend.itemsForDay = (day_ms)=>{
 app.component.dayDropper.func.get.day = (ms)=>{
-app.component.dayDropper.func.get.daysUntilString = (i, startOfDay_ms, incr_ms, msInADay)=>{
+app.component.dayDropper.func.get.daysUntilString = (ms)=>{
 app.component.dayDropper.func.get.numberOfItemsForDayString = (ms)=>{
 app.component.dayDropper.func.give.closeDropdownListener_to_body = ()=>{
 app.component.dayDropper.func.give.currDayStr_to_dayDropperElement = ()=>{
@@ -33,7 +33,7 @@ app.component.dayDropper.func.transition.openDropdown = ()=>{
 */
 
 /* CREATEAPPEND */
-app.component.dayDropper.func.createAppend.dayDropperText = (ms)=>{ // use in item.js init.component()
+app.component.dayDropper.func.createAppend.dayDropperText = (ms)=>{
     let day     = app.component.dayDropper.func.get.day(ms);
     let dayMS   = day[0];
     let dayText = day[1];
@@ -83,7 +83,6 @@ app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
         let dayNum                    = splits[2];
         let day_text                  = `${dayName} ${month} ${dayNum}`;
         let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(incr_ms);
-        // let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(i, startOfDay_ms, incr_ms);
         let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(incr_ms);
         let html_piece = `
             <p day_ms="${incr_ms}" day_text="${day_text}" onclick="app.component.dayDropper.func.set.day(this)">
@@ -100,6 +99,7 @@ app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
         html    += html_piece;
         incr_ms += msInADay;
         if(i === lookAheadRange - 1){
+            app.component.dayDropper.associated.menu.innerHTML = "";
             app.component.dayDropper.associated.menu.insertAdjacentHTML("beforeend", html);
         };
     };
@@ -236,7 +236,8 @@ app.component.dayDropper.func.set.day = async(dayElement)=>{
         timeSlotsWrap.remove(); // remove old timeSlots
     await app.component.timeSlot.func.createAppend.timeSlots(); // createAppend new timeSlots
     app.component.dayDropper.func.createAppend.itemsForDay(day_ms);
-    app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement(day_text); // update dropdown text for selected day
+    //app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement(day_text); // update dropdown text for selected day
+    app.component.dayDropper.func.createAppend.dayDropperText(day_ms);
 };
 
 /* TRANSITION */

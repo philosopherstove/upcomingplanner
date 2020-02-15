@@ -72,6 +72,9 @@ app.component.item.func.give.item_to_dataStore = ()=>{
     if( fieldValue.trim().length > 0 // field NOT empty
     && (event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
         app.component.item.func.create.componentObj(app.component.item.state.selected[1]); // add to objs array and data store
+        let dayMS = app.component.dayDropper.setting.day[0];
+        app.component.dayDropper.func.createAppend.dayDropperText(dayMS);
+        app.component.dayDropper.func.createAppend.htmlInsideDropdown();
         app.component.item.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
     }
     else
@@ -86,9 +89,9 @@ app.component.item.func.init.component = ()=>{
     // get item info from localStorage into item component objs array
     let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
     app.component.item.objs = localStorageObj.items;
+    app.component.dayDropper.func.createAppend.dayDropperText();
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     app.component.dayDropper.func.createAppend.itemsForDay(app.component.dayDropper.setting.day[0]);
-    app.component.dayDropper.func.createAppend.dayDropperText();
 };
 
 /* REMOVE */
@@ -169,6 +172,10 @@ app.component.item.func.transition.removeItem = ()=>{
     /* REMOVE - itemObj from localStorage & itemObjs */
     app.component.item.func.remove.itemObj_fromLocalStorage(); // must happen before removing obj from objs
     app.component.item.func.remove.itemObj_fromItemObjs();
+    /* CREATEAPPEND - daydropper text, html inside dropdown  */
+    let dayMS = app.component.dayDropper.setting.day[0];
+    app.component.dayDropper.func.createAppend.dayDropperText(dayMS);
+    app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     /* REMOVE - element */
     app.component.item.state.selected[1].remove();
     /* STATES - timeSlot (editting OFF, item (selected OFF)) */
