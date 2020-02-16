@@ -3,7 +3,6 @@ app.component.item.objs = [];
 app.component.item.state = {};
 app.component.item.state.selected = [false, null];
 app.component.item.func = {};
-app.component.item.func.action     = {};
 app.component.item.func.create     = {};
 app.component.item.func.get        = {};
 app.component.item.func.give       = {};
@@ -29,7 +28,7 @@ app.component.item.func.transition.hideItem_headerTime = (item)=>{
 app.component.item.func.transition.hideItem_min = (item)=>{
 app.component.item.func.transition.hideItem_tile = ()=>{
 app.component.item.func.transition.hideItem_trash = (item)=>{
-app.component.item.func.transition.removeItem = ()=>{
+app.component.item.func.transition.removeItem = async()=>{
 app.component.item.func.transition.removeItem_blurTile = ()=>{
 app.component.item.func.transition.removeItem_headerTime = ()=>{
 app.component.item.func.transition.showItem = async(item)=>{
@@ -51,15 +50,16 @@ app.component.item.func.create.componentObj = (item)=>{
         obj.setting.text = item.children[1].value;
         obj.state = {};
         obj.state.selected = false;
+    // push to objs
     app.component.item.objs.push(obj);
-    // push to data store. For now, localStorage.
+    // push to data store(for now, that's localStorage)
     let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
         localStorageObj.items.push(obj);
     window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
 };
 
 /* GET */
-app.component.item.func.get.isItemExist = ()=>{
+app.component.item.func.get.isObjExist = ()=>{
     return new Promise((resolve)=>{
         let selectedItem = app.component.item.state.selected[1];
         if(app.component.item.objs.length === 0){
@@ -93,9 +93,9 @@ app.component.item.func.give.item_to_dataStore = async()=>{
     let fieldValue = app.component.item.state.selected[1].children[1].value;
     if( fieldValue.trim().length > 0 // field NOT empty
     &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
-        let isItemExist = await app.component.item.func.get.isItemExist();
-        if( isItemExist[0] === true){ // update old componentObj
-            let selectedObj = isItemExist[1];
+        let isObjExist = await app.component.item.func.get.isObjExist();
+        if( isObjExist[0] === true){ // update old componentObj
+            let selectedObj = isObjExist[1];
             await app.component.item.func.set.componentObj_in_objs(selectedObj, fieldValue);
             await app.component.item.func.set.componentObj_in_localStorage(selectedObj, fieldValue);
         }
@@ -115,9 +115,8 @@ app.component.item.func.give.item_to_dataStore = async()=>{
 
 /* INIT */
 app.component.item.func.init.component = ()=>{
-    // get item info from localStorage into item component objs array
     let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
-    app.component.item.objs = localStorageObj.items;
+    app.component.item.objs = localStorageObj.items; // move localStorage item info into item objs
     app.component.dayDropper.func.createAppend.dayDropperText();
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     app.component.dayDropper.func.createAppend.itemsForDay(app.component.dayDropper.setting.day[0]);
@@ -126,12 +125,12 @@ app.component.item.func.init.component = ()=>{
 };
 
 /* REMOVE */
-app.component.item.func.remove.itemObj = async()=>{
-    try{
+app.component.item.func.remove.itemObj = ()=>{
+    return new Promise(async(resolve)=>{
         await app.component.item.func.remove.itemObj_from_localStorage(); // using reject() on end cases instead of resolve() will cease try block operation. A bit better of an option since a rejection in the first function prevents execution of the second function.
         await app.component.item.func.remove.itemObj_from_itemObjs();
-    }
-    catch(e){};
+        resolve();
+    });
 };
 
 app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
@@ -231,6 +230,7 @@ app.component.item.func.set.componentObj_in_localStorage = (selectedObj, fieldVa
 
 /* TRANSITION */
 app.component.item.func.transition.hideItem = ()=>{
+    /* TRANSITION - blurTile, field, headerTime, min, tile, trash elements*/
     let item = app.component.item.state.selected[1];
     app.component.item.func.transition.hideItem_blurTile();
     app.component.item.func.transition.hideItem_field(item);
@@ -238,7 +238,7 @@ app.component.item.func.transition.hideItem = ()=>{
     app.component.item.func.transition.hideItem_min(item);
     app.component.item.func.transition.hideItem_tile();
     app.component.item.func.transition.hideItem_trash(item);
-    // STATES - timeSlot (active OFF), item (selected OFF)
+    /* STATE - timeSlot(active OFF), item(selected OFF) */
     app.component.timeSlot.state.active = false;
     app.component.item.state.selected   = [false, null];
 };
@@ -278,17 +278,17 @@ app.component.item.func.transition.hideItem_trash = (item)=>{
 
 app.component.item.func.transition.removeItem = async()=>{
     event.stopPropagation();
-    /* TRANSITION */
+    /* TRANSITION - blurTile, headerTime */
     app.component.item.func.transition.removeItem_blurTile();
     app.component.item.func.transition.removeItem_headerTime();
-    /* REMOVE - itemObj from localStorage & itemObjs */
-    app.component.item.func.remove.itemObj();
-    /* CREATEAPPEND - daydropper text, html inside dropdown  */
+    /* REMOVE - itemObj from localStorage & itemObjs(needs to happen before remove element) */
+    await app.component.item.func.remove.itemObj();
+    /* CREATEAPPEND - daydropper text, htmlInsideDropdown  */
     app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
-    /* REMOVE - element */
+    /* REMOVE - item element */
     app.component.item.state.selected[1].remove();
-    /* STATES - timeSlot (editting OFF, item (selected OFF)) */
+    /* STATE - timeSlot(editting OFF), item(selected OFF)) */
     app.component.timeSlot.state.active = false;
     app.component.item.state.selected   = [false, null];
 };
@@ -305,12 +305,12 @@ app.component.item.func.transition.removeItem_headerTime = ()=>{
 
 app.component.item.func.transition.showItem = async(item)=>{
     event.stopPropagation();
-    // CASE = if state editing off
+    // if timeSlot(active OFF)
     if( app.component.timeSlot.state.active === false){
-        // STATES - timeSlot (active ON), item (selected ON)
+        /* STATE - timeSlot(active ON), item(selected ON) */
         app.component.timeSlot.state.active = true;
         app.component.item.state.selected   = [true, item];
-        // TRANSITIONS
+        /* TRANSITION - blurTile, field, tile, trash elements */
         app.component.item.func.transition.showItem_blurTile();
         app.component.item.func.transition.showItem_field(item);
         app.component.item.func.transition.showItem_tile(item);
