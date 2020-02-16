@@ -127,16 +127,16 @@ app.component.item.func.init.component = ()=>{
 /* REMOVE */
 app.component.item.func.remove.itemObj = ()=>{
     return new Promise(async(resolve)=>{
-        await app.component.item.func.remove.itemObj_from_localStorage(); // using reject() on end cases instead of resolve() will cease try block operation. A bit better of an option since a rejection in the first function prevents execution of the second function.
+        await app.component.item.func.remove.itemObj_from_localStorage();
         await app.component.item.func.remove.itemObj_from_itemObjs();
         resolve();
     });
 };
 
 app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve)=>{
         if(app.component.item.objs.length === 0){
-            reject();
+            resolve();
         };
         for(i in app.component.item.objs){
             let obj = app.component.item.objs[i];
@@ -145,18 +145,18 @@ app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
                 resolve();
             };
             if(Number(i) === app.component.item.objs.length-1){
-                reject();
+                resolve();
             };
         };
     });
 };
 
 app.component.item.func.remove.itemObj_from_localStorage = ()=>{
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve)=>{
         let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
         let localStorageItemObjs = localStorageObj.items;
         if( localStorageItemObjs.length === 0){
-            reject();
+            resolve();
         };
         for(i in localStorageItemObjs){
             let obj = localStorageItemObjs[i];
@@ -167,7 +167,7 @@ app.component.item.func.remove.itemObj_from_localStorage = ()=>{
                 resolve();
             };
             if(Number(i) === localStorageItemObjs.length-1){
-                reject();
+                resolve();
             };
         };
     });
