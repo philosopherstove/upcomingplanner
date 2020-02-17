@@ -36,7 +36,8 @@
 
 .slotHeader {
 	position: relative;
-	height: 20px;
+    width: 88%;
+    height: 20px;
 	display: flex;
 
 	/* border: 1px solid red; */
@@ -47,7 +48,7 @@
 }
 
 .time {
-	margin-left: 11px;
+	margin-left: 2px;
 	font-family: Avenir Next;
 	font-size: 14px;
 	font-weight: 600;
@@ -56,14 +57,25 @@
 }
 
 .addButton {
-	position: absolute;
+	/* position: absolute;
 	right: 11px;
 	width: 33px;
 	height: 23px;
 	background-image: url('plusSymbol.svg');
 	background-repeat: no-repeat;
 	background-position-x: 8px;
-	background-position-y: 2px;
+	background-position-y: 2px; */
+
+    width: 157px;
+    height: 10px;
+    margin-top: 4px;
+    margin-left: 14px;
+    background-color: rgba(0,119,181,0.2);
+    background-image: url('plusSymbol.svg');
+    background-repeat: no-repeat;
+    background-size: 8px;
+	background-position-x: 50%;
+	background-position-y: 1px;
 
 	/*border: 1px solid black;*/
 }

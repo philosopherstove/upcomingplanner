@@ -16,9 +16,9 @@
 	display: block;
 	position: absolute;
 	top: 16px;
-	width: 5px;
-	height: 5px;
-	margin-left: 26px;
+	width: 4px;
+	height: 4px;
+	margin-left: 34px;
 	background-image: url('dot.svg');
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -28,7 +28,7 @@
 	width: 134px;
 	height: 22px;
 	margin-top: 7px;
-	margin-left: 50px;
+	margin-left: 59px;
 	padding: 2px;
 	font-family: var(--font_main);
 	font-size: 13px;
