@@ -8,12 +8,11 @@
 
 	--background_main: rgb(236,236,236);
 
-	--boxShadow_1: 0 0.5px 0.5px 0.25px rgba(0,0,0,0.2);
+	--boxShadow_1: 0 1px 1px 0 rgba(0,0,0,0.2);
 	--boxShadow_2: 0 0.75px 0.75px 0.5px rgba(0,0,0,0.2);
 
 	--font_main: Seravek;
 }
-
 
 * {
 	/* general box model & position */
@@ -34,7 +33,6 @@
 	-moz-osx-font-smoothing: antialiased;
 	font-smoothing: antialiased;
 }
-
 
 body {
 	background-color: var(--background_main);
@@ -58,9 +56,6 @@ body {
 }
 
 
-
-
-
 .app {
 	position: relative;
 	width: 320px;
@@ -82,112 +77,11 @@ body {
 	/* border: 1px solid red; */
 }
 
-.dropper {
-	display: flex;
-	position: relative;
-	width: 240px;
-	min-height: 47px;
-	margin-top: 34px;
-	border-radius: 2px;
-	border: 1px solid var(--blue_1);
-	box-shadow: var(--boxShadow_1);
-	background-color: white;
-	cursor: pointer;
-}
-
-.currDay_text {
+.blurTile {
 	position: absolute;
 	width: 100%;
-	padding-top: 6px;
-	font-size: 18px;
-	font-family: var(--font_main);
-	letter-spacing: 0.26px;
-	font-weight: 500;
-	text-align: center;
-}
-
-.items_daysCountdown {
-	position: absolute;
-	width: 100%;
-	margin-top: 28px;
-	font-size: 10px;
-	font-family: var(--font_main);
-	font-style: italic;
-	text-align: center;
-}
-
-.dropper > .downArrow {
-	position: absolute;
-	right: 15px;
-	margin-top: 18px;
-	width: 24px;
-	height: 24px;
-	background-image: url('../img/downArrow.svg');
-	background-repeat: no-repeat;
-}
-
-.dropdownMenu_day {
-	position: absolute;
-	top: 81px;
-	width: 240px;
-	min-height: 390px;
-	max-height: 390px;
-	margin-top: 2px;
-    background-color: white;
-	border-radius: 2px;
-	border: 1px solid var(--blue_1);
-	box-shadow: var(--boxShadow_1);
-	overflow-y: scroll;
+	height: 100%;
+	background-color: rgb(236,236,236);
+	opacity: 0.8;
 	z-index: 1;
-}
-
-.dropdownMenu_day p {
-	position: relative;
-	display: block;
-	width: 100%;
-	height: 47px;
-	font-family: var(--font_main);
-	font-size: 16px;
-	font-weight: 500;
-	line-height: 32px;
-	letter-spacing: 0.24px;
-}
-
-.dropdownMenu_day p:nth-of-type(odd){
-	background-color: rgb(240,246,252);
-}
-
-.dropdownMenu_day p:nth-of-type(even){
-	background-color: white;
-}
-
-.dd_date {
-	display: block;
-	position: relative;
-	width: 100px;
-	top: 2px;
-	margin: 0 auto;
-}
-
-.dd_date > span {
-	display: block;
-	position: absolute;
-}
-.dd_date > span:nth-of-type(2) {
-	left: 40px;
-}
-.dd_date > span:nth-of-type(3) {
-	left: 80px;
-}
-
-.dd_info {
-	display: block;
-	position: relative;
-	top: 18px;
-	width: 100px;
-	margin: 0 auto;
-	text-align: center;
-	font-family: var(--font_main);
-	font-size: 10px;
-	font-style: italic;
 }

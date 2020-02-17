@@ -242,16 +242,16 @@ app.component.dayDropper.func.set.day = async(dayElement)=>{
 
 /* TRANSITION */
 app.component.dayDropper.func.transition.closeDropdown = ()=>{
-    if(app.component.dayDropper.state.open === true){
-       app.component.dayDropper.associated.menu.classList.add("displayNone");
-       app.component.dayDropper.state.open = false;
+    if( app.component.dayDropper.state.open === true){
+        app.component.dayDropper.associated.menu.classList.add("displayNone");
+        app.component.dayDropper.state.open = false;
     };
 };
 
 app.component.dayDropper.func.transition.openDropdown = ()=>{
     if(app.component.dayDropper.state.open === false){
-       event.stopPropagation();
-       app.component.dayDropper.associated.menu.classList.remove("displayNone");
-       app.component.dayDropper.state.open = true;
+        event.stopPropagation();
+        app.component.dayDropper.associated.menu.classList.remove("displayNone");
+        app.component.dayDropper.state.open = true;
     };
 };

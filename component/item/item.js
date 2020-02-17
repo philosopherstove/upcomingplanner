@@ -1,4 +1,6 @@
 app.component.item = {};
+app.component.item.index = {};
+app.component.item.index.createdId = {};
 app.component.item.objs = [];
 app.component.item.state = {};
 app.component.item.state.selected = [false, null];
@@ -16,9 +18,10 @@ app.component.item.func.create.componentObj = (item)=>{
 app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
 app.component.item.func.give.item_to_dataStore = ()=>{
 app.component.item.func.init.component = ()=>{
+app.component.item.func.remove.itemObj = ()=>{
+app.component.item.func.remove.itemObj_from_index = ()=>{
 app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
 app.component.item.func.remove.itemObj_from_localStorage = ()=>{
-app.component.item.func.remove.itemObj = async()=>{
 app.component.item.func.remove.oldItemObjs_from_itemObjs = ()=>{
 app.component.item.func.remove.oldItemObjs_from_localStorage = ()=>{
 app.component.item.func.transition.hideItem = ()=>{
@@ -44,12 +47,13 @@ app.component.item.func.create.componentObj = (item)=>{
         obj.associated = {};
         obj.associated.createdId = Number(item.getAttribute("createdId"));
         obj.associated.day       = app.component.dayDropper.setting.day[0];
-        obj.associated.element   = item;
         obj.associated.timeSlot  = item.parentNode.previousElementSibling.children[0].getAttribute("data_hour"); // 24hr
         obj.setting = {};
         obj.setting.text = item.children[1].value;
         obj.state = {};
         obj.state.selected = false;
+    // add index on createdId
+    app.component.item.index.createdId[obj.associated.createdId] = app.component.item.objs.length; // given next index in objs array
     // push to objs
     app.component.item.objs.push(obj);
     // push to data store(for now, that's localStorage)
@@ -129,13 +133,19 @@ app.component.item.func.remove.itemObj = ()=>{
     return new Promise(async(resolve)=>{
         await app.component.item.func.remove.itemObj_from_localStorage();
         await app.component.item.func.remove.itemObj_from_itemObjs();
+              app.component.item.func.remove.itemObj_from_index();
         resolve();
     });
 };
 
+app.component.item.func.remove.itemObj_from_index = ()=>{
+    let createdId = Number(app.component.item.state.selected[1].getAttribute("createdId"));
+    delete app.component.item.index.createdId[createdId];
+};
+
 app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
     return new Promise((resolve)=>{
-        if(app.component.item.objs.length === 0){
+        if(app.component.item.objs.length === 0){ // no objs
             resolve();
         };
         for(i in app.component.item.objs){
@@ -144,7 +154,7 @@ app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
                 app.component.item.objs.splice(i,1);
                 resolve();
             };
-            if(Number(i) === app.component.item.objs.length-1){
+            if(Number(i) === app.component.item.objs.length-1){ // end of loop, no match found
                 resolve();
             };
         };
@@ -155,7 +165,7 @@ app.component.item.func.remove.itemObj_from_localStorage = ()=>{
     return new Promise((resolve)=>{
         let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
         let localStorageItemObjs = localStorageObj.items;
-        if( localStorageItemObjs.length === 0){
+        if( localStorageItemObjs.length === 0){ // no objs
             resolve();
         };
         for(i in localStorageItemObjs){
@@ -166,7 +176,7 @@ app.component.item.func.remove.itemObj_from_localStorage = ()=>{
                 window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
                 resolve();
             };
-            if(Number(i) === localStorageItemObjs.length-1){
+            if(Number(i) === localStorageItemObjs.length-1){ // end of loop, no match found
                 resolve();
             };
         };
@@ -192,7 +202,7 @@ app.component.item.func.remove.oldItemObjs_from_localStorage = ()=>{
         if( obj.associated.day < startOfToday_ms){
             localStorageItemObjs.splice(i,1);
         };
-        if(i === 0){ // end of loop
+        if(i === 0){ // end of loop, update localStorage
             localStorageObj.items = localStorageItemObjs;
             window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
         };

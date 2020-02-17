@@ -13,7 +13,6 @@ const app = {};
               location.reload();
           },nextRefresh_ms);
       };
-/*************
-INITIALIZATION
-**************/
+
+/* INITIALIZATION */
 app.func.refreshDaily();
