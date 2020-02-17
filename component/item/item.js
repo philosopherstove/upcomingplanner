@@ -1,6 +1,4 @@
 app.component.item = {};
-app.component.item.index = {};
-app.component.item.index.createdId = {};
 app.component.item.objs = [];
 app.component.item.state = {};
 app.component.item.state.selected = [false, null];
@@ -16,10 +14,9 @@ app.component.item.func.transition = {};
 /* func hotkeys:
 app.component.item.func.create.componentObj = (item)=>{
 app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
-app.component.item.func.give.item_to_dataStore = ()=>{
+app.component.item.func.give.item_to_dataStore = async()=>{
 app.component.item.func.init.component = ()=>{
 app.component.item.func.remove.itemObj = ()=>{
-app.component.item.func.remove.itemObj_from_index = ()=>{
 app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
 app.component.item.func.remove.itemObj_from_localStorage = ()=>{
 app.component.item.func.remove.oldItemObjs_from_itemObjs = ()=>{
@@ -52,8 +49,6 @@ app.component.item.func.create.componentObj = (item)=>{
         obj.setting.text = item.children[1].value;
         obj.state = {};
         obj.state.selected = false;
-    // add index on createdId
-    app.component.item.index.createdId[obj.associated.createdId] = app.component.item.objs.length; // given next index in objs array
     // push to objs
     app.component.item.objs.push(obj);
     // push to data store(for now, that's localStorage)
@@ -133,14 +128,8 @@ app.component.item.func.remove.itemObj = ()=>{
     return new Promise(async(resolve)=>{
         await app.component.item.func.remove.itemObj_from_localStorage();
         await app.component.item.func.remove.itemObj_from_itemObjs();
-              app.component.item.func.remove.itemObj_from_index();
         resolve();
     });
-};
-
-app.component.item.func.remove.itemObj_from_index = ()=>{
-    let createdId = Number(app.component.item.state.selected[1].getAttribute("createdId"));
-    delete app.component.item.index.createdId[createdId];
 };
 
 app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
