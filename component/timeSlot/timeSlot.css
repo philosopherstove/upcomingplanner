@@ -25,6 +25,9 @@
 	margin-left: calc(50% - 155px);
 	background-color: rgb(176,192,205);
 }
+.timeSlots::-webkit-scrollbar {
+    display: none;
+}
 
 .slot {
 	position: relative;
@@ -48,7 +51,7 @@
 }
 
 .time {
-	margin-left: 2px;
+	margin-left: 4px;
 	font-family: Avenir Next;
 	font-size: 14px;
 	font-weight: 600;
@@ -57,19 +60,10 @@
 }
 
 .addButton {
-	/* position: absolute;
-	right: 11px;
-	width: 33px;
-	height: 23px;
-	background-image: url('plusSymbol.svg');
-	background-repeat: no-repeat;
-	background-position-x: 8px;
-	background-position-y: 2px; */
-
-    width: 157px;
+    width: 154px;
     height: 10px;
     margin-top: 4px;
-    margin-left: 14px;
+    margin-left: 16px;
     background-color: rgba(0,119,181,0.2);
     background-image: url('plusSymbol.svg');
     background-repeat: no-repeat;
@@ -78,4 +72,20 @@
 	background-position-y: 1px;
 
 	/*border: 1px solid black;*/
+}
+
+.scrollbar_timeSlots {
+    position: absolute;
+    top: 111px;
+    right: 40px;
+    width: 3px;
+    height: 434px;
+    background-color: rgba(0,119,181,0.2);
+}
+
+.scrollbar_timeSlots span {
+    display: block;
+    width: 3px;
+    /* height: 10px; */
+    background-color: rgba(0,119,181,0.5);
 }

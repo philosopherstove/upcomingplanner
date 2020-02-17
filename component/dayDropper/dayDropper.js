@@ -236,8 +236,8 @@ app.component.dayDropper.func.set.day = async(dayElement)=>{
         timeSlotsWrap.remove(); // remove old timeSlots
     await app.component.timeSlot.func.createAppend.timeSlots(); // createAppend new timeSlots
     app.component.dayDropper.func.createAppend.itemsForDay(day_ms);
-    //app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement(day_text); // update dropdown text for selected day
     app.component.dayDropper.func.createAppend.dayDropperText(day_ms);
+    app.component.timeSlot.func.give.height_to_scrollBall();
 };
 
 /* TRANSITION */

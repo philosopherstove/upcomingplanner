@@ -7,6 +7,7 @@ app.component.timeSlot.func = {};
 app.component.timeSlot.func.create       = {};
 app.component.timeSlot.func.createAppend = {};
 app.component.timeSlot.func.get          = {};
+app.component.timeSlot.func.give         = {};
 app.component.timeSlot.func.init         = {};
 app.component.timeSlot.func.transition   = {};
 
@@ -16,6 +17,8 @@ app.component.timeSlot.func.create.minValuesHTML = ()=>{
 app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
 app.component.timeSlot.func.createAppend.itemHTML = (timeSlot)=>{
 app.component.timeSlot.func.createAppend.timeSlots = ()=>{
+app.component.timeSlot.func.give.height_to_scrollBall = ()=>{
+app.component.timeSlot.func.give.scrollListener_to_timeSlots = ()=>{
 app.component.timeSlot.func.get.AMorPM = (hr)=>{
 app.component.timeSlot.func.get.to12Hour = (hr)=>{
 app.component.timeSlot.func.init.component = ()=>{
@@ -73,7 +76,7 @@ app.component.timeSlot.func.createAppend.itemHTML = (timeSlot)=>{
             <div class="itemTile zIndex2" createdId="${createdId}" onclick="app.component.item.func.transition.showItem(this)">
                 <span class="dot"></span>
                 <input class="itemField background_white" spellcheck="false" onkeyup="app.component.item.func.give.item_to_dataStore()">
-                <div class="minValues"></div>
+                <div class="minValues displayNone"></div>
                 <div class="trashIcon" onclick="app.component.item.func.transition.removeItem();"></div>
             </div>
         `;
@@ -120,9 +123,36 @@ app.component.timeSlot.func.get.to12Hour = (hr)=>{
     };
 };
 
+/* GIVE */
+app.component.timeSlot.func.give.height_to_scrollBall = ()=>{
+    let timeSlots           = document.querySelector(".timeSlots");
+    let timeSlots_div       = timeSlots.children[0];
+    let height_noOverflow   = timeSlots.getBoundingClientRect().height;
+    let height_withOverflow = timeSlots_div.getBoundingClientRect().height;
+    let heightRatio         = height_noOverflow / height_withOverflow;
+    let bar                 = document.querySelector(".scrollbar_timeSlots");
+    let barHeight           = bar.getBoundingClientRect().height - 36;
+    let numberOfItemsOnPage = document.querySelectorAll(".itemTile").length;
+    let ballHeight          = (barHeight * heightRatio) + (-1 * numberOfItemsOnPage);
+    let ball                = document.querySelector(".scrollbar_timeSlots > span");
+        ball.setAttribute("heightRatio", heightRatio);
+        ball.style.height   = `${ballHeight}px`;
+};
+
+app.component.timeSlot.func.give.scrollListener_to_timeSlots = ()=>{
+    let timeSlots = document.querySelector(".timeSlots");
+        timeSlots.addEventListener("scroll", ()=>{
+            let scrollTop            = event.srcElement.scrollTop;
+            let ball                 = document.querySelector(".scrollbar_timeSlots > span");
+                ball.style.marginTop = `${scrollTop * ball.getAttribute("heightRatio")}px`;
+        });
+};
+
 /* INIT */
-app.component.timeSlot.func.init.component = ()=>{
-    app.component.timeSlot.func.createAppend.timeSlots();
+app.component.timeSlot.func.init.component = async()=>{
+    await app.component.timeSlot.func.createAppend.timeSlots();
+    app.component.timeSlot.func.give.height_to_scrollBall();
+    app.component.timeSlot.func.give.scrollListener_to_timeSlots();
 };
 
 /* TRANSITION */

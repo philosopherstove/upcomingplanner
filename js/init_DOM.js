@@ -19,6 +19,7 @@ async function init_DOM(){
                 </div>
                 <div class="dropdownMenu_day displayNone"></div>
                 <div class="timeSlots"></div>
+                <div class="scrollbar_timeSlots"><span></span></div>
             </div>
             <div class="upcomingPage"></div>
             <div class="footer></div>

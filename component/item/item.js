@@ -102,6 +102,7 @@ app.component.item.func.give.item_to_dataStore = async()=>{
             app.component.item.func.create.componentObj(app.component.item.state.selected[1]); // add to objs array and data store
             app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
             app.component.dayDropper.func.createAppend.htmlInsideDropdown();
+            app.component.timeSlot.func.give.height_to_scrollBall();
         };
         app.component.item.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
     }
@@ -287,6 +288,8 @@ app.component.item.func.transition.removeItem = async()=>{
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     /* REMOVE - item element */
     app.component.item.state.selected[1].remove();
+    /* GIVE - height to scrollBall */
+    app.component.timeSlot.func.give.height_to_scrollBall(); // must happen after item element removal, since scrollBall height takes into account the number of item elements present
     /* STATE - timeSlot(editting OFF), item(selected OFF)) */
     app.component.timeSlot.state.active = false;
     app.component.item.state.selected   = [false, null];
