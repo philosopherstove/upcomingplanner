@@ -9,19 +9,22 @@ app.component.timeSlot.func.createAppend = {};
 app.component.timeSlot.func.get          = {};
 app.component.timeSlot.func.give         = {};
 app.component.timeSlot.func.init         = {};
+app.component.timeSlot.func.remove       = {};
 app.component.timeSlot.func.transition   = {};
 
 /* func hotkeys:
 app.component.timeSlot.func.create.item = async(timeSlot)=>{
 app.component.timeSlot.func.create.minValuesHTML = ()=>{
 app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
+app.component.timeSlot.func.createAppend.blurTile = ()=>{
 app.component.timeSlot.func.createAppend.itemHTML = (timeSlot)=>{
 app.component.timeSlot.func.createAppend.timeSlots = ()=>{
 app.component.timeSlot.func.give.height_to_scrollBall = ()=>{
 app.component.timeSlot.func.give.scrollListener_to_timeSlots = ()=>{
 app.component.timeSlot.func.get.AMorPM = (hr)=>{
 app.component.timeSlot.func.get.to12Hour = (hr)=>{
-app.component.timeSlot.func.init.component = ()=>{
+app.component.timeSlot.func.init.component = async()=>{
+app.component.timeSlot.func.remove.blurTile = ()=>{
 app.component.timeSlot.func.transition.createdItem = (element)=>{
 */
 
@@ -69,6 +72,12 @@ app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
 };
 
 /* CREATEAPPEND */
+app.component.timeSlot.func.createAppend.blurTile = ()=>{
+    let html = `<div class="blurTile" onclick="app.component.item.func.give.item_to_dataStore(); app.component.timeSlot.func.remove.blurTile()"></div>`;
+    let addPage = document.querySelector(".addPage");
+        addPage.insertAdjacentHTML("afterbegin", html);
+};
+
 app.component.timeSlot.func.createAppend.itemHTML = (timeSlot)=>{
     return new Promise((resolve)=>{
         let createdId = Date.now();
@@ -156,15 +165,17 @@ app.component.timeSlot.func.init.component = async()=>{
     app.component.timeSlot.func.give.scrollListener_to_timeSlots();
 };
 
+/* REMOVE */
+app.component.timeSlot.func.remove.blurTile = ()=>{
+    let blurTile = document.querySelector(".blurTile");
+        blurTile.remove();
+};
+
 /* TRANSITION */
 app.component.timeSlot.func.transition.createdItem = (element)=>{
-    /* focus on input text */
-   let itemField = element.nextElementSibling.children[0].children[1];
-       itemField.focus();
-   /* show blurTile */
-   let blurTile = document.querySelector(".blurTile");
-       blurTile.classList.remove("displayNone");
-   /* headerTime zindex */
-   let headerTime = element.children[0];
-       headerTime.classList.add("zIndex2");
+    app.component.timeSlot.func.createAppend.blurTile();
+    let headerTime = element.children[0];
+        headerTime.classList.add("zIndex2"); // header z-index above blurTile
+    let itemField = element.nextElementSibling.children[0].children[1];
+        itemField.focus(); // focus in field
 };

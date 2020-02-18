@@ -31,6 +31,7 @@ app.component.dayDropper.func.give.height_to_scrollBall = ()=>{
 app.component.dayDropper.func.give.scrollListener_to_dropdownMenu = ()=>{
 app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day_text)=>{
 app.component.dayDropper.func.init.component = async()=>{
+app.component.dayDropper.func.remove.blurTile = ()=>{
 app.component.dayDropper.func.remove.timeSlotsDivElement = ()=>{
 app.component.dayDropper.func.set.day = async(dayElement)=>{
 app.component.dayDropper.func.transition.closeDropdown = ()=>{
@@ -38,6 +39,12 @@ app.component.dayDropper.func.transition.openDropdown = ()=>{
 */
 
 /* CREATEAPPEND */
+app.component.dayDropper.func.createAppend.blurTile = ()=>{
+    let html = `<div class="blurTile" onclick="app.component.dayDropper.func.transition.closeDropdown()"></div>`;
+    let addPage = document.querySelector(".addPage");
+        addPage.insertAdjacentHTML("afterbegin", html);
+};
+
 app.component.dayDropper.func.createAppend.dayDropperText = (ms)=>{
     let day     = app.component.dayDropper.func.get.day(ms);
     let dayMS   = day[0];
@@ -256,6 +263,11 @@ app.component.dayDropper.func.init.component = async()=>{
 };
 
 /* REMOVE */
+app.component.dayDropper.func.remove.blurTile = ()=>{
+    let blurTile = document.querySelector(".blurTile");
+        blurTile.remove();
+};
+
 app.component.dayDropper.func.remove.timeSlotsDivElement = ()=>{
     let timeSlotsWrap = document.querySelector(".timeSlots").children[0];
         timeSlotsWrap.remove();
@@ -275,8 +287,10 @@ app.component.dayDropper.func.set.day = async(dayElement)=>{
 
 /* TRANSITION */
 app.component.dayDropper.func.transition.closeDropdown = ()=>{
+    event.stopPropagation();
     if( app.component.dayDropper.state.open === true){
         app.component.dayDropper.associated.menu.classList.add("displayNone");
+        app.component.dayDropper.func.remove.blurTile();
         app.component.dayDropper.state.open = false;
     };
 };
@@ -285,6 +299,7 @@ app.component.dayDropper.func.transition.openDropdown = ()=>{
     if(app.component.dayDropper.state.open === false){
         event.stopPropagation();
         app.component.dayDropper.associated.menu.classList.remove("displayNone");
+        app.component.dayDropper.func.createAppend.blurTile();
         app.component.dayDropper.state.open = true;
     };
 };

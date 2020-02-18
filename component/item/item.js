@@ -22,7 +22,6 @@ app.component.item.func.remove.itemObj_from_localStorage = ()=>{
 app.component.item.func.remove.oldItemObjs_from_itemObjs = ()=>{
 app.component.item.func.remove.oldItemObjs_from_localStorage = ()=>{
 app.component.item.func.transition.hideItem = ()=>{
-app.component.item.func.transition.hideItem_blurTile = ()=>{
 app.component.item.func.transition.hideItem_field = (item)=>{
 app.component.item.func.transition.hideItem_headerTime = (item)=>{
 app.component.item.func.transition.hideItem_min = (item)=>{
@@ -232,7 +231,6 @@ app.component.item.func.set.componentObj_in_localStorage = (selectedObj, fieldVa
 app.component.item.func.transition.hideItem = ()=>{
     /* TRANSITION - blurTile, field, headerTime, min, tile, trash elements*/
     let item = app.component.item.state.selected[1];
-    app.component.item.func.transition.hideItem_blurTile();
     app.component.item.func.transition.hideItem_field(item);
     app.component.item.func.transition.hideItem_headerTime(item);
     app.component.item.func.transition.hideItem_min(item);
@@ -241,11 +239,6 @@ app.component.item.func.transition.hideItem = ()=>{
     /* STATE - timeSlot(active OFF), item(selected OFF) */
     app.component.timeSlot.state.active = false;
     app.component.item.state.selected   = [false, null];
-};
-
-app.component.item.func.transition.hideItem_blurTile = ()=>{
-    let blurTile = document.querySelector(".blurTile");
-        blurTile.classList.add("displayNone");
 };
 
 app.component.item.func.transition.hideItem_field = (item)=>{

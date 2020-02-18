@@ -9,6 +9,7 @@
 	box-shadow: var(--boxShadow_1);
 	background-color: white;
 	cursor: pointer;
+    z-index: 1;
 }
 
 .currDay_text {
