@@ -10,6 +10,7 @@ app.component.dayDropper.func.createAppend = {};
 app.component.dayDropper.func.get          = {};
 app.component.dayDropper.func.give         = {};
 app.component.dayDropper.func.init         = {};
+app.component.dayDropper.func.remove       = {};
 app.component.dayDropper.func.set          = {};
 app.component.dayDropper.func.transition   = {};
 
@@ -27,6 +28,7 @@ app.component.dayDropper.func.give.closeDropdownListener_to_body = ()=>{
 app.component.dayDropper.func.give.currDayStr_to_dayDropperElement = ()=>{
 app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day_text)=>{
 app.component.dayDropper.func.init.component = async()=>{
+app.component.dayDropper.func.remove.timeSlotsDivElement = ()=>{
 app.component.dayDropper.func.set.day = async(dayElement)=>{
 app.component.dayDropper.func.transition.closeDropdown = ()=>{
 app.component.dayDropper.func.transition.openDropdown = ()=>{
@@ -140,7 +142,7 @@ app.component.dayDropper.func.get.day = (ms)=>{
 app.component.dayDropper.func.get.daysUntilString = (ms)=>{
     let msInADay  = 86400000;
     let todayMS   = app.component.dayDropper.func.get.day()[0];
-    let daysUntil = (ms-todayMS)/msInADay;
+    let daysUntil = Math.round( (ms-todayMS)/msInADay );
     let daysUntilString;
     if(daysUntil === 0){
         daysUntilString = `today`;
@@ -227,17 +229,22 @@ app.component.dayDropper.func.init.component = async()=>{
     app.component.dayDropper.setting.day = app.component.dayDropper.func.get.day(); /* SET - day(defaults to current day) */
 };
 
+/* REMOVE */
+app.component.dayDropper.func.remove.timeSlotsDivElement = ()=>{
+    let timeSlotsWrap = document.querySelector(".timeSlots").children[0];
+        timeSlotsWrap.remove();
+};
+
 /* SET */
 app.component.dayDropper.func.set.day = async(dayElement)=>{
     let day_ms   = Number(dayElement.getAttribute("day_ms"));
     let day_text = dayElement.getAttribute("day_text");
     app.component.dayDropper.setting.day = [day_ms, day_text]; // SET - dayDropper day
-    let timeSlotsWrap = document.querySelector(".timeSlots").children[0];
-        timeSlotsWrap.remove(); // remove old timeSlots
+    app.component.dayDropper.func.remove.timeSlotsDivElement(); // remove old timeSlots
     await app.component.timeSlot.func.createAppend.timeSlots(); // createAppend new timeSlots
     app.component.dayDropper.func.createAppend.itemsForDay(day_ms);
     app.component.dayDropper.func.createAppend.dayDropperText(day_ms);
-    app.component.timeSlot.func.give.height_to_scrollBall();
+    app.component.timeSlot.func.give.height_to_scrollBall();  // timeSlots with items have a larger height than timeSlots without, thus need to calculate different scrollBall height based on number of number of items for the given day
 };
 
 /* TRANSITION */
