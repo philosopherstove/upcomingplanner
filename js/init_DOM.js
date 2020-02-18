@@ -17,7 +17,14 @@ async function init_DOM(){
                     <p class="items_daysCountdown"></p>
                     <div class="downArrow"></div>
                 </div>
-                <div class="dropdownMenu_day displayNone"></div>
+                <div class="dropdownMenu_day displayNone">
+                    <span class="scrollWrapper">
+                        <span class="scrollBar">
+                            <span class="scrollBall"></span>
+                        </span>
+                    </span>
+                    <div class="dropdownMenu_innerWrapper"></div>
+                </div>
                 <div class="timeSlots"></div>
                 <div class="scrollbar_timeSlots"><span></span></div>
             </div>

@@ -1,6 +1,7 @@
 app.component.dayDropper = {};
 app.component.dayDropper.associated = {};
-app.component.dayDropper.associated.menu = document.querySelector(".dropdownMenu_day");
+app.component.dayDropper.associated.menu         = document.querySelector(".dropdownMenu_day");
+app.component.dayDropper.associated.innerWrapper = document.querySelector(".dropdownMenu_innerWrapper");
 app.component.dayDropper.setting = {};
 app.component.dayDropper.setting.day = null;
 app.component.dayDropper.state = {};
@@ -26,6 +27,8 @@ app.component.dayDropper.func.get.daysUntilString = (ms)=>{
 app.component.dayDropper.func.get.numberOfItemsForDayString = (ms)=>{
 app.component.dayDropper.func.give.closeDropdownListener_to_body = ()=>{
 app.component.dayDropper.func.give.currDayStr_to_dayDropperElement = ()=>{
+app.component.dayDropper.func.give.height_to_scrollBall = ()=>{
+app.component.dayDropper.func.give.scrollListener_to_dropdownMenu = ()=>{
 app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day_text)=>{
 app.component.dayDropper.func.init.component = async()=>{
 app.component.dayDropper.func.remove.timeSlotsDivElement = ()=>{
@@ -101,8 +104,8 @@ app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
         html    += html_piece;
         incr_ms += msInADay;
         if(i === lookAheadRange - 1){
-            app.component.dayDropper.associated.menu.innerHTML = "";
-            app.component.dayDropper.associated.menu.insertAdjacentHTML("beforeend", html);
+            app.component.dayDropper.associated.innerWrapper.innerHTML = "";
+            app.component.dayDropper.associated.innerWrapper.insertAdjacentHTML("beforeend", html);
         };
     };
 };
@@ -217,6 +220,27 @@ app.component.dayDropper.func.give.currNumberOfItems_to_dayDropperElement = ()=>
     };
 };
 
+app.component.dayDropper.func.give.height_to_scrollBall = ()=>{
+    let height_noOverflow   = 390;
+    let height_withOverflow = 17155;
+    let barHeight           = 380;
+    let heightRatio         = (height_noOverflow / height_withOverflow) * (barHeight / height_noOverflow);
+    let ballHeight          = Math.ceil( (barHeight * heightRatio) * (barHeight / height_noOverflow) );
+    let ball                = document.querySelector(".dropdownMenu_day .scrollBall");
+        ball.style.height   = `${ballHeight}px`;
+        ball.setAttribute('heightRatio', heightRatio);
+};
+
+app.component.dayDropper.func.give.scrollListener_to_dropdownMenu = ()=>{
+    let dropdownMenu_day = document.querySelector(".dropdownMenu_day");
+        dropdownMenu_day.addEventListener("scroll", ()=>{
+            let scrollTop            = event.srcElement.scrollTop;
+            let ball                 = document.querySelector(".dropdownMenu_day .scrollBall");
+                ballHeightRatio      = ball.getAttribute("heightRatio");
+                ball.style.marginTop = `${scrollTop * ballHeightRatio}px`;
+        });
+};
+
 app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day_text)=>{
     let currDay_text = document.querySelector(".currDay_text");
         currDay_text.innerHTML = day_text;
@@ -226,6 +250,8 @@ app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day
 app.component.dayDropper.func.init.component = async()=>{
     // app.component.dayDropper.func.give.currDayStr_to_dayDropperElement();
     app.component.dayDropper.func.give.closeDropdownListener_to_body();
+    app.component.dayDropper.func.give.height_to_scrollBall();
+    app.component.dayDropper.func.give.scrollListener_to_dropdownMenu();
     app.component.dayDropper.setting.day = app.component.dayDropper.func.get.day(); /* SET - day(defaults to current day) */
 };
 

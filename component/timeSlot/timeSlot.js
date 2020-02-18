@@ -135,8 +135,8 @@ app.component.timeSlot.func.give.height_to_scrollBall = ()=>{
     let numberOfItemsOnPage = document.querySelectorAll(".itemTile").length;
     let ballHeight          = (barHeight * heightRatio) + (-1 * numberOfItemsOnPage);
     let ball                = document.querySelector(".scrollbar_timeSlots > span");
-        ball.setAttribute("heightRatio", heightRatio);
         ball.style.height   = `${ballHeight}px`;
+        ball.setAttribute("heightRatio", heightRatio);
 };
 
 app.component.timeSlot.func.give.scrollListener_to_timeSlots = ()=>{
@@ -144,7 +144,8 @@ app.component.timeSlot.func.give.scrollListener_to_timeSlots = ()=>{
         timeSlots.addEventListener("scroll", ()=>{
             let scrollTop            = event.srcElement.scrollTop;
             let ball                 = document.querySelector(".scrollbar_timeSlots > span");
-                ball.style.marginTop = `${scrollTop * ball.getAttribute("heightRatio")}px`;
+                ballHeightRatio      = ball.getAttribute("heightRatio");
+                ball.style.marginTop = `${scrollTop * ballHeightRatio}px`;
         });
 };
 
