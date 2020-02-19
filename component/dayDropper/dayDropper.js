@@ -82,11 +82,11 @@ app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
 };
 
 app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
-    let startOfDay_ms   = app.component.dayDropper.func.get.day()[0];
-    let incr_ms         = startOfDay_ms;
-    let html            = "";
-    let lookAheadRange  = 365; // 1 year
-    let msInADay        = 86400000;
+    let startOfDay_ms  = app.component.dayDropper.func.get.day()[0];
+    let incr_ms        = startOfDay_ms;
+    let html           = "";
+    let lookAheadRange = 365; // 1 year
+    let msInADay       = 86400000;
     for(let i = 0; i < lookAheadRange; i++){ // year loop
         let dateString                = `${new Date(incr_ms)}`;
         let splits                    = dateString.split(" ");
@@ -95,16 +95,20 @@ app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
         let dayNum                    = splits[2];
         let day_text                  = `${dayName} ${month} ${dayNum}`;
         let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(incr_ms);
+        let highlightClass            = "";
+        if( numberOfItemsForDayString.length > 0){
+            highlightClass = "dropdownItemHighlight";
+        };
         let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(incr_ms);
         let html_piece = `
-            <p day_ms="${incr_ms}" day_text="${day_text}" onclick="app.component.dayDropper.func.set.day(this)">
+            <p day_ms="${incr_ms}" day_text="${day_text}" class="${highlightClass}" onclick="app.component.dayDropper.func.set.day(this)">
                 <span class="dd_date">
                     <span>${dayName}</span>
                     <span>${month}</span>
                     <span>${dayNum}</span>
                 </span>
                 <span class="dd_info">
-                    <span>(${numberOfItemsForDayString}${daysUntilString})</span>
+                    <span">(${numberOfItemsForDayString}${daysUntilString})</span>
                 </span>
             </p>
         `;

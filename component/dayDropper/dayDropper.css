@@ -1,3 +1,9 @@
+.dropdownItemHighlight {
+    color: var(--blue_1);
+    /* color: var(--red); */
+    /* font-weight: 600; */
+}
+
 .dropper {
 	display: flex;
 	position: relative;
