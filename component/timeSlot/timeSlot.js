@@ -21,6 +21,7 @@ app.component.timeSlot.func.createAppend.itemHTML = (timeSlot)=>{
 app.component.timeSlot.func.createAppend.timeSlots = ()=>{
 app.component.timeSlot.func.give.height_to_scrollBall = ()=>{
 app.component.timeSlot.func.give.scrollListener_to_timeSlots = ()=>{
+app.component.timeSlot.func.give.scrollTopDefault_to_timeSlots = ()=>{
 app.component.timeSlot.func.get.AMorPM = (hr)=>{
 app.component.timeSlot.func.get.to12Hour = (hr)=>{
 app.component.timeSlot.func.init.component = async()=>{
@@ -107,6 +108,7 @@ app.component.timeSlot.func.createAppend.timeSlots = ()=>{
             wrapper.insertAdjacentHTML("beforeend", html_timeSlot);
             if(i === hours - 1){
                 app.component.timeSlot.setting.element.appendChild(wrapper);
+                app.component.timeSlot.func.give.scrollTopDefault_to_timeSlots();
                 resolve();
             };
         };
@@ -156,6 +158,30 @@ app.component.timeSlot.func.give.scrollListener_to_timeSlots = ()=>{
                 ballHeightRatio      = ball.getAttribute("heightRatio");
                 ball.style.marginTop = `${scrollTop * ballHeightRatio}px`;
         });
+};
+
+app.component.timeSlot.func.give.scrollTopDefault_to_timeSlots = ()=>{
+    let waitForSlotToAppend = setInterval(()=>{
+        let timeSlots     = document.querySelector(".timeSlots");
+        let top_timeSlots = timeSlots.getBoundingClientRect().top;
+        let top_target    = top_timeSlots + 15;
+
+        let top_7AMSlot  = document.querySelector(".slot:nth-of-type(7)").getBoundingClientRect().top;
+        if( top_7AMSlot !== top_target){
+            let newScrollTop;
+            if(top_7AMSlot < top_target){
+                let difference   = top_target - top_7AMSlot;
+                newScrollTop = timeSlots.scrollTop - difference;
+            }
+            else
+            if(top_7AMSlot > top_target){
+                let difference = top_7AMSlot - top_target;
+                newScrollTop = timeSlots.scrollTop + difference;
+            };
+            timeSlots.scrollTop = newScrollTop;
+            clearInterval(waitForSlotToAppend);
+        };
+    },10);
 };
 
 /* INIT */

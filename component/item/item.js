@@ -306,7 +306,7 @@ app.component.item.func.transition.showItem = async(item)=>{
         app.component.timeSlot.state.active = true;
         app.component.item.state.selected   = [true, item];
         /* TRANSITION - blurTile, field, tile, trash elements */
-        app.component.item.func.transition.showItem_blurTile();
+        // app.component.item.func.transition.showItem_blurTile();
         app.component.item.func.transition.showItem_field(item);
         app.component.item.func.transition.showItem_tile(item);
         app.component.item.func.transition.showItem_trash(item);
