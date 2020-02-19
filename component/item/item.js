@@ -28,10 +28,8 @@ app.component.item.func.transition.hideItem_min = (item)=>{
 app.component.item.func.transition.hideItem_tile = ()=>{
 app.component.item.func.transition.hideItem_trash = (item)=>{
 app.component.item.func.transition.removeItem = async()=>{
-app.component.item.func.transition.removeItem_blurTile = ()=>{
 app.component.item.func.transition.removeItem_headerTime = ()=>{
 app.component.item.func.transition.showItem = async(item)=>{
-app.component.item.func.transition.showItem_blurTile = ()=>{
 app.component.item.func.transition.showItem_field = (tile)=>{
 app.component.item.func.transition.showItem_tile = (tile)=>{
 app.component.item.func.transition.showItem_trash = (tile)=>{
@@ -88,6 +86,7 @@ app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
 
 /* GIVE */
 app.component.item.func.give.item_to_dataStore = async()=>{
+    event.stopPropagation();
     let fieldValue = app.component.item.state.selected[1].children[1].value;
     if( fieldValue.trim().length > 0 // field NOT empty
     &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
@@ -104,6 +103,7 @@ app.component.item.func.give.item_to_dataStore = async()=>{
             app.component.timeSlot.func.give.height_to_scrollBall();
         };
         app.component.item.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
+        app.component.timeSlot.func.remove.blurTile();
     }
     else
     if( fieldValue.trim().length === 0 // field empty
@@ -271,26 +271,21 @@ app.component.item.func.transition.hideItem_trash = (item)=>{
 
 app.component.item.func.transition.removeItem = async()=>{
     event.stopPropagation();
-    /* TRANSITION - blurTile, headerTime */
-    app.component.item.func.transition.removeItem_blurTile();
+    /* TRANSITION - headerTime */
     app.component.item.func.transition.removeItem_headerTime();
     /* REMOVE - itemObj from localStorage & itemObjs(needs to happen before remove element) */
     await app.component.item.func.remove.itemObj();
     /* CREATEAPPEND - daydropper text, htmlInsideDropdown  */
     app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
-    /* REMOVE - item element */
+    /* REMOVE - item, blurTile */
     app.component.item.state.selected[1].remove();
+    app.component.timeSlot.func.remove.blurTile();
     /* GIVE - height to scrollBall */
     app.component.timeSlot.func.give.height_to_scrollBall(); // must happen after item element removal, since scrollBall height takes into account the number of item elements present
     /* STATE - timeSlot(editting OFF), item(selected OFF)) */
     app.component.timeSlot.state.active = false;
     app.component.item.state.selected   = [false, null];
-};
-
-app.component.item.func.transition.removeItem_blurTile = ()=>{
-    let blurTile = document.querySelector(".blurTile");
-        blurTile.classList.add("displayNone");
 };
 
 app.component.item.func.transition.removeItem_headerTime = ()=>{
@@ -305,17 +300,13 @@ app.component.item.func.transition.showItem = async(item)=>{
         /* STATE - timeSlot(active ON), item(selected ON) */
         app.component.timeSlot.state.active = true;
         app.component.item.state.selected   = [true, item];
-        /* TRANSITION - blurTile, field, tile, trash elements */
-        // app.component.item.func.transition.showItem_blurTile();
+        /* TRANSITION - field, tile, trash elements */
         app.component.item.func.transition.showItem_field(item);
         app.component.item.func.transition.showItem_tile(item);
         app.component.item.func.transition.showItem_trash(item);
+        /* CREATEAPPEND - blurTile */
+        app.component.timeSlot.func.createAppend.blurTile();
     };
-};
-
-app.component.item.func.transition.showItem_blurTile = ()=>{
-    let blurTile = document.querySelector(".blurTile");
-        blurTile.classList.remove("displayNone");
 };
 
 app.component.item.func.transition.showItem_field = (tile)=>{

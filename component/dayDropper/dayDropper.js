@@ -253,6 +253,11 @@ app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day
         currDay_text.innerHTML = day_text;
 };
 
+app.component.dayDropper.func.give.zIndex_to_dropper = ()=>{
+    let dropper = document.querySelector(".dropper");
+        dropper.classList.add("zIndex2");
+};
+
 /* INIT */
 app.component.dayDropper.func.init.component = async()=>{
     // app.component.dayDropper.func.give.currDayStr_to_dayDropperElement();
@@ -273,6 +278,11 @@ app.component.dayDropper.func.remove.timeSlotsDivElement = ()=>{
         timeSlotsWrap.remove();
 };
 
+app.component.dayDropper.func.remove.zIndex_from_dropper = ()=>{
+    let dropper = document.querySelector(".dropper");
+        dropper.classList.remove("zIndex2");
+};
+
 /* SET */
 app.component.dayDropper.func.set.day = async(dayElement)=>{
     let day_ms   = Number(dayElement.getAttribute("day_ms"));
@@ -291,6 +301,7 @@ app.component.dayDropper.func.transition.closeDropdown = ()=>{
     if( app.component.dayDropper.state.open === true){
         app.component.dayDropper.associated.menu.classList.add("displayNone");
         app.component.dayDropper.func.remove.blurTile();
+        app.component.dayDropper.func.remove.zIndex_from_dropper();
         app.component.dayDropper.state.open = false;
     };
 };
@@ -300,6 +311,7 @@ app.component.dayDropper.func.transition.openDropdown = ()=>{
         event.stopPropagation();
         app.component.dayDropper.associated.menu.classList.remove("displayNone");
         app.component.dayDropper.func.createAppend.blurTile();
+        app.component.dayDropper.func.give.zIndex_to_dropper();
         app.component.dayDropper.state.open = true;
     };
 };

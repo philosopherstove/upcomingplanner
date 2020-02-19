@@ -74,7 +74,7 @@ app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
 
 /* CREATEAPPEND */
 app.component.timeSlot.func.createAppend.blurTile = ()=>{
-    let html = `<div class="blurTile" onclick="app.component.item.func.give.item_to_dataStore(); app.component.timeSlot.func.remove.blurTile()"></div>`;
+    let html = `<div class="blurTile" onclick="app.component.item.func.give.item_to_dataStore();"></div>`;
     let addPage = document.querySelector(".addPage");
         addPage.insertAdjacentHTML("afterbegin", html);
 };
@@ -85,7 +85,7 @@ app.component.timeSlot.func.createAppend.itemHTML = (timeSlot)=>{
         let html = `
             <div class="itemTile zIndex2" createdId="${createdId}" onclick="app.component.item.func.transition.showItem(this)">
                 <span class="dot"></span>
-                <input class="itemField background_white" spellcheck="false" onkeyup="app.component.item.func.give.item_to_dataStore()">
+                <input class="itemField background_white" spellcheck="false" onkeyup="app.component.item.func.give.item_to_dataStore();">
                 <div class="minValues displayNone"></div>
                 <div class="trashIcon" onclick="app.component.item.func.transition.removeItem();"></div>
             </div>
@@ -181,7 +181,7 @@ app.component.timeSlot.func.give.scrollTopDefault_to_timeSlots = ()=>{
             timeSlots.scrollTop = newScrollTop;
             clearInterval(waitForSlotToAppend);
         };
-    },10);
+    },1);
 };
 
 /* INIT */
