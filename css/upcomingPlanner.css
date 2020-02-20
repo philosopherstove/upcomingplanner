@@ -58,12 +58,16 @@ body {
 
 .app {
 	position: relative;
-	width: 320px;
-	height: 568px;
+	/* width: 320px; */
+	/* height: 568px; */
 	margin: 0 auto;
 	overflow: hidden;
 
-	/* border: 1px solid black; */
+    min-width: 320px; /* smallest mobilewidth: iphone4 */
+    max-width: 414px; /* largest mobile width: iphone6/7/8Plus */
+    height: 100vh;
+
+	/* border: 1px solid blue; */
 }
 
 .addPage {
@@ -73,6 +77,14 @@ body {
 	display: flex;
 	flex-flow: column;
 	align-items: center;
+
+    /* min-width: 320px; */
+    /* max-width: 414px; */
+    /* min-height: 568px; */
+    /* max-height: 736px; */
+    /* height: 100vh; */
+    width: 100%;
+    height: 100%;
 
 	/* border: 1px solid red; */
 }
