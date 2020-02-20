@@ -88,13 +88,13 @@
     top: 111px;
     right: 10%;
     width: 3px;
-    height: 434px;
+    height: 70%;
     background-color: rgb(188,212,224);
+    overflow-y: hidden;
 }
 
 .scrollbar_timeSlots span {
     display: block;
     width: 3px;
-    /* height: 10px; */
     background-color: rgb(93,165,202);
 }

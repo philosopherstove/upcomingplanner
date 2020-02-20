@@ -142,9 +142,9 @@ app.component.timeSlot.func.give.height_to_scrollBall = ()=>{
     let height_withOverflow = timeSlots_div.getBoundingClientRect().height;
     let heightRatio         = height_noOverflow / height_withOverflow;
     let bar                 = document.querySelector(".scrollbar_timeSlots");
-    let barHeight           = bar.getBoundingClientRect().height - 36;
+    let barHeight           = bar.getBoundingClientRect().height;
     let numberOfItemsOnPage = document.querySelectorAll(".itemTile").length;
-    let ballHeight          = (barHeight * heightRatio) + (-1 * numberOfItemsOnPage);
+    let ballHeight          = (barHeight * heightRatio) + numberOfItemsOnPage - 34;
     let ball                = document.querySelector(".scrollbar_timeSlots > span");
         ball.style.height   = `${ballHeight}px`;
         ball.setAttribute("heightRatio", heightRatio);
