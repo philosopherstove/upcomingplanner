@@ -252,6 +252,10 @@ app.component.dayDropper.func.give.scrollListener_to_dropdownMenu = ()=>{
         });
 };
 
+app.component.dayDropper.func.give.scrollTopDefault_to_dropdownMenu = ()=>{
+    app.component.dayDropper.associated.menu.scrollTop = 0;
+};
+
 app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day_text)=>{
     let currDay_text = document.querySelector(".currDay_text");
         currDay_text.innerHTML = day_text;
@@ -315,6 +319,7 @@ app.component.dayDropper.func.transition.openDropdown = ()=>{
         event.stopPropagation();
         app.component.dayDropper.associated.menu.classList.remove("displayNone");
         app.component.dayDropper.func.createAppend.blurTile();
+        app.component.dayDropper.func.give.scrollTopDefault_to_dropdownMenu();
         app.component.dayDropper.func.give.zIndex_to_dropper();
         app.component.dayDropper.state.open = true;
     };
