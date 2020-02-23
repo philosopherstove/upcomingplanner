@@ -31,6 +31,12 @@
     display: none;
 }
 
+.timeSlots > div {
+    /* padding-bottom: 46px; */
+    padding-bottom: 16.5%;
+    /* padding-bottom: 16%; */
+}
+
 .slot {
 	position: relative;
 }

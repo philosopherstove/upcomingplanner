@@ -1,10 +1,7 @@
 :root {
-	--blue_1:     rgb(0,119,181);
-	--grey:       rgb(247,247,247);
-	--greyButton: rgb(176,192,205);
-	--red:        rgb(202,48,67);
-	--green:      rgb(51,157,75);
-	/*--blueDark: rgb(0,73,144);*/
+	--blue_1:          rgb(0,119,181);
+	--grey:            rgb(176,192,205);
+	--red:             rgb(202,48,67);
 
 	--background_main: rgb(236,236,236);
 
@@ -96,4 +93,60 @@ body {
 	background-color: rgb(236,236,236);
 	opacity: 0.8;
 	z-index: 1;
+}
+
+.footer {
+    width: 100%;
+    height: 57px;
+    position: absolute;
+    bottom: 0;
+    background-color: var(--background_main);
+
+    /* background-color: red; */
+    /* border: 1px solid blue; */
+}
+.footer::before {
+    content: "";
+    display: block;
+    width: 80%;
+    height: 1px;
+    margin: 0 auto;
+    background-color: var(--grey);
+}
+
+.footer > div {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.footer > div > div {
+    width: 48%;
+    height: 32px;
+    border-radius: 2px;
+    border: 1px solid var(--blue_1);
+    margin-top: 11px;
+    font-family: var(--font_main);
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 32px;
+}
+
+.bc_blue {
+    background-color: var(--blue_1);
+}
+
+.bc_white {
+    background-color: white;
+}
+
+.c_blue {
+    color: var(--blue_1);
+}
+
+.c_white {
+    color: white;
 }

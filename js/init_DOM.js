@@ -28,7 +28,12 @@ async function init_DOM(){
                 <div class="scrollbar_timeSlots"><span></span></div>
             </div>
             <div class="upcomingPage"></div>
-            <div class="footer></div>
+            <div class="footer">
+                <div>
+                    <div class="addPageButton bc_blue c_white">Add</div>
+                    <div class="viewPageButton bc_white c_blue">View</div>
+                </div>
+            </div>
         </div>
     `;
 
