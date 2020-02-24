@@ -18,9 +18,21 @@ app.component.footer.func.init.component = ()=>{
 app.component.footer.func.transition.toAddPage = ()=>{
     let pagesSlide = document.querySelector(".pagesSlide");
         pagesSlide.style.left = "0%";
+    let addPageButton = document.querySelector(".addPageButton");
+        addPageButton.classList.add("pageButton_on");
+        addPageButton.classList.remove("pageButton_off");
+    let viewPageButton = document.querySelector(".viewPageButton");
+        viewPageButton.classList.add("pageButton_off");
+        viewPageButton.classList.remove("pageButton_on");
 };
 
 app.component.footer.func.transition.toViewPage = ()=>{
     let pagesSlide = document.querySelector(".pagesSlide");
         pagesSlide.style.left = "-100%";
+    let viewPageButton = document.querySelector(".viewPageButton");
+        viewPageButton.classList.add("pageButton_on");
+        viewPageButton.classList.remove("pageButton_off");
+    let addPageButton = document.querySelector(".addPageButton");
+        addPageButton.classList.add("pageButton_off");
+        addPageButton.classList.remove("pageButton_on");
 };

@@ -35,20 +35,14 @@
     line-height: 32px;
 }
 
-.bc_blue {
+.pageButton_on {
     background-color: var(--blue_1);
-}
-
-.bc_white {
-    background-color: white;
-}
-
-.c_blue {
-    color: var(--blue_1);
-}
-
-.c_white {
     color: white;
+}
+
+.pageButton_off {
+    background-color: white;
+    color: var(--blue_1);
 }
 
 .slideTrans {

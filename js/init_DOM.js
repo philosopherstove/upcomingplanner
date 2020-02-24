@@ -32,8 +32,8 @@ async function init_DOM(){
             </div>
             <div class="footer">
                 <div>
-                    <div class="addPageButton bc_blue c_white">Add</div>
-                    <div class="viewPageButton bc_white c_blue">View</div>
+                    <div class="addPageButton pageButton_on">Add</div>
+                    <div class="viewPageButton pageButton_off">View</div>
                 </div>
             </div>
         </div>
