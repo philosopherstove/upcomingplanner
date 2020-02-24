@@ -10,24 +10,26 @@ async function init_DOM(){
 
     let html = `
         <div class="app">
-            <div class="addPage">
-                <div class="dropper borderHighlight_off" onclick="app.component.dayDropper.func.transition.openDropdown()">
-                    <p class="currDay_text"></p>
-                    <p class="items_daysCountdown"></p>
-                    <div class="downArrow"></div>
-                </div>
-                <div class="dropdownMenu_day displayNone">
-                    <span class="scrollWrapper">
-                        <span class="scrollBar">
-                            <span class="scrollBall"></span>
+            <div class="pagesSlide slideTrans" style="left:0%;">
+                <div class="addPage">
+                    <div class="dropper borderHighlight_off" onclick="app.component.dayDropper.func.transition.openDropdown()">
+                        <p class="currDay_text"></p>
+                        <p class="items_daysCountdown"></p>
+                        <div class="downArrow"></div>
+                    </div>
+                    <div class="dropdownMenu_day displayNone">
+                        <span class="scrollWrapper">
+                            <span class="scrollBar">
+                                <span class="scrollBall"></span>
+                            </span>
                         </span>
-                    </span>
-                    <div class="dropdownMenu_innerWrapper"></div>
+                        <div class="dropdownMenu_innerWrapper"></div>
+                    </div>
+                    <div class="timeSlots"></div>
+                    <div class="scrollbar_timeSlots"><span></span></div>
                 </div>
-                <div class="timeSlots"></div>
-                <div class="scrollbar_timeSlots"><span></span></div>
+                <div class="upcomingPage"></div>
             </div>
-            <div class="upcomingPage"></div>
             <div class="footer">
                 <div>
                     <div class="addPageButton bc_blue c_white">Add</div>

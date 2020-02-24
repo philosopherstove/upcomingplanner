@@ -55,35 +55,33 @@ body {
 
 .app {
 	position: relative;
-	/* width: 320px; */
-	/* height: 568px; */
-	margin: 0 auto;
-	overflow: hidden;
-
     min-width: 320px; /* smallest mobilewidth: iphone4 */
     max-width: 414px; /* largest mobile width: iphone6/7/8Plus */
     height: 100vh;
+	margin: 0 auto;
+	overflow: hidden;
+}
 
-	/* border: 1px solid blue; */
+.pagesSlide {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 .addPage {
 	position: absolute;
-	width: 320px;
-	height: 568px;
+    width: 100%;
+    height: 100%;
 	display: flex;
 	flex-flow: column;
 	align-items: center;
+}
 
-    /* min-width: 320px; */
-    /* max-width: 414px; */
-    /* min-height: 568px; */
-    /* max-height: 736px; */
-    /* height: 100vh; */
+.upcomingPage {
     width: 100%;
     height: 100%;
-
-	/* border: 1px solid red; */
+    position: absolute;
+    left: 100%;
 }
 
 .blurTile {
@@ -93,60 +91,4 @@ body {
 	background-color: rgb(236,236,236);
 	opacity: 0.8;
 	z-index: 1;
-}
-
-.footer {
-    width: 100%;
-    height: 57px;
-    position: absolute;
-    bottom: 0;
-    background-color: var(--background_main);
-
-    /* background-color: red; */
-    /* border: 1px solid blue; */
-}
-.footer::before {
-    content: "";
-    display: block;
-    width: 80%;
-    height: 1px;
-    margin: 0 auto;
-    background-color: var(--grey);
-}
-
-.footer > div {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    width: 80%;
-    margin: 0 auto;
-}
-
-.footer > div > div {
-    width: 48%;
-    height: 32px;
-    border-radius: 2px;
-    border: 1px solid var(--blue_1);
-    margin-top: 11px;
-    font-family: var(--font_main);
-    font-size: 18px;
-    font-weight: 500;
-    text-align: center;
-    line-height: 32px;
-}
-
-.bc_blue {
-    background-color: var(--blue_1);
-}
-
-.bc_white {
-    background-color: white;
-}
-
-.c_blue {
-    color: var(--blue_1);
-}
-
-.c_white {
-    color: white;
 }
