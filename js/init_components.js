@@ -3,4 +3,5 @@ window.addEventListener('DOMContentLoaded', ()=>{
     app.component.timeSlot.func.init.component();
     app.component.item.func.init.component();
     app.component.footer.func.init.component();
+    app.component.viewList.func.init.component();
 });

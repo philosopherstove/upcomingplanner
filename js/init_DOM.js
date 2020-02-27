@@ -10,7 +10,7 @@ async function init_DOM(){
 
     let html = `
         <div class="app">
-            <div class="pagesSlide slideTrans" style="left:0%;">
+            <div class="pagesSlide slideTrans" style="left:-100%;">
                 <div class="addPage">
                     <div class="dropper borderHighlight_off" onclick="app.component.dayDropper.func.transition.openDropdown()">
                         <p class="currDay_text"></p>
