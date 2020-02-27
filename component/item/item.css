@@ -1,3 +1,11 @@
+.background_main {
+	background-color: var(--background_main);
+}
+
+.background_white {
+	background-color: white;
+}
+
 .itemTile {
 	display: flex;
 	position: relative;

@@ -1,11 +1,3 @@
-.background_main {
-	background-color: var(--background_main);
-}
-
-.background_white {
-	background-color: white;
-}
-
 .timeSlots {
 	/* width: 250px; */
     width: 80%;

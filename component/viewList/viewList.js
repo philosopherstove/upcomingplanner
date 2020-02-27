@@ -30,17 +30,20 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
             console.log('1st');
             setDay     = dayMS;
             setHour    = timeSlot;
-            console.log(setHour, 'init setHour');
+            console.log('init/both set');
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
             let hr_12  = app.component.timeSlot.func.get.to12Hour(timeSlot);
             html += `
                     <div class="dayBlock" dayMS="${setDay}">
-                        <div class="dayHeader">
-                            <p class="dayText_view">${day_text}</p>
-                            <p class="dayInfo_view">(${numberOfItemsForDayString}${daysUntilString})</p>
+                        <div class="dayHeader_vl">
+                            <p class="dayText_vl">${day_text}</p>
+                            <p class="dayInfo_vl">(${numberOfItemsForDayString}${daysUntilString})</p>
                         </div>
-                        <p class="hourHeader_vl" data_hour="${timeSlot}">${hr_12}${AMorPM}</p>
-                        <div class="itemTile_vl hideItemTile_vl" createdId="${obj.associated.createdId}" onclick="app.component.item.func.transition.showItem(this)">
+                        <p class="hourHeader_vl" data_hour="${timeSlot}">
+                            <span>${hr_12}</span>
+                            <span>${AMorPM}</span>
+                        </p>
+                        <div class="itemTile_vl hideItemTile_vl" createdId="${obj.associated.createdId}" onclick="app.component.viewList.func.transition.showItem(this)">
                             <span class="dot_vl"></span>
                             <input class="itemField_vl background_main_vl" value="${obj.setting.text}" onkeyup="app.component.viewList.func.give.item_to_dataStore()" spellcheck="false">
                             <div class="minValues_vl displayNone"></div>
@@ -53,7 +56,7 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
         &&  setHour === timeSlot){ // same hour
             console.log("same");
             html += `
-                        <div class="itemTile_vl hideItemTile_vl" createdId="${obj.associated.createdId}" onclick="app.component.item.func.transition.showItem(this)">
+                        <div class="itemTile_vl hideItemTile_vl" createdId="${obj.associated.createdId}" onclick="app.component.viewList.func.transition.showItem(this)">
                             <span class="dot_vl"></span>
                             <input class="itemField_vl background_main_vl" value="${obj.setting.text}" onkeyup="app.component.viewList.func.give.item_to_dataStore()" spellcheck="false">
                             <div class="minValues_vl displayNone"></div>
@@ -64,13 +67,13 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
         else
         if( setDay  === dayMS      // same day
         &&  setHour !== timeSlot){ // diff hour
-            console.log(setHour, 'setHour');
+            console.log(setHour, timeSlot, 'diff hour');
             setHour    = timeSlot;
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
             let hr_12  = app.component.timeSlot.func.get.to12Hour(timeSlot);
             html += `
-                        <p class="hourHeader_vl" data_hour="${timeSlot}">${hr_12}${AMorPM}</p>
-                        <div class="itemTile_vl hideItemTile_vl" createdId="${obj.associated.createdId}" onclick="app.component.item.func.transition.showItem(this)">
+                        <p class="hourHeader_vl" data_hour="${timeSlot}">${hr_12} ${AMorPM}</p>
+                        <div class="itemTile_vl hideItemTile_vl" createdId="${obj.associated.createdId}" onclick="app.component.viewList.func.transition.showItem(this)">
                             <span class="dot_vl"></span>
                             <input class="itemField_vl background_main_vl" value="${obj.setting.text}" onkeyup="app.component.viewList.func.give.item_to_dataStore()" spellcheck="false">
                             <div class="minValues_vl displayNone"></div>
@@ -80,7 +83,7 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
         }
         else
         if(setDay !== dayMS){      // diff day
-            console.log('diff day');
+            console.log(setDay, dayMS, 'diff day');
             setDay     = dayMS;
             setHour    = null;
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
@@ -88,12 +91,12 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
             html += `
                     </div>
                     <div class="dayBlock" dayMS="${setDay}">
-                        <div class="dayHeader">
-                            <p class="dayText_view">${day_text}</p>
-                            <p class="dayInfo_view">(${numberOfItemsForDayString}${daysUntilString})</p>
+                        <div class="dayHeader_vl">
+                            <p class="dayText_vl">${day_text}</p>
+                            <p class="dayInfo_vl">(${numberOfItemsForDayString}${daysUntilString})</p>
                         </div>
-                        <p class="hourHeader_vl" data_hour="${timeSlot}">${hr_12}${AMorPM}</p>
-                        <div class="itemTile_vl hideItemTile_vl" createdId="${obj.associated.createdId}" onclick="app.component.item.func.transition.showItem(this)">
+                        <p class="hourHeader_vl" data_hour="${timeSlot}">${hr_12} ${AMorPM}</p>
+                        <div class="itemTile_vl hideItemTile_vl" createdId="${obj.associated.createdId}" onclick="app.component.viewList.func.transition.showItem(this)">
                             <span class="dot_vl"></span>
                             <input class="itemField_vl background_main_vl" value="${obj.setting.text}" onkeyup="app.component.viewList.func.give.item_to_dataStore()" spellcheck="false">
                             <div class="minValues_vl displayNone"></div>
