@@ -13,6 +13,7 @@ app.component.item.func.transition = {};
 
 /* func hotkeys:
 app.component.item.func.create.componentObj = (item)=>{
+app.component.item.func.get.isObjExist = ()=>{
 app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
 app.component.item.func.give.item_to_dataStore = async()=>{
 app.component.item.func.init.component = ()=>{
@@ -96,7 +97,10 @@ app.component.item.func.give.item_to_dataStore = async()=>{
             await app.component.item.func.set.componentObj_in_objs(selectedObj, fieldValue);
             await app.component.item.func.set.componentObj_in_localStorage(selectedObj, fieldValue);
         }
-        else{ // create new componentObj
+        else{
+            // CREATE       componentObj
+            // CREATEAPPEND dayDropperText, htmlInsideDropdown
+            // GIVE         height_to_scrollBall
             app.component.item.func.create.componentObj(app.component.item.state.selected[1]); // add to objs array and data store
             app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
             app.component.dayDropper.func.createAppend.htmlInsideDropdown();

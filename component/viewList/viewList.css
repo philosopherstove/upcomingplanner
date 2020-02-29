@@ -18,6 +18,7 @@
 }
 
 .dayHeader_vl {
+    position: relative;
     color: var(--blue_1);
 }
 
@@ -40,6 +41,7 @@
 }
 
 .hourHeader_vl {
+    position: relative;
     margin-top: 15px;
     margin-left: 10%;
     color: var(--blue_1);
@@ -81,7 +83,7 @@
 }
 
 .itemField_vl {
-    width: 70%;
+    width: 64%;
 	height: 22px;
 	margin-top: 7px;
 	margin-left: 19.9%;
@@ -110,7 +112,7 @@
     width: 16px;
 	height: 16px;
 	margin-top: 11px;
-	margin-left: -4%;
+	margin-left: 2%;
 	background-image: url('trashIcon.svg');
 	background-repeat: no-repeat;
 	background-size: contain;
