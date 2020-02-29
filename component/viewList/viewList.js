@@ -17,6 +17,7 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
 app.component.viewList.func.get.isObjExist = ()=>{
 app.component.viewList.func.give.item_to_dataStore = async()=>{
 app.component.viewList.func.init.component = async()=>{
+app.component.viewList.func.is.itemsUnderDay = ()=>{
 app.component.viewList.func.is.itemsUnderHour = ()=>{
 app.component.viewList.func.remove.blurTile = ()=>{
 app.component.viewList.func.remove.itemElement = ()=>{
@@ -221,6 +222,18 @@ app.component.viewList.func.init.component = async()=>{
 
 /* is */
 
+app.component.viewList.func.is.itemsUnderDay = ()=>{
+    let activeItem     = app.component.viewList.state.itemActive[1];
+    let dayId          = activeItem.getAttribute("dayMS");
+    let itemsUnderDay  = document.querySelectorAll(`div.itemTile_vl[dayMS="${dayId}"]`);
+    if( itemsUnderDay.length === 0){ // no itemsUnderHour
+        return false;
+    }
+    else{
+        return true;
+    };
+};
+
 app.component.viewList.func.is.itemsUnderHour = ()=>{
     let activeItem     = app.component.viewList.state.itemActive[1];
     let dayId          = activeItem.getAttribute("dayMS");
@@ -239,10 +252,16 @@ app.component.viewList.func.remove.blurTile = ()=>{
         blurTile.remove();
 };
 
+app.component.viewList.func.remove.dayHeader = ()=>{
+    let dayId     = app.component.viewList.state.itemActive[1].getAttribute("dayMS");
+    let dayHeader = document.querySelector(`.dayBlock[dayMS="${dayId}"]`);
+        dayHeader.remove();
+};
+
 app.component.viewList.func.remove.hourHeader = ()=>{
     let hourId       = app.component.viewList.state.itemActive[1].getAttribute("data_hour");
-    let headerOfItem = document.querySelector(`.dayBlock > p.hourHeader_vl[data_hour="${hourId}"]`);
-        headerOfItem.remove();
+    let hourHeader = document.querySelector(`.dayBlock > p.hourHeader_vl[data_hour="${hourId}"]`);
+        hourHeader.remove();
 };
 
 app.component.viewList.func.remove.itemElement = ()=>{
@@ -333,6 +352,9 @@ app.component.viewList.func.transition.removeItem = async()=>{
     app.component.viewList.func.remove.itemElement();
     if(app.component.viewList.func.is.itemsUnderHour() === false){
         app.component.viewList.func.remove.hourHeader();
+    };
+    if(app.component.viewList.func.is.itemsUnderDay() === false){
+        app.component.viewList.func.remove.dayHeader();
     };
 
 
