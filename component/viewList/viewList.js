@@ -27,8 +27,9 @@ app.component.viewList.func.remove.itemObj_from_itemObjs = ()=>{
 app.component.viewList.func.remove.itemObj_from_localStorage = ()=>{
 app.component.viewList.func.sort.itemsObjs_by_dayAndTimeSlot = ()=>{
 app.component.viewList.func.transition.hideItem = ()=>{
+app.component.viewList.func.transition.hideItem_dayHeader = (itemElement)=>{
 app.component.viewList.func.transition.hideItem_field = (itemElement)=>{
-app.component.viewList.func.transition.hideItem_min = (itemElement)=>{
+app.component.viewList.func.transition.hideItem_hourHeader = (itemElement)=>{
 app.component.viewList.func.transition.hideItem_tile = ()=>{
 app.component.viewList.func.transition.hideItem_trash = (itemElement)=>{
 app.component.viewList.func.transition.removeItem = async()=>{
@@ -368,13 +369,19 @@ app.component.viewList.func.sort.itemsObjs_by_dayAndTimeSlot = ()=>{
 app.component.viewList.func.transition.hideItem = ()=>{
     /* TRANSITION - blurTile, field, headerTime, min, tile, trash elements*/
     let itemElement = app.component.viewList.state.itemActive[1];
+    app.component.viewList.func.transition.hideItem_dayHeader(itemElement);
     app.component.viewList.func.transition.hideItem_field(itemElement);
-    // app.component.viewList.func.transition.hideItem_headerTime(itemElement);
-    app.component.viewList.func.transition.hideItem_min(itemElement);
-    app.component.viewList.func.transition.hideItem_tile();
+    app.component.viewList.func.transition.hideItem_hourHeader(itemElement);
+    app.component.viewList.func.transition.hideItem_tile(itemElement);
     app.component.viewList.func.transition.hideItem_trash(itemElement);
     /* STATE - activeItem OFF */
     app.component.viewList.state.itemActive = [false, null];
+};
+
+app.component.viewList.func.transition.hideItem_dayHeader = (itemElement)=>{
+    let dayId     = itemElement.getAttribute("dayMS");
+    let dayHeader = document.querySelector(`.dayBlock[dayMS="${dayId}"]`).children[0];
+        dayHeader.classList.remove("zIndex2");
 };
 
 app.component.viewList.func.transition.hideItem_field = (itemElement)=>{
@@ -384,20 +391,15 @@ app.component.viewList.func.transition.hideItem_field = (itemElement)=>{
         field.setAttribute("readonly", "readonly");
 };
 
-// app.component.viewList.func.transition.hideItem_headerTime = (itemElement)=>{
-//     let headerTime = itemElement.parentNode.previousElementSibling.children[0]
-//         headerTime.classList.remove("zIndex2");
-// };
-
-app.component.viewList.func.transition.hideItem_min = (itemElement)=>{
-    let min = itemElement.children[2];
-        min.classList.add("displayNone");
+app.component.viewList.func.transition.hideItem_hourHeader = (itemElement)=>{
+    let hourId       = itemElement.getAttribute("data_hour");
+    let headerOfItem = document.querySelector(`.dayBlock > p.hourHeader_vl[data_hour="${hourId}"]`);
+        headerOfItem.classList.remove("zIndex2");
 };
 
-app.component.viewList.func.transition.hideItem_tile = ()=>{
-    let tile = app.component.viewList.state.itemActive[1];
-        tile.classList.add("hideItemTile_vl");
-        tile.classList.remove("zIndex2");
+app.component.viewList.func.transition.hideItem_tile = (itemElement)=>{
+    itemElement.classList.add("hideItemTile_vl");
+    itemElement.classList.remove("zIndex2");
 };
 
 app.component.viewList.func.transition.hideItem_trash = (itemElement)=>{
@@ -495,7 +497,7 @@ app.component.viewList.func.transition.showItem_hourHeader = (itemElement)=>{
     let hourId       = itemElement.getAttribute("data_hour");
     let headerOfItem = document.querySelector(`.dayBlock > p.hourHeader_vl[data_hour="${hourId}"]`);
         headerOfItem.classList.add("zIndex2");
-}
+};
 
 app.component.viewList.func.transition.showItem_tile = (itemElement)=>{
     itemElement.classList.remove("hideItemTile_vl");
