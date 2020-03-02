@@ -7,6 +7,7 @@ app.component.item.func.create     = {};
 app.component.item.func.get        = {};
 app.component.item.func.give       = {};
 app.component.item.func.init       = {};
+app.component.item.func.is         = {};
 app.component.item.func.remove     = {};
 app.component.item.func.set        = {};
 app.component.item.func.transition = {};
@@ -18,6 +19,7 @@ app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
 app.component.item.func.give.item_to_dataStore = async()=>{
 app.component.item.func.init.component = ()=>{
 app.component.item.func.remove.itemObj = ()=>{
+app.component.item.func.remove.itemElementFromViewPage = ()=>{
 app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
 app.component.item.func.remove.itemObj_from_localStorage = ()=>{
 app.component.item.func.remove.oldItemObjs_from_itemObjs = ()=>{
@@ -127,7 +129,79 @@ app.component.item.func.init.component = ()=>{
     app.component.item.func.remove.oldItemObjs_from_localStorage();
 };
 
+/* is */
+
+app.component.item.func.is.itemsUnderViewPageDay = ()=>{
+    let createdId = Number(app.component.item.state.selected[1].getAttribute("createdId"));
+    let dayId     = null;
+    for(i in app.component.item.objs){
+        let obj = app.component.item.objs[i];
+        if( obj.associated.createdId === createdId){
+            dayId = obj.associated.day;
+        };
+        if(Number(i) === app.component.item.objs.length-1
+        && dayId !== null){
+            let itemsUnderViewPageDay = document.querySelectorAll(`div.itemTile_vl[dayMS="${dayId}"]`);
+            if( itemsUnderViewPageDay.length === 0){ // no itemsUnderHour
+                return false;
+            }
+            else{
+                return true;
+            };
+        };
+    };
+}
+
+app.component.item.func.is.itemsUnderViewPageHour = ()=>{
+    let createdId = Number(app.component.item.state.selected[1].getAttribute("createdId"));
+    let hourId     = null;
+    for(i in app.component.item.objs){
+        let obj = app.component.item.objs[i];
+        if( obj.associated.createdId === createdId){
+            hourId = obj.associated.timeSlot;
+        };
+        if(Number(i) === app.component.item.objs.length-1
+        && hourId !== null){
+            let itemsUnderViewPageDay = document.querySelectorAll(`div.itemTile_vl[data_hour="${hourId}"]`);
+            if( itemsUnderViewPageDay.length === 0){ // no itemsUnderHour
+                return false;
+            }
+            else{
+                return true;
+            };
+        };
+    };
+}
+
 /* REMOVE */
+app.component.item.func.remove.dayHeader = (dayId)=>{
+    let dayHeader = document.querySelector(`.dayBlock[dayMS="${dayId}"]`);
+        dayHeader.remove();
+};
+
+app.component.item.func.remove.hourHeader = (hourId)=>{
+    let hourHeader = document.querySelector(`.dayBlock > p.hourHeader_vl[data_hour="${hourId}"]`);
+        hourHeader.remove();
+};
+
+app.component.item.func.remove.itemElementFromViewPage = ()=>{
+    return new Promise((resolve)=>{
+        let createdId               = Number(app.component.item.state.selected[1].getAttribute("createdId"));
+        let itemElementFromViewPage = document.querySelector(`.itemTile_vl[createdId="${createdId}"]`);
+        let dayId                   = Number(itemElementFromViewPage.getAttribute("dayMS"));
+        let hourId                  = Number(itemElementFromViewPage.getAttribute("data_hour"));
+        itemElementFromViewPage.remove();
+        if(app.component.item.func.is.itemsUnderViewPageHour() === false){
+            app.component.item.func.remove.hourHeader(hourId);
+            resolve();
+        };
+        if( app.component.item.func.is.itemsUnderViewPageDay() === false){
+            app.component.item.func.remove.dayHeader(dayId)
+            resolve();
+        };
+    });
+};
+
 app.component.item.func.remove.itemObj = ()=>{
     return new Promise(async(resolve)=>{
         await app.component.item.func.remove.itemObj_from_localStorage();
@@ -277,16 +351,19 @@ app.component.item.func.transition.removeItem = async()=>{
     event.stopPropagation();
     /* TRANSITION - headerTime */
     app.component.item.func.transition.removeItem_headerTime();
-    /* REMOVE - itemObj from localStorage & itemObjs(needs to happen before remove element) */
-    await app.component.item.func.remove.itemObj();
     /* CREATEAPPEND - daydropper text, htmlInsideDropdown  */
     app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     /* REMOVE - item, blurTile */
     app.component.item.state.selected[1].remove();
     app.component.timeSlot.func.remove.blurTile();
+    /* REMOVE - itemElement from viewPage */
+    // await app.component.item.func.remove.itemElementFromViewPage();
+    app.component.item.func.remove.itemElementFromViewPage();
     /* GIVE - height to scrollBall */
     app.component.timeSlot.func.give.height_to_scrollBall(); // must happen after item element removal, since scrollBall height takes into account the number of item elements present
+    /* REMOVE - itemObj */
+    await app.component.item.func.remove.itemObj();
     /* STATE - timeSlot(editting OFF), item(selected OFF)) */
     app.component.timeSlot.state.active = false;
     app.component.item.state.selected   = [false, null];

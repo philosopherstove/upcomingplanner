@@ -273,6 +273,12 @@ app.component.viewList.func.remove.hourHeader = ()=>{
 app.component.viewList.func.remove.itemElement = ()=>{
     let itemElement = app.component.viewList.state.itemActive[1];
         itemElement.remove();
+    if(app.component.viewList.func.is.itemsUnderHour() === false){
+        app.component.viewList.func.remove.hourHeader();
+    };
+    if(app.component.viewList.func.is.itemsUnderDay() === false){
+        app.component.viewList.func.remove.dayHeader();
+    };
 };
 
 app.component.viewList.func.remove.itemElementFromAddPage = ()=>{
@@ -417,12 +423,6 @@ app.component.viewList.func.transition.removeItem = async()=>{
     app.component.viewList.func.remove.blurTile();
     app.component.viewList.func.remove.itemElement();
     app.component.viewList.func.remove.itemElementFromAddPage();
-    if(app.component.viewList.func.is.itemsUnderHour() === false){
-        app.component.viewList.func.remove.hourHeader();
-    };
-    if(app.component.viewList.func.is.itemsUnderDay() === false){
-        app.component.viewList.func.remove.dayHeader();
-    };
     /* REMOVE - itemObjs */
     await app.component.viewList.func.remove.itemObj();
     /* STATE - itemActive OFF */
