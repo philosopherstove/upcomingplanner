@@ -21,6 +21,10 @@ app.component.viewList.func.is.itemsUnderDay = ()=>{
 app.component.viewList.func.is.itemsUnderHour = ()=>{
 app.component.viewList.func.remove.blurTile = ()=>{
 app.component.viewList.func.remove.itemElement = ()=>{
+app.component.viewList.func.remove.itemElementFromAddPage = ()=>{
+app.component.viewList.func.remove.itemObj = ()=>{
+app.component.viewList.func.remove.itemObj_from_itemObjs = ()=>{
+app.component.viewList.func.remove.itemObj_from_localStorage = ()=>{
 app.component.viewList.func.sort.itemsObjs_by_dayAndTimeSlot = ()=>{
 app.component.viewList.func.transition.hideItem = ()=>{
 app.component.viewList.func.transition.hideItem_field = (itemElement)=>{
@@ -45,7 +49,6 @@ app.component.viewList.func.createAppend.blurTile = ()=>{
 };
 
 app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
-    // console.log(sorted);
     let html = `
         <div class="viewItemsWrapper">
     `;
@@ -247,6 +250,8 @@ app.component.viewList.func.is.itemsUnderHour = ()=>{
     };
 };
 
+/* remove */
+
 app.component.viewList.func.remove.blurTile = ()=>{
     let blurTile = document.querySelector(".blurTile");
         blurTile.remove();
@@ -268,6 +273,62 @@ app.component.viewList.func.remove.itemElement = ()=>{
     let itemElement = app.component.viewList.state.itemActive[1];
         itemElement.remove();
 };
+
+app.component.viewList.func.remove.itemElementFromAddPage = ()=>{
+    let createdId = app.component.viewList.state.itemActive[1].getAttribute("createdId");
+    let itemFromAddPage = document.querySelector(`.itemTile[createdId="${createdId}"]`);
+        itemFromAddPage.remove();
+};
+
+app.component.viewList.func.remove.itemObj = ()=>{
+    return new Promise(async(resolve)=>{
+        await app.component.viewList.func.remove.itemObj_from_localStorage();
+        await app.component.viewList.func.remove.itemObj_from_itemObjs();
+        resolve();
+    });
+};
+
+app.component.viewList.func.remove.itemObj_from_itemObjs = ()=>{
+    return new Promise((resolve)=>{
+        if(app.component.item.objs.length === 0){ // no objs
+            resolve();
+        };
+        for(i in app.component.item.objs){
+            let obj = app.component.item.objs[i];
+            if( obj.associated.createdId === Number(app.component.viewList.state.itemActive[1].getAttribute("createdId"))){
+                app.component.item.objs.splice(i,1);
+                resolve();
+            };
+            if(Number(i) === app.component.item.objs.length-1){ // end of loop, no match found
+                resolve();
+            };
+        };
+    });
+};
+
+app.component.viewList.func.remove.itemObj_from_localStorage = ()=>{
+    return new Promise((resolve)=>{
+        let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
+        let localStorageItemObjs = localStorageObj.items;
+        if( localStorageItemObjs.length === 0){ // no objs
+            resolve();
+        };
+        for(i in localStorageItemObjs){
+            let obj = localStorageItemObjs[i];
+            if( obj.associated.createdId === Number(app.component.viewList.state.itemActive[1].getAttribute("createdId"))){
+                localStorageItemObjs.splice(i,1);
+                localStorageObj.items = localStorageItemObjs;
+                window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
+                resolve();
+            };
+            if(Number(i) === localStorageItemObjs.length-1){ // end of loop, no match found
+                resolve();
+            };
+        };
+    });
+};
+
+/* sort */
 
 app.component.viewList.func.sort.itemsObjs_by_dayAndTimeSlot = ()=>{
     return new Promise((resolve)=>{
@@ -348,14 +409,23 @@ app.component.viewList.func.transition.removeItem = async()=>{
     event.stopPropagation();
     console.log('remove item');
 
-    app.component.viewList.func.remove.blurTile();
-    app.component.viewList.func.remove.itemElement();
+    app.component.viewList.func.remove.blurTile();                 // remove viewList blurTile
+    app.component.viewList.func.remove.itemElement();              // remove viewList itemElement
     if(app.component.viewList.func.is.itemsUnderHour() === false){
-        app.component.viewList.func.remove.hourHeader();
+        app.component.viewList.func.remove.hourHeader();           // remove hourHeader, if no items under hour
     };
     if(app.component.viewList.func.is.itemsUnderDay() === false){
-        app.component.viewList.func.remove.dayHeader();
+        app.component.viewList.func.remove.dayHeader();            // remove dayHeader, if no items under day
     };
+
+    /* REMOVE - itemObj from localStorage & itemObjs(needs to happen before remove element) */
+    await app.component.viewList.func.remove.itemObj();
+
+    app.component.viewList.func.remove.itemElementFromAddPage();   // remove addPage itemElement
+
+    // remove from local data
+
+    // remove from dataStore
 
 
     /* TRANSITION - headerTime */
