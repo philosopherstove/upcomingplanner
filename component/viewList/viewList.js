@@ -409,45 +409,22 @@ app.component.viewList.func.transition.hideItem_trash = (itemElement)=>{
 
 app.component.viewList.func.transition.removeItem = async()=>{
     event.stopPropagation();
-    console.log('remove item');
-
-    app.component.viewList.func.remove.blurTile();                 // remove viewList blurTile
-    app.component.viewList.func.remove.itemElement();              // remove viewList itemElement
+    /* TRANSITION - hide - day and hour zIndex */
+    let itemElement = app.component.viewList.state.itemActive[1];
+    app.component.viewList.func.transition.hideItem_dayHeader(itemElement);
+    app.component.viewList.func.transition.hideItem_hourHeader(itemElement);
+    /* REMOVE - elements */
+    app.component.viewList.func.remove.blurTile();
+    app.component.viewList.func.remove.itemElement();
+    app.component.viewList.func.remove.itemElementFromAddPage();
     if(app.component.viewList.func.is.itemsUnderHour() === false){
-        app.component.viewList.func.remove.hourHeader();           // remove hourHeader, if no items under hour
+        app.component.viewList.func.remove.hourHeader();
     };
     if(app.component.viewList.func.is.itemsUnderDay() === false){
-        app.component.viewList.func.remove.dayHeader();            // remove dayHeader, if no items under day
+        app.component.viewList.func.remove.dayHeader();
     };
-
-    /* REMOVE - itemObj from localStorage & itemObjs(needs to happen before remove element) */
+    /* REMOVE - itemObjs */
     await app.component.viewList.func.remove.itemObj();
-
-    app.component.viewList.func.remove.itemElementFromAddPage();   // remove addPage itemElement
-
-    // remove from local data
-
-    // remove from dataStore
-
-
-    /* TRANSITION - headerTime */
-    // app.component.viewList.func.transition.hideItem_headerTimeZIndex();
-
-    /* REMOVE - itemObj from localStorage & itemObjs(needs to happen before remove element) */
-    // await app.component.item.func.remove.itemObj();
-
-    /* CREATEAPPEND - daydropper text, htmlInsideDropdown  */
-    // app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
-    // app.component.dayDropper.func.createAppend.htmlInsideDropdown();
-
-    /* REMOVE - item, blurTile */
-    // app.component.item.state.selected[1].remove();
-    // app.component.timeSlot.func.remove.blurTile();
-
-    /* GIVE - height to scrollBall */
-    // app.component.timeSlot.func.give.height_to_scrollBall(); // must happen after item element removal, since scrollBall height takes into account the number of item elements present
-
-
     /* STATE - itemActive OFF */
     app.component.viewList.state.itemActive = [false, null];
 };
