@@ -12,6 +12,9 @@
     padding-bottom: 78px;
     overflow-y: scroll;
 }
+.viewItemsWrapper::-webkit-scrollbar {
+    display: none;
+}
 
 .dayBlock {
     margin-top: 16px;

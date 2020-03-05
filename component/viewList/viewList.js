@@ -70,11 +70,9 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
         let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayMS);
         let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayMS);
 
-        if( setDay === null){ // first iteration
-            console.log('1st');
+        if( setDay === null){      // first iteration
             setDay     = dayMS;
             setHour    = timeSlot;
-            console.log('init/both set');
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
             let hr_12  = app.component.timeSlot.func.get.to12Hour(timeSlot);
             html += `
@@ -83,7 +81,7 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
                             <p class="dayText_vl">${day_text}</p>
                             <p class="dayInfo_vl">(${numberOfItemsForDayString}${daysUntilString})</p>
                         </div>
-                        <p class="hourHeader_vl" data_hour="${timeSlot}">
+                        <p class="hourHeader_vl" dayMS="${setDay}" data_hour="${timeSlot}">
                             <span>${hr_12}</span>
                             <span>${AMorPM}</span>
                         </p>
@@ -98,7 +96,6 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
         else
         if( setDay  === dayMS      // same day
         &&  setHour === timeSlot){ // same hour
-            console.log("same");
             html += `
                         <div class="itemTile_vl hideItemTile_vl" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.viewList.func.transition.showItem(this)">
                             <span class="dot_vl"></span>
@@ -111,12 +108,11 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
         else
         if( setDay  === dayMS      // same day
         &&  setHour !== timeSlot){ // diff hour
-            console.log(setHour, timeSlot, 'diff hour');
             setHour    = timeSlot;
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
             let hr_12  = app.component.timeSlot.func.get.to12Hour(timeSlot);
             html += `
-                        <p class="hourHeader_vl" data_hour="${timeSlot}">${hr_12} ${AMorPM}</p>
+                        <p class="hourHeader_vl" dayMS="${setDay}" data_hour="${timeSlot}">${hr_12} ${AMorPM}</p>
                         <div class="itemTile_vl hideItemTile_vl" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.viewList.func.transition.showItem(this)">
                             <span class="dot_vl"></span>
                             <input class="itemField_vl background_main_vl" value="${obj.setting.text}" onkeyup="app.component.viewList.func.give.item_to_dataStore()" spellcheck="false" readonly>
@@ -127,7 +123,6 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
         }
         else
         if(setDay !== dayMS){      // diff day
-            console.log(setDay, dayMS, 'diff day');
             setDay     = dayMS;
             setHour    = null;
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
@@ -139,7 +134,7 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
                             <p class="dayText_vl">${day_text}</p>
                             <p class="dayInfo_vl">(${numberOfItemsForDayString}${daysUntilString})</p>
                         </div>
-                        <p class="hourHeader_vl" data_hour="${timeSlot}">${hr_12} ${AMorPM}</p>
+                        <p class="hourHeader_vl" dayMS="${setDay}" data_hour="${timeSlot}">${hr_12} ${AMorPM}</p>
                         <div class="itemTile_vl hideItemTile_vl" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.viewList.func.transition.showItem(this)">
                             <span class="dot_vl"></span>
                             <input class="itemField_vl background_main_vl" value="${obj.setting.text}" onkeyup="app.component.viewList.func.give.item_to_dataStore()" spellcheck="false" readonly>
@@ -161,6 +156,16 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
 };
 
 /* get */
+
+app.component.viewList.func.get.dayText_from_dayMS = (dayMS)=>{
+    let dateString = `${new Date(dayMS)}`;
+    let splits     = dateString.split(" ");
+    let month      = splits[1];
+    let dayName    = splits[0];
+    let dayNum     = splits[2];
+    let dayText    = `${dayName} ${month} ${dayNum}`;
+    return dayText;
+};
 
 app.component.viewList.func.get.isObjExist = ()=>{
     return new Promise((resolve)=>{
@@ -284,7 +289,9 @@ app.component.viewList.func.remove.itemElement = ()=>{
 app.component.viewList.func.remove.itemElementFromAddPage = ()=>{
     let createdId = app.component.viewList.state.itemActive[1].getAttribute("createdId");
     let itemFromAddPage = document.querySelector(`.itemTile[createdId="${createdId}"]`);
+    if( itemFromAddPage !== null){
         itemFromAddPage.remove();
+    };
 };
 
 app.component.viewList.func.remove.itemObj = ()=>{
@@ -425,6 +432,9 @@ app.component.viewList.func.transition.removeItem = async()=>{
     app.component.viewList.func.remove.itemElementFromAddPage();
     /* REMOVE - itemObjs */
     await app.component.viewList.func.remove.itemObj();
+    /* CREATEAPPEND - daydropper text, htmlInsideDropdown (has to happen after itemObj removed) */
+    app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
+    app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     /* STATE - itemActive OFF */
     app.component.viewList.state.itemActive = [false, null];
 };
