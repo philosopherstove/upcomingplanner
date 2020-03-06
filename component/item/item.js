@@ -78,7 +78,7 @@ app.component.item.func.createAppend.itemElementToViewPage = async()=>{
     let dayBlock   = document.querySelector(`.dayBlock[dayMS="${dayId}"]`);
     let hourHeader = document.querySelector(`.hourHeader_vl[dayMS="${dayId}"][data_hour="${hourId}"]`);
 
-    // case 1 - no dayblocks => new dayBlock append wherever
+    // case 1 - no dayblocks => order of append doesn't matter for 1st. This 1st case needs viewItemsWrapper
     if(dayBlocks.length === 0){
         let html = `
             <div class="dayBlock" dayMS="${dayId}">
@@ -240,6 +240,8 @@ app.component.item.func.give.item_to_dataStore = async()=>{
             let selectedObj = isObjExist[1];
             await app.component.item.func.set.componentObj_in_objs(selectedObj, fieldValue);
             await app.component.item.func.set.componentObj_in_localStorage(selectedObj, fieldValue);
+            // need equivalent createAppend.itemElementToViewPage(), but for update
+
         }
         else{
             // CREATE       componentObj
@@ -249,8 +251,8 @@ app.component.item.func.give.item_to_dataStore = async()=>{
             app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
             app.component.dayDropper.func.createAppend.htmlInsideDropdown();
             app.component.timeSlot.func.give.height_to_scrollBall();
+            app.component.item.func.createAppend.itemElementToViewPage();
         };
-        app.component.item.func.createAppend.itemElementToViewPage();
         app.component.item.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
         app.component.timeSlot.func.remove.blurTile();
     }
@@ -329,10 +331,13 @@ app.component.item.func.remove.hourHeader = (hourId)=>{
 
 app.component.item.func.remove.itemElementFromViewPage = ()=>{
     return new Promise((resolve)=>{
-        let createdId               = Number(app.component.item.state.selected[1].getAttribute("createdId"));
+        let createdId = Number(app.component.item.state.selected[1].getAttribute("createdId"));
         let itemElementFromViewPage = document.querySelector(`.itemTile_vl[createdId="${createdId}"]`);
-        let dayId                   = Number(itemElementFromViewPage.getAttribute("dayMS"));
-        let hourId                  = Number(itemElementFromViewPage.getAttribute("data_hour"));
+        if (itemElementFromViewPage === null){ // need to avoid in case of removing an as yet to be created item(pre-submission)
+            resolve();
+        };
+        let dayId  = Number(itemElementFromViewPage.getAttribute("dayMS"));
+        let hourId = Number(itemElementFromViewPage.getAttribute("data_hour"));
         itemElementFromViewPage.remove();
         if(app.component.item.func.is.itemsUnderViewPageHour() === false){
             app.component.item.func.remove.hourHeader(hourId);
