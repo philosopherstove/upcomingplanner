@@ -51,10 +51,10 @@ app.component.item.func.create.componentObj = (item)=>{
         obj.state = {};
         obj.state.selected = false;
     // push to objs
-    app.component.item.objs.unshift(obj);
+    app.component.item.objs.push(obj);
     // push to data store(for now, that's localStorage)
     let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
-        localStorageObj.items.unshift(obj);
+        localStorageObj.items.push(obj);
     window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
 };
 

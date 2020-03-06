@@ -122,7 +122,7 @@ app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
 };
 
 app.component.dayDropper.func.createAppend.itemsForDay = (day_ms)=>{
-    for(i in app.component.item.objs){
+    for(let i = app.component.item.objs.length-1; i > -1; i--){
         let obj = app.component.item.objs[i];
         if( obj.associated.day === day_ms){
             app.component.dayDropper.func.createAppend.filledItem(obj);

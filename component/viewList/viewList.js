@@ -56,6 +56,8 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
     let setDay  = null;
     let setHour = null;
     for(let i in sorted){
+    // for(let i = sorted.length-1; i > -1; i--){
+        // console.log('hi')
         let obj      = sorted[i];
         let dayMS    = obj.associated.day;
         let timeSlot = Number(obj.associated.timeSlot);
@@ -226,6 +228,7 @@ app.component.viewList.func.give.item_to_dataStore = async()=>{
 
 app.component.viewList.func.init.component = async()=>{
     let sorted = await app.component.viewList.func.sort.itemsObjs_by_dayAndTimeSlot();
+    console.log("sorted", sorted);
     app.component.viewList.func.createAppend.viewItems(sorted);
 };
 
@@ -349,10 +352,12 @@ app.component.viewList.func.sort.itemsObjs_by_dayAndTimeSlot = ()=>{
         resolve(app.component.item.objs.sort(compare));
     });
     function compare(a, b){
-        let dayA       = a.associated.day;
-        let timeSlotA  = Number(a.associated.timeSlot);
-        let dayB       = b.associated.day;
-        let timeSlotB  = Number(b.associated.timeSlot);
+        let dayA       = Number(a.associated.day);
+        let dayB       = Number(b.associated.day);
+        let hourA      = Number(a.associated.timeSlot);
+        let hourB      = Number(b.associated.timeSlot);
+        let createdA   = Number(a.associated.createdId);
+        let createdB   = Number(b.associated.createdId);
         let comparison = 0;
         if(dayA > dayB){
             comparison = 1;
@@ -363,20 +368,26 @@ app.component.viewList.func.sort.itemsObjs_by_dayAndTimeSlot = ()=>{
         }
         else
         if(dayA === dayB){
-            if(timeSlotA > timeSlotB){
+            if(hourA > hourB){
                 comparison = 1;
             }
             else
-            if(timeSlotA < timeSlotB){
+            if(hourA < hourB){
                 comparison = -1;
             }
             else
-            if(timeSlotA === timeSlotB){
-                comparison = 0;
+            if(hourA === hourB){
+                if(createdA > createdB){
+                    comparison = -1;
+                }
+                else
+                if(createdA < createdB){
+                    comparison = 1;
+                };
             };
         };
         return comparison;
-    }
+    };
 };
 
 app.component.viewList.func.transition.hideItem = ()=>{
