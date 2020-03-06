@@ -51,10 +51,10 @@ app.component.item.func.create.componentObj = (item)=>{
         obj.state = {};
         obj.state.selected = false;
     // push to objs
-    app.component.item.objs.push(obj);
+    app.component.item.objs.unshift(obj);
     // push to data store(for now, that's localStorage)
     let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
-        localStorageObj.items.push(obj);
+        localStorageObj.items.unshift(obj);
     window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
 };
 
@@ -295,7 +295,7 @@ app.component.item.func.is.itemsUnderViewPageDay = ()=>{
             };
         };
     };
-}
+};
 
 app.component.item.func.is.itemsUnderViewPageHour = ()=>{
     let createdId = Number(app.component.item.state.selected[1].getAttribute("createdId"));
@@ -316,7 +316,7 @@ app.component.item.func.is.itemsUnderViewPageHour = ()=>{
             };
         };
     };
-}
+};
 
 /* REMOVE */
 app.component.item.func.remove.dayHeader = (dayId)=>{
