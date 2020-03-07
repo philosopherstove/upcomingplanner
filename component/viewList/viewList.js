@@ -8,6 +8,7 @@ app.component.viewList.func.give         = {};
 app.component.viewList.func.init         = {};
 app.component.viewList.func.is           = {};
 app.component.viewList.func.remove       = {};
+app.component.viewList.func.set          = {};
 app.component.viewList.func.sort         = {};
 app.component.viewList.func.transition   = {};
 
@@ -194,26 +195,12 @@ app.component.viewList.func.give.item_to_dataStore = async()=>{
     let fieldValue = app.component.viewList.state.itemActive[1].children[1].value;
     if( fieldValue.trim().length > 0 // field NOT empty
     &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
-
-        let isObjExist = await app.component.viewList.func.get.isObjExist();
-        if( isObjExist[0] === true
-        &&  isObjExist[1].setting.text !== fieldValue){ // update old componentObj
-
-            let selectedObj = isObjExist[1];
-            console.log('give', isObjExist[1].setting.text, fieldValue);
-            // update local data & data store
-
-            // await app.component.item.func.set.componentObj_in_objs(selectedObj, fieldValue);
-            // await app.component.item.func.set.componentObj_in_localStorage(selectedObj, fieldValue);
-        }
-        else{ // obj doesn't exist OR no change to text => create new componentObj
-
-            // console.log('not exist or no change');
-            // app.component.item.func.create.componentObj(app.component.item.state.selected[1]); // add to objs array and data store
-            // app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
-            // app.component.dayDropper.func.createAppend.htmlInsideDropdown();
-            // app.component.timeSlot.func.give.height_to_scrollBall();
-        };
+        let createdId = app.component.viewList.state.itemActive[1].getAttribute("createdId");
+        let itemObj   = await app.component.item.func.get.itemObj_from_createdId(createdId);
+        await app.component.item.func.set.componentObj_in_objs(itemObj, fieldValue);
+        await app.component.item.func.set.componentObj_in_localStorage(itemObj, fieldValue);
+        app.component.viewList.func.give.value_to_itemElementOnAddPage();
+        app.component.viewList.func.give.value_to_itemElementOnViewPage();
         app.component.viewList.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
         app.component.viewList.func.remove.blurTile();
     }
@@ -224,11 +211,28 @@ app.component.viewList.func.give.item_to_dataStore = async()=>{
     };
 };
 
+app.component.viewList.func.give.value_to_itemElementOnAddPage = ()=>{
+    let createdId                 = app.component.viewList.state.itemActive[1].getAttribute("createdId");
+    let updatedValue              = app.component.viewList.state.itemActive[1].children[1].value;
+    let itemElementField          = document.querySelector(`.itemTile[createdId="${createdId}"] > input`);
+        itemElementField.readonly = false;
+        itemElementField.value    = updatedValue;
+        itemElementField.readonly = true;
+};
+
+app.component.viewList.func.give.value_to_itemElementOnViewPage = ()=>{
+    let createdId                 = app.component.viewList.state.itemActive[1].getAttribute("createdId");
+    let updatedValue              = app.component.viewList.state.itemActive[1].children[1].value;
+    let itemElementField          = document.querySelector(`.itemTile_vl[createdId="${createdId}"] > input`);
+        itemElementField.readonly = false;
+        itemElementField.value    = updatedValue;
+        itemElementField.readonly = true;
+};
+
 /* init */
 
 app.component.viewList.func.init.component = async()=>{
     let sorted = await app.component.viewList.func.sort.itemsObjs_by_dayAndTimeSlot();
-    console.log("sorted", sorted);
     app.component.viewList.func.createAppend.viewItems(sorted);
 };
 

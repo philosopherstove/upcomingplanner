@@ -12,7 +12,6 @@ app.component.item.func.is           = {};
 app.component.item.func.remove       = {};
 app.component.item.func.set          = {};
 app.component.item.func.transition   = {};
-app.component.item.func.update       = {};
 
 /* func hotkeys:
 app.component.item.func.create.componentObj = (item)=>{
@@ -223,7 +222,7 @@ app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
     return new Promise((resolve)=>{
         for(i in app.component.item.objs){
             let obj = app.component.item.objs[i];
-            if( obj.associated.createdId === createdId){
+            if( Number(obj.associated.createdId) === Number(createdId)){
                 resolve(obj);
             };
         };
@@ -231,6 +230,7 @@ app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
 };
 
 /* GIVE */
+
 app.component.item.func.give.item_to_dataStore = async()=>{
     event.stopPropagation();
     let fieldValue = app.component.item.state.selected[1].children[1].value;
@@ -239,10 +239,13 @@ app.component.item.func.give.item_to_dataStore = async()=>{
         let isObjExist = await app.component.item.func.get.isObjExist();
         if( isObjExist[0] === true){ // update old componentObj
             let selectedObj = isObjExist[1];
+
+            console.log(selectedObj, 'selectedObj');
+
             await app.component.item.func.set.componentObj_in_objs(selectedObj, fieldValue);
             await app.component.item.func.set.componentObj_in_localStorage(selectedObj, fieldValue);
-            // need equivalent createAppend.itemElementToViewPage(), but for update
-            app.component.item.func.update.itemElementOnViewPage();
+            app.component.item.func.give.value_to_itemElementOnAddPage();
+            app.component.item.func.give.value_to_itemElementOnViewPage();
         }
         else{
             // CREATE       componentObj
@@ -262,6 +265,25 @@ app.component.item.func.give.item_to_dataStore = async()=>{
     &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
         app.component.item.func.transition.removeItem();
     };
+};
+
+app.component.item.func.give.value_to_itemElementOnAddPage = ()=>{
+    let createdId        = app.component.item.state.selected[1].getAttribute("createdId");
+    let updatedValue     = app.component.item.state.selected[1].children[1].value;
+    let itemElementField = document.querySelector(`.itemTile[createdId="${createdId}"] > input`);
+        itemElementField.readonly = false;
+        itemElementField.value = updatedValue;
+        itemElementField.readonly = true;
+
+}
+
+app.component.item.func.give.value_to_itemElementOnViewPage = ()=>{
+    let createdId        = app.component.item.state.selected[1].getAttribute("createdId");
+    let updatedValue     = app.component.item.state.selected[1].children[1].value;
+    let itemElementField = document.querySelector(`.itemTile_vl[createdId="${createdId}"] > input`);
+        itemElementField.readonly = false;
+        itemElementField.value = updatedValue;
+        itemElementField.readonly = true;
 };
 
 /* INIT */
@@ -555,13 +577,4 @@ app.component.item.func.transition.showItem_tile = (tile)=>{
 app.component.item.func.transition.showItem_trash = (tile)=>{
     let trash = tile.children[3];
         trash.classList.remove("displayNone");
-};
-
-/* update */
-
-app.component.item.func.update.itemElementOnViewPage = ()=>{
-    let createdId        = app.component.item.state.selected[1].getAttribute("createdId");
-    let updatedValue     = app.component.item.state.selected[1].children[1].value;
-    let itemElementField = document.querySelector(`.itemTile_vl[createdId="${createdId}"] > input`);
-        itemElementField.setAttribute("value", updatedValue);
 };
