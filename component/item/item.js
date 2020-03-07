@@ -12,6 +12,7 @@ app.component.item.func.is           = {};
 app.component.item.func.remove       = {};
 app.component.item.func.set          = {};
 app.component.item.func.transition   = {};
+app.component.item.func.update       = {};
 
 /* func hotkeys:
 app.component.item.func.create.componentObj = (item)=>{
@@ -241,7 +242,7 @@ app.component.item.func.give.item_to_dataStore = async()=>{
             await app.component.item.func.set.componentObj_in_objs(selectedObj, fieldValue);
             await app.component.item.func.set.componentObj_in_localStorage(selectedObj, fieldValue);
             // need equivalent createAppend.itemElementToViewPage(), but for update
-
+            app.component.item.func.update.itemElementOnViewPage();
         }
         else{
             // CREATE       componentObj
@@ -554,4 +555,13 @@ app.component.item.func.transition.showItem_tile = (tile)=>{
 app.component.item.func.transition.showItem_trash = (tile)=>{
     let trash = tile.children[3];
         trash.classList.remove("displayNone");
+};
+
+/* update */
+
+app.component.item.func.update.itemElementOnViewPage = ()=>{
+    let createdId        = app.component.item.state.selected[1].getAttribute("createdId");
+    let updatedValue     = app.component.item.state.selected[1].children[1].value;
+    let itemElementField = document.querySelector(`.itemTile_vl[createdId="${createdId}"] > input`);
+        itemElementField.setAttribute("value", updatedValue);
 };
