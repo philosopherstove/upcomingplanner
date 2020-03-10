@@ -295,6 +295,7 @@ app.component.dayDropper.func.remove.zIndex_from_dropper = ()=>{
 app.component.dayDropper.func.set.day = async(dayElement)=>{
     let day_ms   = Number(dayElement.getAttribute("day_ms"));
     let day_text = dayElement.getAttribute("day_text");
+    console.log(day_ms, day_text);
     app.component.dayDropper.setting.day = [day_ms, day_text]; // SET - dayDropper day
     app.component.dayDropper.func.remove.timeSlotsDivElement(); // remove old timeSlots
     await app.component.timeSlot.func.createAppend.timeSlots(); // createAppend new timeSlots

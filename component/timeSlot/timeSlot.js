@@ -117,7 +117,7 @@ app.component.timeSlot.func.createAppend.timeSlots = ()=>{
 
 /* GET */
 app.component.timeSlot.func.get.AMorPM = (hr)=>{
-    if(hr < 13){
+    if(hr < 12){
         return 'AM';
     }
     else{
