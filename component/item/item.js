@@ -155,6 +155,7 @@ app.component.item.func.createAppend.itemElementToViewPage = async()=>{
     else
     if( dayBlock   !== null
     &&  hourHeader === null){
+console.log('same day, diff hour');
         let hourHeaders = document.querySelectorAll(`.hourHeader_vl[dayMS="${dayId}"]`);
         let html = `
             <p class="hourHeader_vl" dayMS="${dayId}" data_hour="${hourId}">
@@ -173,6 +174,7 @@ app.component.item.func.createAppend.itemElementToViewPage = async()=>{
             if(hourId > hourHeaderId){ // exceed hourHeaderId, append as last of itemTiles for that hour
                 let itemTilesForLastHourHeader = document.querySelectorAll(`.itemTile_vl[dayMS="${dayId}"][data_hour="${hourHeaderId}"]`);
                     itemTilesForLastHourHeader[itemTilesForLastHourHeader.length-1].insertAdjacentHTML("afterend", html);
+                break;
             }
             else
             if(i === hourHeaders.length-1){ // get to end/never exceeded a present hourHeaderId, append after matching hourHeader
@@ -516,9 +518,9 @@ app.component.item.func.transition.removeItem = async()=>{
     event.stopPropagation();
     /* TRANSITION - headerTime */
     app.component.item.func.transition.removeItem_headerTime();
-    /* CREATEAPPEND - daydropper text, htmlInsideDropdown  */
-    app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
-    app.component.dayDropper.func.createAppend.htmlInsideDropdown();
+    // /* CREATEAPPEND - daydropper text, htmlInsideDropdown */
+    // app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
+    // app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     /* REMOVE - item, blurTile */
     app.component.item.state.selected[1].remove();
     app.component.timeSlot.func.remove.blurTile();
@@ -529,6 +531,9 @@ app.component.item.func.transition.removeItem = async()=>{
     app.component.timeSlot.func.give.height_to_scrollBall(); // must happen after item element removal, since scrollBall height takes into account the number of item elements present
     /* REMOVE - itemObj */
     await app.component.item.func.remove.itemObj();
+/* CREATEAPPEND - daydropper text, htmlInsideDropdown */
+app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
+app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     /* STATE - timeSlot(editting OFF), item(selected OFF)) */
     app.component.timeSlot.state.active = false;
     app.component.item.state.selected   = [false, null];
