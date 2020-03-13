@@ -134,14 +134,14 @@ app.component.item.func.createAppend.itemElementToViewPage = async()=>{
         /* How to determine where to append dayBlock:
         --- querySelectorAll dayBlock
         --- loop them
-        --- greater/less than compare createdId and dayBlockId. (ids are created ms)
-        --- when createdId greater than given dayBlockId,
+        --- greater/less than compare dayId and dayBlockId
+        --- when dayId greater than given dayBlockId,
         --- insert new dayBlock before this dayBlock */
         let dayBlocks = document.querySelectorAll(`.dayBlock`);
         for(let i = 0; i < dayBlocks.length; i++){
             let dayBlock   = dayBlocks[i];
             let dayBlockId = Number(dayBlocks[i].getAttribute("dayMS"));
-            if( createdId > dayBlockId){
+            if( dayId < dayBlockId){
                 dayBlock.insertAdjacentHTML("beforebegin", html);
                 break;
             };
@@ -239,18 +239,12 @@ app.component.item.func.give.item_to_dataStore = async()=>{
         let isObjExist = await app.component.item.func.get.isObjExist();
         if( isObjExist[0] === true){ // update old componentObj
             let selectedObj = isObjExist[1];
-
-            console.log(selectedObj, 'selectedObj');
-
             await app.component.item.func.set.componentObj_in_objs(selectedObj, fieldValue);
             await app.component.item.func.set.componentObj_in_localStorage(selectedObj, fieldValue);
             app.component.item.func.give.value_to_itemElementOnAddPage();
             app.component.item.func.give.value_to_itemElementOnViewPage();
         }
         else{
-            // CREATE       componentObj
-            // CREATEAPPEND dayDropperText, htmlInsideDropdown
-            // GIVE         height_to_scrollBall
             app.component.item.func.create.componentObj(app.component.item.state.selected[1]); // add to objs array and data store
             app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
             app.component.dayDropper.func.createAppend.htmlInsideDropdown();

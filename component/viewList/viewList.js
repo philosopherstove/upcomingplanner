@@ -215,6 +215,7 @@ app.component.viewList.func.give.value_to_itemElementOnAddPage = ()=>{
     let createdId                 = app.component.viewList.state.itemActive[1].getAttribute("createdId");
     let updatedValue              = app.component.viewList.state.itemActive[1].children[1].value;
     let itemElementField          = document.querySelector(`.itemTile[createdId="${createdId}"] > input`);
+    if( itemElementField === null){return};
         itemElementField.readonly = false;
         itemElementField.value    = updatedValue;
         itemElementField.readonly = true;
