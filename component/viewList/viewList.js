@@ -451,8 +451,9 @@ app.component.viewList.func.transition.removeItem = async()=>{
     /* CREATEAPPEND - daydropper text, htmlInsideDropdown (has to happen after itemObj removed) */
     app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
-/* UPDATE - dayInfoOnViewPage */
-    app.component.item.func.update.dayInfoOnViewPage();
+    /* UPDATE - dayInfoOnViewPage */
+    let dayId = Number(itemElement.getAttribute("dayMS"));
+    app.component.item.func.update.dayInfoOnViewPage(dayId);
     /* STATE - itemActive OFF */
     app.component.viewList.state.itemActive = [false, null];
 };

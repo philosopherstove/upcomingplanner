@@ -252,7 +252,9 @@ app.component.item.func.give.item_to_dataStore = async()=>{
             app.component.dayDropper.func.createAppend.htmlInsideDropdown();
             app.component.timeSlot.func.give.height_to_scrollBall();
             app.component.item.func.createAppend.itemElementToViewPage();
-            app.component.item.func.update.dayInfoOnViewPage();
+
+            let dayId = Number(app.component.item.state.selected[1].getAttribute("dayId"));
+            app.component.item.func.update.dayInfoOnViewPage(dayId);
         };
         app.component.item.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
         app.component.timeSlot.func.remove.blurTile();
@@ -532,11 +534,12 @@ app.component.item.func.transition.removeItem = async()=>{
     app.component.timeSlot.func.give.height_to_scrollBall(); // must happen after item element removal, since scrollBall height takes into account the number of item elements present
     /* REMOVE - itemObj */
     await app.component.item.func.remove.itemObj();
-/* CREATEAPPEND - daydropper text, htmlInsideDropdown */
-app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
-app.component.dayDropper.func.createAppend.htmlInsideDropdown();
-/* UPDATE - dayInfo on */
-app.component.item.func.update.dayInfoOnViewPage();
+    /* CREATEAPPEND - daydropper text, htmlInsideDropdown */
+    app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
+    app.component.dayDropper.func.createAppend.htmlInsideDropdown();
+    /* UPDATE - dayInfo on */
+    let dayId = Number(app.component.item.state.selected[1].getAttribute("dayId"));
+    app.component.item.func.update.dayInfoOnViewPage(dayId);
     /* STATE - timeSlot(editting OFF), item(selected OFF)) */
     app.component.timeSlot.state.active = false;
     app.component.item.state.selected   = [false, null];
@@ -583,6 +586,10 @@ app.component.item.func.transition.showItem_trash = (tile)=>{
 
 /* update */
 
-app.component.item.func.update.dayInfoOnViewPage = ()=>{
-    console.log('updateDayInfoOnViewPage');
+app.component.item.func.update.dayInfoOnViewPage = async(dayId)=>{
+    let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
+    let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayId);
+    let dayInfoElement            = document.querySelector(`.viewPage .dayBlock[dayMS="${dayId}"] .dayInfo_vl`);
+    if( dayInfoElement === null){return};
+        dayInfoElement.innerHTML  = `${numberOfItemsForDayString}${daysUntilString}`;
 };
