@@ -12,6 +12,7 @@ app.component.item.func.is           = {};
 app.component.item.func.remove       = {};
 app.component.item.func.set          = {};
 app.component.item.func.transition   = {};
+app.component.item.func.update       = {};
 
 /* func hotkeys:
 app.component.item.func.create.componentObj = (item)=>{
@@ -155,7 +156,6 @@ app.component.item.func.createAppend.itemElementToViewPage = async()=>{
     else
     if( dayBlock   !== null
     &&  hourHeader === null){
-console.log('same day, diff hour');
         let hourHeaders = document.querySelectorAll(`.hourHeader_vl[dayMS="${dayId}"]`);
         let html = `
             <p class="hourHeader_vl" dayMS="${dayId}" data_hour="${hourId}">
@@ -252,6 +252,7 @@ app.component.item.func.give.item_to_dataStore = async()=>{
             app.component.dayDropper.func.createAppend.htmlInsideDropdown();
             app.component.timeSlot.func.give.height_to_scrollBall();
             app.component.item.func.createAppend.itemElementToViewPage();
+            app.component.item.func.update.dayInfoOnViewPage();
         };
         app.component.item.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
         app.component.timeSlot.func.remove.blurTile();
@@ -534,6 +535,8 @@ app.component.item.func.transition.removeItem = async()=>{
 /* CREATEAPPEND - daydropper text, htmlInsideDropdown */
 app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
 app.component.dayDropper.func.createAppend.htmlInsideDropdown();
+/* UPDATE - dayInfo on */
+app.component.item.func.update.dayInfoOnViewPage();
     /* STATE - timeSlot(editting OFF), item(selected OFF)) */
     app.component.timeSlot.state.active = false;
     app.component.item.state.selected   = [false, null];
@@ -576,4 +579,10 @@ app.component.item.func.transition.showItem_tile = (tile)=>{
 app.component.item.func.transition.showItem_trash = (tile)=>{
     let trash = tile.children[3];
         trash.classList.remove("displayNone");
+};
+
+/* update */
+
+app.component.item.func.update.dayInfoOnViewPage = ()=>{
+    console.log('updateDayInfoOnViewPage');
 };

@@ -68,16 +68,17 @@ app.component.dayDropper.func.createAppend.dayDropperText_info = async(ms)=>{
 app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
     let createdId = obj.associated.createdId;
     let itemText  = obj.setting.text;
-    let hour      = obj.associated.timeSlot; // hour used to locate correct slotBody to append to
+    let dayId     = obj.associated.day;
+    let hourId    = obj.associated.timeSlot; // hourId used to locate correct slotBody to append to
     let html = `
-        <div class="itemTile hideItemTile" createdId="${createdId}" onclick="app.component.item.func.transition.showItem(this)">
+        <div class="itemTile hideItemTile" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem(this)">
             <span class="dot"></span>
             <input class="itemField background_main" spellcheck="false" onkeyup="app.component.item.func.give.item_to_dataStore()" value="${itemText}">
             <div class="minValues displayNone"></div>
             <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem();"></div>
         </div>
     `;
-    let slotBody = document.querySelector(".timeSlots").children[0].children[hour-1].children[0].nextElementSibling;
+    let slotBody = document.querySelector(".timeSlots").children[0].children[hourId-1].children[0].nextElementSibling;
         slotBody.insertAdjacentHTML("beforeend", html);
 };
 

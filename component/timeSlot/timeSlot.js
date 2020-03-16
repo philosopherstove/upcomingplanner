@@ -82,8 +82,10 @@ app.component.timeSlot.func.createAppend.blurTile = ()=>{
 app.component.timeSlot.func.createAppend.itemHTML = (timeSlot)=>{
     return new Promise((resolve)=>{
         let createdId = Date.now();
+        let dayId     = app.component.dayDropper.setting.day[0];
+        let hourId    = Number(timeSlot.children[0].getAttribute("data_hour"));
         let html = `
-            <div class="itemTile zIndex2" createdId="${createdId}" onclick="app.component.item.func.transition.showItem(this)">
+            <div class="itemTile zIndex2" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem(this)">
                 <span class="dot"></span>
                 <input class="itemField background_white" spellcheck="false" onkeyup="app.component.item.func.give.item_to_dataStore();">
                 <div class="minValues displayNone"></div>
