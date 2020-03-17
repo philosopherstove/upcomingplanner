@@ -8,9 +8,20 @@ async function init_DOM(){
         window.localStorage.setItem("upcomingPlanner", JSON.stringify(obj));
     };
 
+    /* Determine whether to start on addPage or viewPage: determined by number of items */
+    let left_determinesStartPage = null;
+    let dataStoreObj             = JSON.parse(localStorage.upcomingPlanner);
+    let numberOfItems            = dataStoreObj.items.length;
+    if( numberOfItems === 0){
+        left_determinesStartPage = 0;
+    }
+    else{
+        left_determinesStartPage = -100;
+    };
+
     let html = `
         <div class="app">
-            <div class="pagesSlide slideTrans" style="left:-100%;">
+            <div class="pagesSlide slideTrans" style="left:${left_determinesStartPage}%;">
                 <div class="addPage">
                     <div class="dropper borderHighlight_off" onclick="app.component.dayDropper.func.transition.openDropdown()">
                         <p class="currDay_text"></p>
