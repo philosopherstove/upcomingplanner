@@ -421,8 +421,9 @@ app.component.viewList.func.transition.hideItem_field = (itemElement)=>{
 };
 
 app.component.viewList.func.transition.hideItem_hourHeader = (itemElement)=>{
+    let dayId        = itemElement.getAttribute("dayMS");
     let hourId       = itemElement.getAttribute("data_hour");
-    let headerOfItem = document.querySelector(`.dayBlock > p.hourHeader_vl[data_hour="${hourId}"]`);
+    let headerOfItem = document.querySelector(`.dayBlock[dayMS="${dayId}"] > p.hourHeader_vl[data_hour="${hourId}"]`);
         headerOfItem.classList.remove("zIndex2");
 };
 
@@ -500,8 +501,9 @@ app.component.viewList.func.transition.showItem_field = (itemElement)=>{
 };
 
 app.component.viewList.func.transition.showItem_hourHeader = (itemElement)=>{
+    let dayId        = itemElement.getAttribute("dayMS");
     let hourId       = itemElement.getAttribute("data_hour");
-    let headerOfItem = document.querySelector(`.dayBlock > p.hourHeader_vl[data_hour="${hourId}"]`);
+    let headerOfItem = document.querySelector(`.dayBlock[dayMS="${dayId}"] > p.hourHeader_vl[data_hour="${hourId}"]`);
         headerOfItem.classList.add("zIndex2");
 };
 
