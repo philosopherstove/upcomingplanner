@@ -45,7 +45,7 @@ app.component.viewList.func.transition.showItem_trash = (itemElement)=>{
 /* createAppend */
 
 app.component.viewList.func.createAppend.blurTile = ()=>{
-    let html = `<div class="blurTile" onclick="app.component.viewList.func.give.item_to_dataStore();"></div>`;
+    let html = `<div class="blurTile" onclick="app.component.viewList.func.give.item_to_dataStore()"></div>`;
     let viewPage = document.querySelector(".viewPage");
         viewPage.insertAdjacentHTML("afterbegin", html);
 };
@@ -80,7 +80,7 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
             let hr_12  = app.component.timeSlot.func.get.to12Hour(timeSlot);
             html += `
                     <div class="dayBlock" dayMS="${setDay}">
-                        <div class="dayHeader_vl">
+                        <div class="dayHeader_vl" onclick="app.component.viewList.func.transition.hideItem(); app.component.viewList.func.remove.blurTile()">
                             <p class="dayText_vl">${day_text}</p>
                             <p class="dayInfo_vl">(${numberOfItemsForDayString}${daysUntilString})</p>
                         </div>
@@ -133,7 +133,7 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
             html += `
                     </div>
                     <div class="dayBlock" dayMS="${setDay}">
-                        <div class="dayHeader_vl">
+                        <div class="dayHeader_vl" onclick="app.component.viewList.func.transition.hideItem(); app.component.viewList.func.remove.blurTile()">
                             <p class="dayText_vl">${day_text}</p>
                             <p class="dayInfo_vl">(${numberOfItemsForDayString}${daysUntilString})</p>
                         </div>
@@ -268,6 +268,7 @@ app.component.viewList.func.is.itemsUnderHour = ()=>{
 
 app.component.viewList.func.remove.blurTile = ()=>{
     let blurTile = document.querySelector(".blurTile");
+    if( blurTile === null){return};
         blurTile.remove();
 };
 
@@ -396,8 +397,9 @@ app.component.viewList.func.sort.itemsObjs_by_dayAndTimeSlot = ()=>{
 };
 
 app.component.viewList.func.transition.hideItem = ()=>{
-    /* TRANSITION - blurTile, field, headerTime, min, tile, trash elements*/
+    /* TRANSITION - dayHeader, field, hourHeader, tile, trash elements */
     let itemElement = app.component.viewList.state.itemActive[1];
+    if( itemElement === null){return};
     app.component.viewList.func.transition.hideItem_dayHeader(itemElement);
     app.component.viewList.func.transition.hideItem_field(itemElement);
     app.component.viewList.func.transition.hideItem_hourHeader(itemElement);
@@ -458,16 +460,6 @@ app.component.viewList.func.transition.removeItem = async()=>{
     /* STATE - itemActive OFF */
     app.component.viewList.state.itemActive = [false, null];
 };
-
-// app.component.viewList.func.transition.hideItem_headerTimeElement = ()=>{
-//
-// };
-
-// app.component.viewList.func.transition.removeItem_headerTimeZIndex = ()=>{
-//     let hourId       = app.component.viewList.state.itemActive[1].getAttribute("data_hour");
-//     let headerOfItem = document.querySelector(`.dayBlock > p.hourHeader_vl[data_hour="${hourId}"]`);
-//         headerOfItem.classList.remove("zIndex2");
-// };
 
 app.component.viewList.func.transition.showItem = (itemElement)=>{
     event.stopPropagation();
