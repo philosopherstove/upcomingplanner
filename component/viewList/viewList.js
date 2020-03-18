@@ -78,6 +78,8 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
             setHour    = timeSlot;
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
             let hr_12  = app.component.timeSlot.func.get.to12Hour(timeSlot);
+            let spacingClass = "";
+            if(hr_12 < 10){spacingClass = "spacing";}
             html += `
                     <div class="dayBlock" dayMS="${setDay}">
                         <div class="dayHeader_vl" onclick="app.component.viewList.func.transition.hideItem(); app.component.viewList.func.remove.blurTile()">
@@ -85,7 +87,7 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
                             <p class="dayInfo_vl">(${numberOfItemsForDayString}${daysUntilString})</p>
                         </div>
                         <p class="hourHeader_vl" dayMS="${setDay}" data_hour="${timeSlot}">
-                            <span>${hr_12}</span>
+                            <span class="${spacingClass}">${hr_12}</span>
                             <span>${AMorPM}</span>
                         </p>
                         <div class="itemTile_vl hideItemTile_vl" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.viewList.func.transition.showItem(this)">
@@ -114,8 +116,13 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
             setHour    = timeSlot;
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
             let hr_12  = app.component.timeSlot.func.get.to12Hour(timeSlot);
+            let spacingClass = "";
+            if(hr_12 < 10){spacingClass = "spacing";}
             html += `
-                        <p class="hourHeader_vl" dayMS="${setDay}" data_hour="${timeSlot}">${hr_12} ${AMorPM}</p>
+                        <p class="hourHeader_vl" dayMS="${setDay}" data_hour="${timeSlot}">
+                            <span class="${spacingClass}">${hr_12}</span>
+                            <span>${AMorPM}</span>
+                        </p>
                         <div class="itemTile_vl hideItemTile_vl" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.viewList.func.transition.showItem(this)">
                             <span class="dot_vl"></span>
                             <input class="itemField_vl background_main_vl" value="${obj.setting.text}" onkeyup="app.component.viewList.func.give.item_to_dataStore()" spellcheck="false" readonly>
@@ -130,6 +137,8 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
             setHour    = null;
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
             let hr_12  = app.component.timeSlot.func.get.to12Hour(timeSlot);
+            let spacingClass = "";
+            if(hr_12 < 10){spacingClass = "spacing";}
             html += `
                     </div>
                     <div class="dayBlock" dayMS="${setDay}">
@@ -137,7 +146,10 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
                             <p class="dayText_vl">${day_text}</p>
                             <p class="dayInfo_vl">(${numberOfItemsForDayString}${daysUntilString})</p>
                         </div>
-                        <p class="hourHeader_vl" dayMS="${setDay}" data_hour="${timeSlot}">${hr_12} ${AMorPM}</p>
+                        <p class="hourHeader_vl" dayMS="${setDay}" data_hour="${timeSlot}">
+                            <span class="${spacingClass}">${hr_12}</span>
+                            <span>${AMorPM}</span>
+                        </p>
                         <div class="itemTile_vl hideItemTile_vl" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.viewList.func.transition.showItem(this)">
                             <span class="dot_vl"></span>
                             <input class="itemField_vl background_main_vl" value="${obj.setting.text}" onkeyup="app.component.viewList.func.give.item_to_dataStore()" spellcheck="false" readonly>

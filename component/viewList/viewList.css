@@ -54,8 +54,12 @@
     letter-spacing: -0.5px;
 }
 
+.spacing {
+	margin-left: 8px;
+}
+
 .hourHeader_vl > span:nth-of-type(2) {
-    margin-left: 4px;
+    margin-left: 1px;
 }
 
 .itemTile_vl {
