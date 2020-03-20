@@ -308,7 +308,15 @@ app.component.dayDropper.func.set.day = async(dayElement)=>{
 app.component.dayDropper.func.transition.closeDropdown = ()=>{
     event.stopPropagation();
     if( app.component.dayDropper.state.open === true){
-        app.component.dayDropper.associated.menu.classList.add("displayNone");
+        app.component.dayDropper.associated.menu.classList.add("closedHeight");
+        app.component.dayDropper.associated.menu.classList.remove("openHeight");
+        let delay_closedBorder = setTimeout(()=>{
+            app.component.dayDropper.associated.menu.classList.add("closedBorder");
+            app.component.dayDropper.associated.menu.classList.remove("openBorder");
+        },200);
+        let scrollBar = document.querySelector(".dropdownMenu_day .scrollBar");
+            scrollBar.classList.add("closedHeight");
+            scrollBar.classList.remove("openHeight");
         app.component.dayDropper.func.remove.blurTile();
         app.component.dayDropper.func.remove.zIndex_from_dropper();
         app.component.dayDropper.state.open = false;
@@ -318,7 +326,13 @@ app.component.dayDropper.func.transition.closeDropdown = ()=>{
 app.component.dayDropper.func.transition.openDropdown = ()=>{
     if(app.component.dayDropper.state.open === false){
         event.stopPropagation();
-        app.component.dayDropper.associated.menu.classList.remove("displayNone");
+        app.component.dayDropper.associated.menu.classList.add("openHeight");
+        app.component.dayDropper.associated.menu.classList.remove("closedHeight");
+        app.component.dayDropper.associated.menu.classList.add("openBorder");
+        app.component.dayDropper.associated.menu.classList.remove("closedBorder");
+        let scrollBar = document.querySelector(".dropdownMenu_day .scrollBar");
+            scrollBar.classList.add("openHeight");
+            scrollBar.classList.remove("closedHeight");
         app.component.dayDropper.func.createAppend.blurTile();
         app.component.dayDropper.func.give.scrollTopDefault_to_dropdownMenu();
         app.component.dayDropper.func.give.zIndex_to_dropper();

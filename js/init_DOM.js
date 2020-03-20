@@ -23,14 +23,14 @@ async function init_DOM(){
         <div class="app">
             <div class="pagesSlide slideTrans" style="left:${left_determinesStartPage}%;">
                 <div class="addPage">
-                    <div class="dropper borderHighlight_off" onclick="app.component.dayDropper.func.transition.openDropdown()">
+                    <div class="dropper" onclick="app.component.dayDropper.func.transition.openDropdown()">
                         <p class="currDay_text"></p>
                         <p class="items_daysCountdown"></p>
                         <div class="downArrow"></div>
                     </div>
-                    <div class="dropdownMenu_day displayNone">
+                    <div class="dropdownMenu_day closedHeight closedBorder">
                         <span class="scrollWrapper">
-                            <span class="scrollBar">
+                            <span class="scrollBar closedHeight">
                                 <span class="scrollBall"></span>
                             </span>
                         </span>

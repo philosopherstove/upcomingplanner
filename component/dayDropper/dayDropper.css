@@ -52,18 +52,37 @@
 	position: absolute;
 	top: 81px;
 	width: 80%;
-	min-height: 390px;
-	max-height: 390px;
+	/* min-height: 390px; */
+	/* max-height: 390px; */
+    transition: max-height 0.2s ease-out, opacity 0.3s ease-out;
 	margin-top: 2px;
     background-color: white;
 	border-radius: 2px;
-	border: 1px solid var(--blue_1);
+	/* border: 1px solid var(--blue_1); */
 	box-shadow: var(--boxShadow_1);
 	overflow-y: scroll;
 	z-index: 1;
 }
 .dropdownMenu_day::-webkit-scrollbar {
     display: none;
+}
+
+.dropdownMenu_day.closedHeight {
+    max-height: 0;
+    opacity: 0;
+}
+
+.dropdownMenu_day.openHeight {
+	max-height: 390px;
+    opacity: 1;
+}
+
+.dropdownMenu_day.closedBorder {
+    border: 0px solid transparent;
+}
+
+.dropdownMenu_day.openBorder {
+    border: 1px solid var(--blue_1);
 }
 
 .dropdownMenu_innerWrapper p {
@@ -98,14 +117,21 @@
     display: block;
     position: fixed;
     width: 3px;
-    height: 380px;
+    transition: height 0.2s ease-out;
     background-color: rgb(188,212,224);
+}
+
+.dropdownMenu_day .scrollBar.closedHeight {
+    height: 0;
+}
+
+.dropdownMenu_day .scrollBar.openHeight {
+    height: 380px;
 }
 
 .dropdownMenu_day .scrollWrapper .scrollBall {
     display: block;
     width: 3px;
-    /* height: 10px; */
     background-color: rgb(93,165,202);
 }
 
