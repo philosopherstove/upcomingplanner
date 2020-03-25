@@ -299,7 +299,7 @@ app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day
         currDay_text.innerHTML = day_text;
 };
 
-app.component.dayDropper.func.give.zIndex_to_dropper = ()=>{
+app.component.dayDropper.func.give.zIndex2_to_dropper = ()=>{
     let dropper = document.querySelector(".dropper");
         dropper.classList.add("zIndex2");
 };
@@ -324,7 +324,7 @@ app.component.dayDropper.func.remove.timeSlotsDivElement = ()=>{
         timeSlotsWrap.remove();
 };
 
-app.component.dayDropper.func.remove.zIndex_from_dropper = ()=>{
+app.component.dayDropper.func.remove.zIndex2_from_dropper = ()=>{
     let dropper = document.querySelector(".dropper");
         dropper.classList.remove("zIndex2");
 };
@@ -349,7 +349,7 @@ app.component.dayDropper.func.transition.closeDropdown = async()=>{
         app.component.dayDropper.func.give.closedHeight_to_dropdownMenu();
         app.component.dayDropper.func.give.closedHeight_to_dropdownMenuScrollBar();
         app.component.dayDropper.func.remove.blurTile();
-        app.component.dayDropper.func.remove.zIndex_from_dropper();
+        app.component.dayDropper.func.remove.zIndex2_from_dropper();
         app.component.dayDropper.func.give.closedBorder_to_dropdownMenu()
         .then(()=>{
             app.component.dayDropper.state.open = false;
@@ -366,7 +366,7 @@ app.component.dayDropper.func.transition.openDropdown = ()=>{
         app.component.dayDropper.func.give.openHeight_to_dropdownMenu();
         app.component.dayDropper.func.give.openHeight_to_dropdownMenuScrollBar();
         app.component.dayDropper.func.give.scrollTopDefault_to_dropdownMenu();
-        app.component.dayDropper.func.give.zIndex_to_dropper();
+        app.component.dayDropper.func.give.zIndex2_to_dropper();
         app.component.dayDropper.state.open = true;
     };
 };

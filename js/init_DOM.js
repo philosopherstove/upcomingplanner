@@ -10,13 +10,22 @@ async function init_DOM(){
 
     /* Determine whether to start on addPage or viewPage: determined by number of items */
     let left_determinesStartPage = null;
+    let footerButtonsHTML        = null;
     let dataStoreObj             = JSON.parse(localStorage.upcomingPlanner);
     let numberOfItems            = dataStoreObj.items.length;
     if( numberOfItems === 0){
         left_determinesStartPage = 0;
+        footerButtonsHTML = `
+            <div class="addPageButton pageButton_on">Add</div>
+            <div class="viewPageButton pageButton_off">View</div>
+        `;
     }
     else{
         left_determinesStartPage = -100;
+        footerButtonsHTML = `
+            <div class="addPageButton pageButton_off">Add</div>
+            <div class="viewPageButton pageButton_on">View</div>
+        `;
     };
 
     let html = `
@@ -43,8 +52,7 @@ async function init_DOM(){
             </div>
             <div class="footer">
                 <div>
-                    <div class="addPageButton pageButton_on">Add</div>
-                    <div class="viewPageButton pageButton_off">View</div>
+                    ${footerButtonsHTML}
                 </div>
             </div>
         </div>
