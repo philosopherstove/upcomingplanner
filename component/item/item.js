@@ -81,6 +81,8 @@ app.component.item.func.createAppend.itemElementToViewPage = async()=>{
 
     // case 1 - no dayblocks => order of append doesn't matter for 1st. This 1st case needs viewItemsWrapper
     if(dayBlocks.length === 0){
+        let spacingClass = "";
+        if(hr_12 < 10){spacingClass = "spacing";}
         let html = `
             <div class="dayBlock" dayMS="${dayId}">
                 <div class="dayHeader_vl">
@@ -88,7 +90,7 @@ app.component.item.func.createAppend.itemElementToViewPage = async()=>{
                     <p class="dayInfo_vl">(${numberOfItemsForDayString}${daysUntilString})</p>
                 </div>
                 <p class="hourHeader_vl" dayMS="${dayId}" data_hour="${hourId}">
-                    <span>${hr_12}</span>
+                    <span class="${spacingClass}">${hr_12}</span>
                     <span>${AMorPM}</span>
                 </p>
                 <div class="itemTile_vl hideItemTile_vl" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.viewList.func.transition.showItem(this)">
@@ -114,6 +116,8 @@ app.component.item.func.createAppend.itemElementToViewPage = async()=>{
     // case 2 - no matching dayblock => new dayBlock, append in correct spot
     else
     if(dayBlock === null){
+        let spacingClass = "";
+        if(hr_12 < 10){spacingClass = "spacing";}
         let html = `
             <div class="dayBlock" dayMS="${dayId}">
                 <div class="dayHeader_vl">
@@ -121,7 +125,7 @@ app.component.item.func.createAppend.itemElementToViewPage = async()=>{
                     <p class="dayInfo_vl">(${numberOfItemsForDayString}${daysUntilString})</p>
                 </div>
                 <p class="hourHeader_vl" dayMS="${dayId}" data_hour="${hourId}">
-                    <span>${hr_12}</span>
+                    <span class="${spacingClass}">${hr_12}</span>
                     <span>${AMorPM}</span>
                 </p>
                 <div class="itemTile_vl hideItemTile_vl" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.viewList.func.transition.showItem(this)">
@@ -157,9 +161,11 @@ app.component.item.func.createAppend.itemElementToViewPage = async()=>{
     if( dayBlock   !== null
     &&  hourHeader === null){
         let hourHeaders = document.querySelectorAll(`.hourHeader_vl[dayMS="${dayId}"]`);
+        let spacingClass = "";
+        if(hr_12 < 10){spacingClass = "spacing";}
         let html = `
             <p class="hourHeader_vl" dayMS="${dayId}" data_hour="${hourId}">
-                <span>${hr_12}</span>
+                <span class="${spacingClass}">${hr_12}</span>
                 <span>${AMorPM}</span>
             </p>
             <div class="itemTile_vl hideItemTile_vl" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.viewList.func.transition.showItem(this)">
