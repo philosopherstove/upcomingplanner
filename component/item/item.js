@@ -597,5 +597,5 @@ app.component.item.func.update.dayInfoOnViewPage = async(dayId)=>{
     let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayId);
     let dayInfoElement            = document.querySelector(`.viewPage .dayBlock[dayMS="${dayId}"] .dayInfo_vl`);
     if( dayInfoElement === null){return};
-        dayInfoElement.innerHTML  = `${numberOfItemsForDayString}${daysUntilString}`;
+        dayInfoElement.innerHTML  = `(${numberOfItemsForDayString}${daysUntilString})`;
 };
