@@ -138,9 +138,6 @@ app.component.timeSlot.func.get.to12Hour = (hr)=>{
 
 /* GIVE */
 app.component.timeSlot.func.give.height_to_scrollBall = ()=>{
-
-    console.log('scrollball height');
-
     let timeSlots           = document.querySelector(".timeSlots");
     let timeSlots_div       = timeSlots.children[0];
     let height_noOverflow   = timeSlots.getBoundingClientRect().height;

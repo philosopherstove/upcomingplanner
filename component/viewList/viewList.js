@@ -463,6 +463,8 @@ app.component.viewList.func.transition.removeItem = async()=>{
     app.component.viewList.func.remove.itemElementFromAddPage();
     /* REMOVE - itemObjs */
     await app.component.viewList.func.remove.itemObj();
+    /* GIVE - height to timeSlot scrollBall */
+    app.component.timeSlot.func.give.height_to_scrollBall();
     /* CREATEAPPEND - daydropper text, htmlInsideDropdown (has to happen after itemObj removed) */
     app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
