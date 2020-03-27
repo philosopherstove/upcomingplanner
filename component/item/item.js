@@ -490,6 +490,7 @@ app.component.item.func.transition.hideItem = ()=>{
     app.component.item.func.transition.hideItem_min(item);
     app.component.item.func.transition.hideItem_tile();
     app.component.item.func.transition.hideItem_trash(item);
+    app.component.timeSlot.func.give.height_to_scrollBall();
     /* STATE - timeSlot(active OFF), item(selected OFF) */
     app.component.timeSlot.state.active = false;
     app.component.item.state.selected   = [false, null];
