@@ -264,6 +264,7 @@ app.component.item.func.give.item_to_dataStore = async()=>{
         };
         app.component.item.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
         app.component.timeSlot.func.remove.blurTile();
+        app.component.timeSlot.func.give.height_to_scrollBall();
     }
     else
     if( fieldValue.trim().length === 0 // field empty
@@ -490,7 +491,6 @@ app.component.item.func.transition.hideItem = ()=>{
     app.component.item.func.transition.hideItem_min(item);
     app.component.item.func.transition.hideItem_tile();
     app.component.item.func.transition.hideItem_trash(item);
-    app.component.timeSlot.func.give.height_to_scrollBall();
     /* STATE - timeSlot(active OFF), item(selected OFF) */
     app.component.timeSlot.state.active = false;
     app.component.item.state.selected   = [false, null];
