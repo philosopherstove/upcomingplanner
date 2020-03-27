@@ -567,7 +567,6 @@ app.component.item.func.transition.showItem = async(item)=>{
         app.component.item.func.transition.showItem_field(item);
         app.component.item.func.transition.showItem_tile(item);
         app.component.item.func.transition.showItem_trash(item);
-        app.component.footer.func.transition.hideFooterForMobileKeyboard();
         /* CREATEAPPEND - blurTile */
         app.component.timeSlot.func.createAppend.blurTile();
     };

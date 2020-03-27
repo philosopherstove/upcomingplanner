@@ -15,14 +15,6 @@ app.component.footer.func.init.component = ()=>{
     app.component.footer.func.give.pageTurnerListeners_to_pageTurnerButtons();
 };
 
-app.component.footer.func.transition.hideFooterForMobileKeyboard = ()=>{
-    let screenWidth = window.screen.width;
-    if( screenWidth < 425){
-        let footer = document.querySelector(".footer");
-            footer.classList.add("positionRelative");
-    };
-}
-
 app.component.footer.func.transition.toAddPage = ()=>{
     let pagesSlide = document.querySelector(".pagesSlide");
         pagesSlide.style.left = "0%";
