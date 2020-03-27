@@ -256,7 +256,6 @@ app.component.item.func.give.item_to_dataStore = async()=>{
             app.component.item.func.create.componentObj(app.component.item.state.selected[1]); // add to objs array and data store
             app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
             app.component.dayDropper.func.createAppend.htmlInsideDropdown();
-            // app.component.timeSlot.func.give.height_to_scrollBall();
             app.component.item.func.createAppend.itemElementToViewPage();
 
             let dayId = Number(app.component.item.state.selected[1].getAttribute("dayId"));
@@ -264,11 +263,9 @@ app.component.item.func.give.item_to_dataStore = async()=>{
         };
         app.component.item.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
         app.component.timeSlot.func.remove.blurTile();
-
         let delay_forKeyboardExitOnMobile = setTimeout(()=>{
             app.component.timeSlot.func.give.height_to_scrollBall();
         },300);
-
     }
     else
     if( fieldValue.trim().length === 0 // field empty
@@ -532,9 +529,6 @@ app.component.item.func.transition.removeItem = async()=>{
     event.stopPropagation();
     /* TRANSITION - headerTime */
     app.component.item.func.transition.removeItem_headerTime();
-    // /* CREATEAPPEND - daydropper text, htmlInsideDropdown */
-    // app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
-    // app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     /* REMOVE - item, blurTile */
     app.component.item.state.selected[1].remove();
     app.component.timeSlot.func.remove.blurTile();
@@ -542,9 +536,8 @@ app.component.item.func.transition.removeItem = async()=>{
     // await app.component.item.func.remove.itemElementFromViewPage();
     app.component.item.func.remove.itemElementFromViewPage();
     /* GIVE - height to scrollBall */
-    //app.component.timeSlot.func.give.height_to_scrollBall(); // must happen after item element removal, since scrollBall height takes into account the number of item elements present
     let delay_forKeyboardExitOnMobile = setTimeout(()=>{
-        app.component.timeSlot.func.give.height_to_scrollBall();
+        app.component.timeSlot.func.give.height_to_scrollBall(); // must happen after item element removal, since scrollBall height takes into account the number of item elements present
     },300);
     /* REMOVE - itemObj */
     await app.component.item.func.remove.itemObj();
