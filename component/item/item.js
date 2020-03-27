@@ -258,14 +258,17 @@ app.component.item.func.give.item_to_dataStore = async()=>{
             app.component.dayDropper.func.createAppend.htmlInsideDropdown();
             // app.component.timeSlot.func.give.height_to_scrollBall();
             app.component.item.func.createAppend.itemElementToViewPage();
-            app.component.timeSlot.func.give.height_to_scrollBall();
 
             let dayId = Number(app.component.item.state.selected[1].getAttribute("dayId"));
             app.component.item.func.update.dayInfoOnViewPage(dayId);
         };
         app.component.item.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
         app.component.timeSlot.func.remove.blurTile();
-        // app.component.timeSlot.func.give.height_to_scrollBall();
+
+        let delay_forKeyboardExitOnMobile = setTimeout(()=>{
+            app.component.timeSlot.func.give.height_to_scrollBall();
+        },300);
+        
     }
     else
     if( fieldValue.trim().length === 0 // field empty
