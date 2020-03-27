@@ -256,15 +256,16 @@ app.component.item.func.give.item_to_dataStore = async()=>{
             app.component.item.func.create.componentObj(app.component.item.state.selected[1]); // add to objs array and data store
             app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
             app.component.dayDropper.func.createAppend.htmlInsideDropdown();
-            app.component.timeSlot.func.give.height_to_scrollBall();
+            // app.component.timeSlot.func.give.height_to_scrollBall();
             app.component.item.func.createAppend.itemElementToViewPage();
+            app.component.timeSlot.func.give.height_to_scrollBall();
 
             let dayId = Number(app.component.item.state.selected[1].getAttribute("dayId"));
             app.component.item.func.update.dayInfoOnViewPage(dayId);
         };
         app.component.item.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
         app.component.timeSlot.func.remove.blurTile();
-        app.component.timeSlot.func.give.height_to_scrollBall();
+        // app.component.timeSlot.func.give.height_to_scrollBall();
     }
     else
     if( fieldValue.trim().length === 0 // field empty
