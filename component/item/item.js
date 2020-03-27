@@ -79,6 +79,12 @@ app.component.item.func.createAppend.itemElementToViewPage = async()=>{
     let dayBlock   = document.querySelector(`.dayBlock[dayMS="${dayId}"]`);
     let hourHeader = document.querySelector(`.hourHeader_vl[dayMS="${dayId}"][data_hour="${hourId}"]`);
 
+    let currentDayMS = app.component.dayDropper.func.get.day()[0];
+    let colorRed = "";
+    if( currentDayMS === dayId){
+        colorRed = "colorRed";
+    };
+
     // case 1 - no dayblocks => order of append doesn't matter for 1st. This 1st case needs viewItemsWrapper
     if(dayBlocks.length === 0){
         let spacingClass = "";
@@ -86,10 +92,10 @@ app.component.item.func.createAppend.itemElementToViewPage = async()=>{
         let html = `
             <div class="dayBlock" dayMS="${dayId}">
                 <div class="dayHeader_vl">
-                    <p class="dayText_vl">${dayText}</p>
-                    <p class="dayInfo_vl">(${numberOfItemsForDayString}${daysUntilString})</p>
+                    <p class="dayText_vl ${colorRed}">${dayText}</p>
+                    <p class="dayInfo_vl ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
                 </div>
-                <p class="hourHeader_vl" dayMS="${dayId}" data_hour="${hourId}">
+                <p class="hourHeader_vl ${colorRed}" dayMS="${dayId}" data_hour="${hourId}">
                     <span class="${spacingClass}">${hr_12}</span>
                     <span>${AMorPM}</span>
                 </p>
@@ -121,10 +127,10 @@ app.component.item.func.createAppend.itemElementToViewPage = async()=>{
         let html = `
             <div class="dayBlock" dayMS="${dayId}">
                 <div class="dayHeader_vl">
-                    <p class="dayText_vl">${dayText}</p>
-                    <p class="dayInfo_vl">(${numberOfItemsForDayString}${daysUntilString})</p>
+                    <p class="dayText_vl ${colorRed}">${dayText}</p>
+                    <p class="dayInfo_vl ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
                 </div>
-                <p class="hourHeader_vl" dayMS="${dayId}" data_hour="${hourId}">
+                <p class="hourHeader_vl ${colorRed}" dayMS="${dayId}" data_hour="${hourId}">
                     <span class="${spacingClass}">${hr_12}</span>
                     <span>${AMorPM}</span>
                 </p>
@@ -164,7 +170,7 @@ app.component.item.func.createAppend.itemElementToViewPage = async()=>{
         let spacingClass = "";
         if(hr_12 < 10){spacingClass = "spacing";}
         let html = `
-            <p class="hourHeader_vl" dayMS="${dayId}" data_hour="${hourId}">
+            <p class="hourHeader_vl ${colorRed}" dayMS="${dayId}" data_hour="${hourId}">
                 <span class="${spacingClass}">${hr_12}</span>
                 <span>${AMorPM}</span>
             </p>

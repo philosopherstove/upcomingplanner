@@ -54,11 +54,12 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
     let html = `
         <div class="viewItemsWrapper">
     `;
-    let setDay  = null;
-    let setHour = null;
+    let setDay       = null;
+    let setHour      = null;
+    let currentDayMS = app.component.dayDropper.func.get.day()[0];
+
     for(let i in sorted){
-    // for(let i = sorted.length-1; i > -1; i--){
-        // console.log('hi')
+
         let obj      = sorted[i];
         let dayMS    = obj.associated.day;
         let timeSlot = Number(obj.associated.timeSlot);
@@ -73,20 +74,27 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
         let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayMS);
         let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayMS);
 
-        if( setDay === null){      // first iteration
+        let colorRed = "";
+        if( currentDayMS === dayMS){
+            colorRed = "colorRed";
+        };
+
+        if( setDay === null){  // first iteration
             setDay     = dayMS;
             setHour    = timeSlot;
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
             let hr_12  = app.component.timeSlot.func.get.to12Hour(timeSlot);
             let spacingClass = "";
-            if(hr_12 < 10){spacingClass = "spacing";}
+            if(hr_12 < 10){
+                spacingClass = "spacing";
+            };
             html += `
                     <div class="dayBlock" dayMS="${setDay}">
                         <div class="dayHeader_vl" onclick="app.component.viewList.func.transition.hideItem(); app.component.viewList.func.remove.blurTile()">
-                            <p class="dayText_vl">${day_text}</p>
-                            <p class="dayInfo_vl">(${numberOfItemsForDayString}${daysUntilString})</p>
+                            <p class="dayText_vl ${colorRed}">${day_text}</p>
+                            <p class="dayInfo_vl ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
                         </div>
-                        <p class="hourHeader_vl" dayMS="${setDay}" data_hour="${timeSlot}">
+                        <p class="hourHeader_vl ${colorRed}" dayMS="${setDay}" data_hour="${timeSlot}">
                             <span class="${spacingClass}">${hr_12}</span>
                             <span>${AMorPM}</span>
                         </p>
@@ -119,7 +127,7 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
             let spacingClass = "";
             if(hr_12 < 10){spacingClass = "spacing";}
             html += `
-                        <p class="hourHeader_vl" dayMS="${setDay}" data_hour="${timeSlot}">
+                        <p class="hourHeader_vl ${colorRed}" dayMS="${setDay}" data_hour="${timeSlot}">
                             <span class="${spacingClass}">${hr_12}</span>
                             <span>${AMorPM}</span>
                         </p>
@@ -143,10 +151,10 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
                     </div>
                     <div class="dayBlock" dayMS="${setDay}">
                         <div class="dayHeader_vl" onclick="app.component.viewList.func.transition.hideItem(); app.component.viewList.func.remove.blurTile()">
-                            <p class="dayText_vl">${day_text}</p>
-                            <p class="dayInfo_vl">(${numberOfItemsForDayString}${daysUntilString})</p>
+                            <p class="dayText_vl ${colorRed}">${day_text}</p>
+                            <p class="dayInfo_vl ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
                         </div>
-                        <p class="hourHeader_vl" dayMS="${setDay}" data_hour="${timeSlot}">
+                        <p class="hourHeader_vl ${colorRed}" dayMS="${setDay}" data_hour="${timeSlot}">
                             <span class="${spacingClass}">${hr_12}</span>
                             <span>${AMorPM}</span>
                         </p>
