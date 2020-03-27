@@ -48,6 +48,10 @@ body {
 	display: flex;
 }
 
+.positionRelative {
+    position: relative;
+}
+
 .zIndex2 {
 	z-index: 2;
 }
