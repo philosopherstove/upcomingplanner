@@ -268,7 +268,7 @@ app.component.item.func.give.item_to_dataStore = async()=>{
         let delay_forKeyboardExitOnMobile = setTimeout(()=>{
             app.component.timeSlot.func.give.height_to_scrollBall();
         },300);
-        
+
     }
     else
     if( fieldValue.trim().length === 0 // field empty
@@ -542,7 +542,10 @@ app.component.item.func.transition.removeItem = async()=>{
     // await app.component.item.func.remove.itemElementFromViewPage();
     app.component.item.func.remove.itemElementFromViewPage();
     /* GIVE - height to scrollBall */
-    app.component.timeSlot.func.give.height_to_scrollBall(); // must happen after item element removal, since scrollBall height takes into account the number of item elements present
+    //app.component.timeSlot.func.give.height_to_scrollBall(); // must happen after item element removal, since scrollBall height takes into account the number of item elements present
+    let delay_forKeyboardExitOnMobile = setTimeout(()=>{
+        app.component.timeSlot.func.give.height_to_scrollBall();
+    },300);
     /* REMOVE - itemObj */
     await app.component.item.func.remove.itemObj();
     /* CREATEAPPEND - daydropper text, htmlInsideDropdown */
