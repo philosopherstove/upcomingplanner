@@ -303,7 +303,7 @@ app.component.item.func.give.value_to_itemElementOnViewPage = ()=>{
 app.component.item.func.init.component = ()=>{
     let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
     app.component.item.objs = localStorageObj.items; // move localStorage item info into item objs
-    app.component.dayDropper.func.createAppend.dayDropperText();
+    // app.component.dayDropper.func.createAppend.dayDropperText();
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     app.component.dayDropper.func.createAppend.itemsForDay(app.component.dayDropper.setting.day[0]);
     app.component.item.func.remove.oldItemObjs_from_itemObjs();

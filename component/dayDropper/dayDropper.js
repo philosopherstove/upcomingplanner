@@ -26,14 +26,13 @@ app.component.dayDropper.func.get.day = (ms)=>{
 app.component.dayDropper.func.get.daysUntilString = (ms)=>{
 app.component.dayDropper.func.get.numberOfItemsForDayString = (ms)=>{
 app.component.dayDropper.func.give.closeDropdownListener_to_body = ()=>{
-app.component.dayDropper.func.give.currDayStr_to_dayDropperElement = ()=>{
 app.component.dayDropper.func.give.height_to_scrollBall = ()=>{
 app.component.dayDropper.func.give.scrollListener_to_dropdownMenu = ()=>{
 app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day_text)=>{
-app.component.dayDropper.func.init.component = async()=>{
+app.component.dayDropper.func.init.component = ()=>{
 app.component.dayDropper.func.remove.blurTile = ()=>{
 app.component.dayDropper.func.remove.timeSlotsDivElement = ()=>{
-app.component.dayDropper.func.set.day = async(dayElement)=>{
+app.component.dayDropper.func.set.day = async(dayDropperDayElement)=>{
 app.component.dayDropper.func.transition.closeDropdown = ()=>{
 app.component.dayDropper.func.transition.openDropdown = ()=>{
 */
@@ -133,7 +132,7 @@ app.component.dayDropper.func.createAppend.itemsForDay = (day_ms)=>{
 
 /* GET */
 
-// will return day as [ms(startOfDay), `${dayName} ${month} ${dayNum}`]
+// will return day as an array: [ ms(startOfDay), `${dayName} ${month} ${dayNum}` ]
 // if pass-in ms, will return for passed in day, otherwise, will do for current day
 app.component.dayDropper.func.get.day = (ms)=>{
     let now_dateString;
@@ -233,12 +232,6 @@ app.component.dayDropper.func.give.closedHeight_to_dropdownMenuScrollBar = ()=>{
         scrollBar.classList.remove("openHeight");
 };
 
-app.component.dayDropper.func.give.currDayStr_to_dayDropperElement = ()=>{
-    let currDay_str  = app.component.dayDropper.func.get.day()[1];
-    let currDay_text = document.querySelector(".currDay_text");
-        currDay_text.innerHTML = currDay_str;
-};
-
 app.component.dayDropper.func.give.currNumberOfItems_to_dayDropperElement = ()=>{
     let numberOfItems = 0;
     for(i in app.component.item.objs){
@@ -305,8 +298,10 @@ app.component.dayDropper.func.give.zIndex2_to_dropper = ()=>{
 };
 
 /* INIT */
-app.component.dayDropper.func.init.component = async()=>{
-    // app.component.dayDropper.func.give.currDayStr_to_dayDropperElement();
+app.component.dayDropper.func.init.component = ()=>{
+
+    app.component.dayDropper.func.createAppend.dayDropperText();
+
     app.component.dayDropper.func.give.closeDropdownListener_to_body();
     app.component.dayDropper.func.give.height_to_scrollBall();
     app.component.dayDropper.func.give.scrollListener_to_dropdownMenu();
@@ -330,9 +325,9 @@ app.component.dayDropper.func.remove.zIndex2_from_dropper = ()=>{
 };
 
 /* SET */
-app.component.dayDropper.func.set.day = async(dayElement)=>{
-    let day_ms   = Number(dayElement.getAttribute("day_ms"));
-    let day_text = dayElement.getAttribute("day_text");
+app.component.dayDropper.func.set.day = async(dayDropperDayElement)=>{
+    let day_ms   = Number(dayDropperDayElement.getAttribute("day_ms"));
+    let day_text = dayDropperDayElement.getAttribute("day_text");
     app.component.dayDropper.setting.day = [day_ms, day_text]; // SET - dayDropper day
     app.component.dayDropper.func.remove.timeSlotsDivElement(); // remove old timeSlots
     await app.component.timeSlot.func.createAppend.timeSlots(); // createAppend new timeSlots
