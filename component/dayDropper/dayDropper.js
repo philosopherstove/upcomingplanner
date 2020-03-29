@@ -312,7 +312,7 @@ app.component.dayDropper.func.init.component = ()=>{
     app.component.dayDropper.func.give.closeDropdownListener_to_body();
     app.component.dayDropper.func.give.height_to_scrollBall();
     app.component.dayDropper.func.give.scrollListener_to_dropdownMenu();
-    app.component.dayDropper.setting.day = app.component.dayDropper.func.get.day(); /* SET - day(defaults to current day) */
+    app.component.dayDropper.setting.day = app.component.dayDropper.func.get.day();
 };
 
 /* REMOVE */
