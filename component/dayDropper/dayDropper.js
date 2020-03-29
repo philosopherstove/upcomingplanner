@@ -44,8 +44,8 @@ app.component.dayDropper.func.createAppend.blurTile = ()=>{
         addPage.insertAdjacentHTML("afterbegin", html);
 };
 
-app.component.dayDropper.func.createAppend.dayDropperText = (ms)=>{
-    let day     = app.component.dayDropper.func.get.day(ms);
+app.component.dayDropper.func.createAppend.dayDropperText = (dayId)=>{
+    let day     = app.component.dayDropper.func.get.day(dayId);
     let dayMS   = day[0];
     let dayText = day[1];
     app.component.dayDropper.func.createAppend.dayDropperText_day(dayText);
@@ -57,9 +57,9 @@ app.component.dayDropper.func.createAppend.dayDropperText_day = (dayText)=>{
         currDay_text.innerHTML = dayText;
 };
 
-app.component.dayDropper.func.createAppend.dayDropperText_info = async(ms)=>{
-    let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(ms);
-    let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(ms);
+app.component.dayDropper.func.createAppend.dayDropperText_info = async(dayMS)=>{
+    let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayMS);
+    let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayMS);
     let items_daysCountdown       = document.querySelector(".items_daysCountdown");
         items_daysCountdown.innerHTML = `${numberOfItemsForDayString}${daysUntilString}`;
 };
@@ -298,10 +298,17 @@ app.component.dayDropper.func.give.zIndex2_to_dropper = ()=>{
 };
 
 /* INIT */
+
+/*
+One might expect to find the following functions in the dayDropper initialization:
+- app.component.dayDropper.func.createAppend.dayDropperText()
+- app.component.dayDropper.func.createAppend.htmlInsideDropdown()
+The firing of these functions is deferred to the item component initialization.
+The reason is because the dayDropperText and htmlInsideDropdown need to be aware of the items to be set properly.
+Also, one cannot simply initialize the dayDropper after the item component because the item component has initial functions that need to be aware of the day.
+Either way, there is a catch-22 between these two components.
+*/
 app.component.dayDropper.func.init.component = ()=>{
-
-    app.component.dayDropper.func.createAppend.dayDropperText();
-
     app.component.dayDropper.func.give.closeDropdownListener_to_body();
     app.component.dayDropper.func.give.height_to_scrollBall();
     app.component.dayDropper.func.give.scrollListener_to_dropdownMenu();
