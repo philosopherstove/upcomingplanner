@@ -21,7 +21,6 @@ app.component.dayDropper.func.createAppend.blurTile = ()=>{
 app.component.dayDropper.func.createAppend.dayDropperText = (ms)=>{
 app.component.dayDropper.func.createAppend.dayDropperText_day = (dayText)=>{
 app.component.dayDropper.func.createAppend.dayDropperText_info = async(dayId)=>{
-app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
 app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
 GET
 app.component.dayDropper.func.get.day = (ms)=>{
@@ -80,23 +79,6 @@ app.component.dayDropper.func.createAppend.dayDropperText_info = async(dayId)=>{
     let daysUntilString               = app.component.dayDropper.func.get.daysUntilString(dayId);
     let items_daysCountdown           = document.querySelector(".items_daysCountdown");
         items_daysCountdown.innerHTML = `${numberOfItemsForDayString}${daysUntilString}`;
-};
-
-app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
-    let createdId = obj.associated.createdId;
-    let itemText  = obj.setting.text;
-    let dayId     = obj.associated.day;
-    let hourId    = obj.associated.timeSlot; // hourId used to locate correct slotBody to append to
-    let html = `
-        <div class="itemTile hideItemTile" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem(this)">
-            <span class="dot"></span>
-            <input class="itemField background_main" spellcheck="false" onkeyup="app.component.item.func.give.item_to_dataStore()" value="${itemText}">
-            <div class="minValues displayNone"></div>
-            <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem();"></div>
-        </div>
-    `;
-    let slotBody = document.querySelector(".timeSlots").children[0].children[hourId-1].children[0].nextElementSibling;
-        slotBody.insertAdjacentHTML("beforeend", html);
 };
 
 app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
