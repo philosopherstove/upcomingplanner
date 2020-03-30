@@ -23,7 +23,6 @@ app.component.dayDropper.func.createAppend.dayDropperText_day = (dayText)=>{
 app.component.dayDropper.func.createAppend.dayDropperText_info = async(dayId)=>{
 app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
 app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
-app.component.dayDropper.func.createAppend.itemsForDay = (day_ms)=>{
 GET
 app.component.dayDropper.func.get.day = (ms)=>{
 app.component.dayDropper.func.get.daysUntilString = (ms)=>{
@@ -133,15 +132,6 @@ app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
         if( i === lookAheadRange - 1){ // end of loop
             app.component.dayDropper.associated.innerWrapper.innerHTML = "";
             app.component.dayDropper.associated.innerWrapper.insertAdjacentHTML("beforeend", html);
-        };
-    };
-};
-
-app.component.dayDropper.func.createAppend.itemsForDay = (day_ms)=>{
-    for(let i = app.component.item.objs.length-1; i > -1; i--){
-        let obj = app.component.item.objs[i];
-        if( obj.associated.day === day_ms){
-            app.component.dayDropper.func.createAppend.filledItem(obj);
         };
     };
 };
@@ -355,10 +345,10 @@ SET
 app.component.dayDropper.func.set.day = async(dayDropperDayElement)=>{
     let day_ms   = Number(dayDropperDayElement.getAttribute("dayId"));
     let day_text = dayDropperDayElement.getAttribute("day_text");
-    app.component.dayDropper.setting.day = [day_ms, day_text];  // SET - dayDropper day
-    app.component.dayDropper.func.remove.timeSlotsDivElement(); // remove old timeSlots
-    await app.component.timeSlot.func.createAppend.timeSlots(); // createAppend new timeSlots
-    app.component.dayDropper.func.createAppend.itemsForDay(day_ms);
+    app.component.dayDropper.setting.day = [day_ms, day_text];  // set - dayDropper day
+    app.component.dayDropper.func.remove.timeSlotsDivElement(); // remove - old timeSlots
+    await app.component.timeSlot.func.createAppend.timeSlots(); // createAppend - new timeSlots
+    app.component.item.func.createAppend.itemsForDay(day_ms);
     app.component.dayDropper.func.createAppend.dayDropperText(day_ms);
     app.component.timeSlot.func.give.height_to_scrollBall();    // timeSlots with items have a larger height than timeSlots without, thus need to calculate different scrollBall height based on number of number of items for the given day
 };

@@ -16,6 +16,7 @@ app.component.item.func.update       = {};
 
 /* func hotkeys:
 app.component.item.func.create.componentObj = (item)=>{
+app.component.item.func.createAppend.itemsForDay = (dayId)=>{
 app.component.item.func.get.isObjExist = ()=>{
 app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
 app.component.item.func.give.item_to_dataStore = async()=>{
@@ -212,6 +213,15 @@ app.component.item.func.createAppend.itemElementToViewPage = async()=>{
     };
 };
 
+app.component.item.func.createAppend.itemsForDay = (dayId)=>{
+    for(let i = app.component.item.objs.length-1; i > -1; i--){
+        let obj = app.component.item.objs[i];
+        if( obj.associated.day === dayId){
+            app.component.dayDropper.func.createAppend.filledItem(obj);
+        };
+    };
+};
+
 /* get */
 
 app.component.item.func.get.isObjExist = ()=>{
@@ -305,7 +315,7 @@ app.component.item.func.init.component = ()=>{
     app.component.item.objs = localStorageObj.items; // move item data into local item objs array
     app.component.dayDropper.func.createAppend.dayDropperText();
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
-    app.component.dayDropper.func.createAppend.itemsForDay(app.component.dayDropper.setting.day[0]);
+    app.component.item.func.createAppend.itemsForDay(app.component.dayDropper.setting.day[0]);
     app.component.item.func.remove.oldItemObjs_from_itemObjs();
     app.component.item.func.remove.oldItemObjs_from_localStorage();
 };
