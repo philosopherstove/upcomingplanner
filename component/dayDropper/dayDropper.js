@@ -16,40 +16,59 @@ app.component.dayDropper.func.set          = {};
 app.component.dayDropper.func.transition   = {};
 
 /* func hotkeys:
+CREATEAPPEND
+app.component.dayDropper.func.createAppend.blurTile = ()=>{
 app.component.dayDropper.func.createAppend.dayDropperText = (ms)=>{
 app.component.dayDropper.func.createAppend.dayDropperText_day = (dayText)=>{
-app.component.dayDropper.func.createAppend.dayDropperText_info = async(ms)=>{
+app.component.dayDropper.func.createAppend.dayDropperText_info = async(dayId)=>{
 app.component.dayDropper.func.createAppend.filledItem = (obj)=>{
 app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
 app.component.dayDropper.func.createAppend.itemsForDay = (day_ms)=>{
+GET
 app.component.dayDropper.func.get.day = (ms)=>{
 app.component.dayDropper.func.get.daysUntilString = (ms)=>{
+app.component.dayDropper.func.get.dropdownHighlightClass = (numberOfItemsForDayString)=>{
 app.component.dayDropper.func.get.numberOfItemsForDayString = (ms)=>{
+GIVE
 app.component.dayDropper.func.give.closeDropdownListener_to_body = ()=>{
+app.component.dayDropper.func.give.closedBorder_to_dropdownMenu = ()=>{
+app.component.dayDropper.func.give.closedHeight_to_dropdownMenu = ()=>{
+app.component.dayDropper.func.give.closedHeight_to_dropdownMenuScrollBar = ()=>{
+app.component.dayDropper.func.give.openBorder_to_dropdowMenu = ()=>{
+app.component.dayDropper.func.give.openHeight_to_dropdownMenu = ()=>{
+app.component.dayDropper.func.give.openHeight_to_dropdownMenuScrollBar = ()=>{
 app.component.dayDropper.func.give.height_to_scrollBall = ()=>{
 app.component.dayDropper.func.give.scrollListener_to_dropdownMenu = ()=>{
 app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day_text)=>{
+app.component.dayDropper.func.give.zIndex2_to_dropper = ()=>{
+INIT
 app.component.dayDropper.func.init.component = ()=>{
+REMOVE
 app.component.dayDropper.func.remove.blurTile = ()=>{
 app.component.dayDropper.func.remove.timeSlotsDivElement = ()=>{
+app.component.dayDropper.func.remove.zIndex2_from_dropper = ()=>{
+SET
 app.component.dayDropper.func.set.day = async(dayDropperDayElement)=>{
-app.component.dayDropper.func.transition.closeDropdown = ()=>{
+TRANSITION
+app.component.dayDropper.func.transition.closeDropdown = async()=>{
 app.component.dayDropper.func.transition.openDropdown = ()=>{
 */
 
-/* CREATEAPPEND */
+/***********
+CREATEAPPEND
+************/
 app.component.dayDropper.func.createAppend.blurTile = ()=>{
     let html = `<div class="blurTile" onclick="app.component.dayDropper.func.transition.closeDropdown()"></div>`;
     let addPage = document.querySelector(".addPage");
         addPage.insertAdjacentHTML("afterbegin", html);
 };
 
-app.component.dayDropper.func.createAppend.dayDropperText = (dayId)=>{
-    let day     = app.component.dayDropper.func.get.day(dayId);
-    let dayMS   = day[0];
+app.component.dayDropper.func.createAppend.dayDropperText = (ms)=>{
+    let day     = app.component.dayDropper.func.get.day(ms);
+    let dayId   = day[0];
     let dayText = day[1];
     app.component.dayDropper.func.createAppend.dayDropperText_day(dayText);
-    app.component.dayDropper.func.createAppend.dayDropperText_info(dayMS);
+    app.component.dayDropper.func.createAppend.dayDropperText_info(dayId);
 };
 
 app.component.dayDropper.func.createAppend.dayDropperText_day = (dayText)=>{
@@ -57,10 +76,10 @@ app.component.dayDropper.func.createAppend.dayDropperText_day = (dayText)=>{
         currDay_text.innerHTML = dayText;
 };
 
-app.component.dayDropper.func.createAppend.dayDropperText_info = async(dayMS)=>{
-    let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayMS);
-    let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayMS);
-    let items_daysCountdown       = document.querySelector(".items_daysCountdown");
+app.component.dayDropper.func.createAppend.dayDropperText_info = async(dayId)=>{
+    let numberOfItemsForDayString     = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
+    let daysUntilString               = app.component.dayDropper.func.get.daysUntilString(dayId);
+    let items_daysCountdown           = document.querySelector(".items_daysCountdown");
         items_daysCountdown.innerHTML = `${numberOfItemsForDayString}${daysUntilString}`;
 };
 
@@ -95,13 +114,10 @@ app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
         let dayNum                    = splits[2];
         let day_text                  = `${dayName} ${month} ${dayNum}`;
         let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(incr_ms);
-        let highlightClass            = "";
-        if( numberOfItemsForDayString.length > 0){
-            highlightClass = "dropdownItemHighlight";
-        };
+        let dropdownHighlightClass    = app.component.dayDropper.func.get.dropdownHighlightClass(numberOfItemsForDayString);
         let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(incr_ms);
         let html_piece = `
-            <p day_ms="${incr_ms}" day_text="${day_text}" class="${highlightClass}" onclick="app.component.dayDropper.func.set.day(this)">
+            <p dayId="${incr_ms}" day_text="${day_text}" class="${dropdownHighlightClass}" onclick="app.component.dayDropper.func.set.day(this)">
                 <span class="dd_date">
                     <span>${dayName}</span>
                     <span>${month}</span>
@@ -114,7 +130,7 @@ app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
         `;
         html    += html_piece;
         incr_ms += msInADay;
-        if(i === lookAheadRange - 1){
+        if( i === lookAheadRange - 1){ // end of loop
             app.component.dayDropper.associated.innerWrapper.innerHTML = "";
             app.component.dayDropper.associated.innerWrapper.insertAdjacentHTML("beforeend", html);
         };
@@ -130,13 +146,16 @@ app.component.dayDropper.func.createAppend.itemsForDay = (day_ms)=>{
     };
 };
 
-/* GET */
-
-// will return day as an array: [ ms(startOfDay), `${dayName} ${month} ${dayNum}` ]
-// if pass-in ms, will return for passed in day, otherwise, will do for current day
+/**
+GET
+***/
+/*
+Will return day as an array: [ ms(startOfDay), `${dayName} ${month} ${dayNum}` ].
+If pass-in ms, will return for passed in day, otherwise, will do for current day.
+*/
 app.component.dayDropper.func.get.day = (ms)=>{
     let now_dateString;
-    if(ms === undefined){
+    if( ms === undefined){
         now_dateString  = new Date();
     }
     else{
@@ -158,11 +177,11 @@ app.component.dayDropper.func.get.daysUntilString = (ms)=>{
     let todayMS   = app.component.dayDropper.func.get.day()[0];
     let daysUntil = Math.round( (ms-todayMS)/msInADay );
     let daysUntilString;
-    if(daysUntil === 0){
+    if( daysUntil === 0){
         daysUntilString = `today`;
     }
     else
-    if(daysUntil === 1){
+    if( daysUntil === 1){
         daysUntilString = `in 1 day`;
     }
     else{
@@ -171,9 +190,17 @@ app.component.dayDropper.func.get.daysUntilString = (ms)=>{
     return daysUntilString;
 };
 
+app.component.dayDropper.func.get.dropdownHighlightClass = (numberOfItemsForDayString)=>{
+    let dropdownHighlightClass = "";
+    if( numberOfItemsForDayString.length > 0){
+        dropdownHighlightClass = "dropdownItemHighlight";
+    };
+    return dropdownHighlightClass;
+};
+
 app.component.dayDropper.func.get.numberOfItemsForDayString = (ms)=>{
     return new Promise((resolve)=>{
-        if(app.component.item.objs.length === 0){
+        if( app.component.item.objs.length === 0){
             let numberOfItemsForDayString = "";
             resolve(numberOfItemsForDayString);
         }
@@ -184,13 +211,13 @@ app.component.dayDropper.func.get.numberOfItemsForDayString = (ms)=>{
                 if( obj.associated.day === ms){
                     numberOfItems++;
                 };
-                if(Number(i) === app.component.item.objs.length -1){
+                if( Number(i) === app.component.item.objs.length -1){ // end of loop
                     let numberOfItemsForDayString;
                     if( numberOfItems === 0){
                         numberOfItemsForDayString = "";
                     }
                     else
-                    if( numberOfItems === 1){
+                    if( numberOfItems === 1){ // 1 item grammar
                         numberOfItemsForDayString = `${numberOfItems} item - `;
                     }
                     else{
@@ -203,7 +230,9 @@ app.component.dayDropper.func.get.numberOfItemsForDayString = (ms)=>{
     });
 };
 
-/* GIVE */
+/***
+GIVE
+****/
 app.component.dayDropper.func.give.closeDropdownListener_to_body = ()=>{
     let docBody = document.body;
         docBody.addEventListener('click', ()=>{
@@ -230,20 +259,6 @@ app.component.dayDropper.func.give.closedHeight_to_dropdownMenuScrollBar = ()=>{
     let scrollBar = document.querySelector(".dropdownMenu_day .scrollBar");
         scrollBar.classList.add("closedHeight");
         scrollBar.classList.remove("openHeight");
-};
-
-app.component.dayDropper.func.give.currNumberOfItems_to_dayDropperElement = ()=>{
-    let numberOfItems = 0;
-    for(i in app.component.item.objs){
-        let obj = app.component.item.objs[i];
-        if( obj.associated.day === app.component.dayDropper.setting.day[0]){
-            numberOfItems++;
-        };
-        if(Number(i) === app.component.item.objs.length-1){ // end of loop
-            let items_daysCountdown = document.querySelector(".items_daysCountdown");
-                items_daysCountdown.innerHTML = `{}`;
-        };
-    };
 };
 
 app.component.dayDropper.func.give.openBorder_to_dropdowMenu = ()=>{
@@ -297,8 +312,9 @@ app.component.dayDropper.func.give.zIndex2_to_dropper = ()=>{
         dropper.classList.add("zIndex2");
 };
 
-/* INIT */
-
+/***
+INIT
+****/
 /*
 One might expect to find the following functions in the dayDropper initialization:
 - app.component.dayDropper.func.createAppend.dayDropperText()
@@ -315,7 +331,9 @@ app.component.dayDropper.func.init.component = ()=>{
     app.component.dayDropper.setting.day = app.component.dayDropper.func.get.day();
 };
 
-/* REMOVE */
+/*****
+REMOVE
+******/
 app.component.dayDropper.func.remove.blurTile = ()=>{
     let blurTile = document.querySelector(".blurTile");
         blurTile.remove();
@@ -331,23 +349,27 @@ app.component.dayDropper.func.remove.zIndex2_from_dropper = ()=>{
         dropper.classList.remove("zIndex2");
 };
 
-/* SET */
+/**
+SET
+***/
 app.component.dayDropper.func.set.day = async(dayDropperDayElement)=>{
-    let day_ms   = Number(dayDropperDayElement.getAttribute("day_ms"));
+    let day_ms   = Number(dayDropperDayElement.getAttribute("dayId"));
     let day_text = dayDropperDayElement.getAttribute("day_text");
-    app.component.dayDropper.setting.day = [day_ms, day_text]; // SET - dayDropper day
+    app.component.dayDropper.setting.day = [day_ms, day_text];  // SET - dayDropper day
     app.component.dayDropper.func.remove.timeSlotsDivElement(); // remove old timeSlots
     await app.component.timeSlot.func.createAppend.timeSlots(); // createAppend new timeSlots
     app.component.dayDropper.func.createAppend.itemsForDay(day_ms);
     app.component.dayDropper.func.createAppend.dayDropperText(day_ms);
-    app.component.timeSlot.func.give.height_to_scrollBall();  // timeSlots with items have a larger height than timeSlots without, thus need to calculate different scrollBall height based on number of number of items for the given day
+    app.component.timeSlot.func.give.height_to_scrollBall();    // timeSlots with items have a larger height than timeSlots without, thus need to calculate different scrollBall height based on number of number of items for the given day
 };
 
-/* TRANSITION */
+/*********
+TRANSITION
+**********/
 app.component.dayDropper.func.transition.closeDropdown = async()=>{
     if( app.component.dayDropper.state.open === true){
         event.stopPropagation();
-        app.component.dayDropper.state.open = null;
+        app.component.dayDropper.state.open = null; // null while transitioning avoids erroneous quick double clicks
         app.component.dayDropper.func.give.closedHeight_to_dropdownMenu();
         app.component.dayDropper.func.give.closedHeight_to_dropdownMenuScrollBar();
         app.component.dayDropper.func.remove.blurTile();
@@ -362,7 +384,7 @@ app.component.dayDropper.func.transition.closeDropdown = async()=>{
 app.component.dayDropper.func.transition.openDropdown = ()=>{
     if( app.component.dayDropper.state.open === false){
         event.stopPropagation();
-        app.component.dayDropper.state.open = null;
+        app.component.dayDropper.state.open = null; // null while transitioning avoids erroneous quick double clicks
         app.component.dayDropper.func.createAppend.blurTile();
         app.component.dayDropper.func.give.openBorder_to_dropdowMenu();
         app.component.dayDropper.func.give.openHeight_to_dropdownMenu();
