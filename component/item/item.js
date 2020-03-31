@@ -232,12 +232,17 @@ app.component.item.func.createAppend.itemElementToViewPage = async()=>{
 };
 
 app.component.item.func.createAppend.itemsForDay = (dayId)=>{
-    for(let i = app.component.item.objs.length-1; i > -1; i--){
-        let obj = app.component.item.objs[i];
-        if( obj.associated.day === dayId){
-            app.component.item.func.createAppend.filledItem(obj);
+    return new Promise((resolve)=>{
+        for(let i = app.component.item.objs.length-1; i > -1; i--){
+            let obj = app.component.item.objs[i];
+            if( obj.associated.day === dayId){
+                app.component.item.func.createAppend.filledItem(obj);
+            };
+            if(i === 0){ // end of loop
+                resolve();
+            };
         };
-    };
+    });
 };
 
 /* get */
