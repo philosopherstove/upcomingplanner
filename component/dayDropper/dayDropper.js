@@ -43,7 +43,6 @@ INIT
 app.component.dayDropper.func.init.component = ()=>{
 REMOVE
 app.component.dayDropper.func.remove.blurTile = ()=>{
-app.component.dayDropper.func.remove.timeSlotsDivElement = ()=>{
 app.component.dayDropper.func.remove.zIndex2_from_dropper = ()=>{
 SET
 app.component.dayDropper.func.set.day = async(dayDropperDayElement)=>{
@@ -311,11 +310,6 @@ app.component.dayDropper.func.remove.blurTile = ()=>{
         blurTile.remove();
 };
 
-app.component.dayDropper.func.remove.timeSlotsDivElement = ()=>{
-    let timeSlotsWrap = document.querySelector(".timeSlots").children[0];
-        timeSlotsWrap.remove();
-};
-
 app.component.dayDropper.func.remove.zIndex2_from_dropper = ()=>{
     let dropper = document.querySelector(".dropper");
         dropper.classList.remove("zIndex2");
@@ -328,7 +322,7 @@ app.component.dayDropper.func.set.day = async(dayDropperDayElement)=>{
     let day_ms   = Number(dayDropperDayElement.getAttribute("dayId"));
     let day_text = dayDropperDayElement.getAttribute("day_text");
     app.component.dayDropper.setting.day = [day_ms, day_text];  // set - dayDropper day
-    app.component.dayDropper.func.remove.timeSlotsDivElement(); // remove - old timeSlots
+    app.component.timeSlot.func.remove.timeSlotsDivElement(); // remove - old timeSlots
     await app.component.timeSlot.func.createAppend.timeSlots(); // createAppend - new timeSlots
     app.component.item.func.createAppend.itemsForDay(day_ms);
     app.component.dayDropper.func.createAppend.dayDropperText(day_ms);

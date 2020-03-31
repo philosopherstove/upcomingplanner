@@ -26,6 +26,7 @@ app.component.timeSlot.func.get.AMorPM = (hr)=>{
 app.component.timeSlot.func.get.to12Hour = (hr)=>{
 app.component.timeSlot.func.init.component = async()=>{
 app.component.timeSlot.func.remove.blurTile = ()=>{
+app.component.timeSlot.func.remove.timeSlotsDivElement = ()=>{
 app.component.timeSlot.func.transition.createdItem = (element)=>{
 */
 
@@ -197,6 +198,11 @@ app.component.timeSlot.func.init.component = async()=>{
 app.component.timeSlot.func.remove.blurTile = ()=>{
     let blurTile = document.querySelector(".blurTile");
         blurTile.remove();
+};
+
+app.component.timeSlot.func.remove.timeSlotsDivElement = ()=>{
+    let timeSlotsWrap = document.querySelector(".timeSlots").children[0];
+        timeSlotsWrap.remove();
 };
 
 /* TRANSITION */
