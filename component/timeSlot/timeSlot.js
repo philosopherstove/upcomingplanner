@@ -10,14 +10,12 @@ app.component.timeSlot.func.get          = {};
 app.component.timeSlot.func.give         = {};
 app.component.timeSlot.func.init         = {};
 app.component.timeSlot.func.remove       = {};
-app.component.timeSlot.func.transition   = {};
 
 /* func hotkeys:
 CREATE
 app.component.timeSlot.func.create.minValuesHTML = ()=>{
 app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
 CREATEAPPEND
-app.component.timeSlot.func.createAppend.blurTile = ()=>{
 app.component.timeSlot.func.createAppend.timeSlots = ()=>{
 GET
 app.component.timeSlot.func.get.AMorPM = (hr)=>{
@@ -29,10 +27,7 @@ app.component.timeSlot.func.give.scrollTopDefault_to_timeSlots = ()=>{
 INIT
 app.component.timeSlot.func.init.component = async()=>{
 REMOVE
-app.component.timeSlot.func.remove.blurTile = ()=>{
 app.component.timeSlot.func.remove.timeSlotsDivElement = ()=>{
-TRANSITION
-app.component.timeSlot.func.transition.createdItem = (element)=>{
 */
 
 /*****
@@ -54,7 +49,7 @@ app.component.timeSlot.func.create.minValuesHTML = ()=>{
 
 app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
     let spacingClass = "";
-    if(hr12 < 10){spacingClass = "spacing";}
+    if( hr12 < 10){spacingClass = "spacing";}
     let html = `
         <div class="slot">
             <div class="slotHeader" onclick="app.component.item.func.transition.createNewItem(this)">
@@ -73,12 +68,6 @@ app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
 /***********
 CREATEAPPEND
 ************/
-app.component.timeSlot.func.createAppend.blurTile = ()=>{
-    let html = `<div class="blurTile" onclick="app.component.item.func.give.item_to_dataStore();"></div>`;
-    let addPage = document.querySelector(".addPage");
-        addPage.insertAdjacentHTML("afterbegin", html);
-};
-
 app.component.timeSlot.func.createAppend.timeSlots = ()=>{
     return new Promise((resolve)=>{
         let wrapper = document.createElement("div");
@@ -152,18 +141,17 @@ app.component.timeSlot.func.give.scrollTopDefault_to_timeSlots = ()=>{
         let timeSlots     = document.querySelector(".timeSlots");
         let top_timeSlots = timeSlots.getBoundingClientRect().top;
         let top_target    = top_timeSlots + 15;
-
-        let top_7AMSlot  = document.querySelector(".slot:nth-of-type(7)").getBoundingClientRect().top;
+        let top_7AMSlot   = document.querySelector(".slot:nth-of-type(7)").getBoundingClientRect().top;
         if( top_7AMSlot !== top_target){
             let newScrollTop;
-            if(top_7AMSlot < top_target){
-                let difference   = top_target - top_7AMSlot;
-                newScrollTop = timeSlots.scrollTop - difference;
+            if( top_7AMSlot < top_target){
+                let difference = top_target - top_7AMSlot;
+                newScrollTop   = timeSlots.scrollTop - difference;
             }
             else
-            if(top_7AMSlot > top_target){
+            if( top_7AMSlot > top_target){
                 let difference = top_7AMSlot - top_target;
-                newScrollTop = timeSlots.scrollTop + difference;
+                newScrollTop   = timeSlots.scrollTop + difference;
             };
             timeSlots.scrollTop = newScrollTop;
             clearInterval(waitForSlotToAppend);
@@ -183,23 +171,7 @@ app.component.timeSlot.func.init.component = async()=>{
 /*****
 REMOVE
 ******/
-app.component.timeSlot.func.remove.blurTile = ()=>{
-    let blurTile = document.querySelector(".blurTile");
-        blurTile.remove();
-};
-
 app.component.timeSlot.func.remove.timeSlotsDivElement = ()=>{
     let timeSlotsWrap = document.querySelector(".timeSlots").children[0];
         timeSlotsWrap.remove();
-};
-
-/*********
-TRANSITION
-**********/
-app.component.timeSlot.func.transition.createdItem = (element)=>{
-    app.component.timeSlot.func.createAppend.blurTile();
-    let headerTime = element.children[0];
-        headerTime.classList.add("zIndex2"); // header z-index above blurTile
-    let itemField = element.nextElementSibling.children[0].children[1];
-        itemField.focus(); // focus in field
 };
