@@ -13,34 +13,31 @@ app.component.timeSlot.func.remove       = {};
 app.component.timeSlot.func.transition   = {};
 
 /* func hotkeys:
-app.component.timeSlot.func.create.item = async(timeSlot)=>{
+CREATE
 app.component.timeSlot.func.create.minValuesHTML = ()=>{
 app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
+CREATEAPPEND
 app.component.timeSlot.func.createAppend.blurTile = ()=>{
-app.component.timeSlot.func.createAppend.itemHTML = (timeSlot)=>{
 app.component.timeSlot.func.createAppend.timeSlots = ()=>{
+GET
+app.component.timeSlot.func.get.AMorPM = (hr)=>{
+app.component.timeSlot.func.get.to12Hour = (hr)=>{
+GIVE
 app.component.timeSlot.func.give.height_to_scrollBall = ()=>{
 app.component.timeSlot.func.give.scrollListener_to_timeSlots = ()=>{
 app.component.timeSlot.func.give.scrollTopDefault_to_timeSlots = ()=>{
-app.component.timeSlot.func.get.AMorPM = (hr)=>{
-app.component.timeSlot.func.get.to12Hour = (hr)=>{
+INIT
 app.component.timeSlot.func.init.component = async()=>{
+REMOVE
 app.component.timeSlot.func.remove.blurTile = ()=>{
 app.component.timeSlot.func.remove.timeSlotsDivElement = ()=>{
+TRANSITION
 app.component.timeSlot.func.transition.createdItem = (element)=>{
 */
 
-/* CREATE */
-app.component.timeSlot.func.create.item = async(timeSlot)=>{
-    if(app.component.timeSlot.state.active === true){ return; };
-    await app.component.timeSlot.func.createAppend.itemHTML(timeSlot);
-    app.component.timeSlot.func.transition.createdItem(timeSlot);
-    /* STATES - timeSlot (active ON), item (selected ON) */
-    app.component.timeSlot.state.active = true;
-    let item = timeSlot.nextElementSibling.children[0];
-    app.component.item.state.selected = [true, item];
-};
-
+/*****
+CREATE
+******/
 app.component.timeSlot.func.create.minValuesHTML = ()=>{
     return new Promise((resolve)=>{
         let html = "";
@@ -60,7 +57,7 @@ app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
     if(hr12 < 10){spacingClass = "spacing";}
     let html = `
         <div class="slot">
-            <div class="slotHeader" onclick="app.component.timeSlot.func.create.item(this)">
+            <div class="slotHeader" onclick="app.component.item.func.transition.createNewItem(this)">
                 <p class="time" data_hour="${hr}">
                     <span class="${spacingClass}">${hr12}</span>
                     <span>${AMorPM}</span>
@@ -73,30 +70,13 @@ app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
     return html;
 };
 
-/* CREATEAPPEND */
+/***********
+CREATEAPPEND
+************/
 app.component.timeSlot.func.createAppend.blurTile = ()=>{
     let html = `<div class="blurTile" onclick="app.component.item.func.give.item_to_dataStore();"></div>`;
     let addPage = document.querySelector(".addPage");
         addPage.insertAdjacentHTML("afterbegin", html);
-};
-
-app.component.timeSlot.func.createAppend.itemHTML = (timeSlot)=>{
-    return new Promise((resolve)=>{
-        let createdId = Date.now();
-        let dayId     = app.component.dayDropper.setting.day[0];
-        let hourId    = Number(timeSlot.children[0].getAttribute("data_hour"));
-        let html = `
-            <div class="itemTile zIndex2" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem(this)">
-                <span class="dot"></span>
-                <input class="itemField background_white" spellcheck="false" onkeyup="app.component.item.func.give.item_to_dataStore();">
-                <div class="minValues displayNone"></div>
-                <div class="trashIcon" onclick="app.component.item.func.transition.removeItem();"></div>
-            </div>
-        `;
-        let slotBody = timeSlot.nextElementSibling;
-            slotBody.insertAdjacentHTML("afterbegin", html);
-        resolve();
-    });
 };
 
 app.component.timeSlot.func.createAppend.timeSlots = ()=>{
@@ -118,7 +98,9 @@ app.component.timeSlot.func.createAppend.timeSlots = ()=>{
     });
 };
 
-/* GET */
+/**
+GET
+***/
 app.component.timeSlot.func.get.AMorPM = (hr)=>{
     if(hr < 12){
         return 'AM';
@@ -137,7 +119,9 @@ app.component.timeSlot.func.get.to12Hour = (hr)=>{
     };
 };
 
-/* GIVE */
+/***
+GIVE
+****/
 app.component.timeSlot.func.give.height_to_scrollBall = ()=>{
     let timeSlots           = document.querySelector(".timeSlots");
     let timeSlots_div       = timeSlots.children[0];
@@ -187,14 +171,18 @@ app.component.timeSlot.func.give.scrollTopDefault_to_timeSlots = ()=>{
     },1);
 };
 
-/* INIT */
+/***
+INIT
+****/
 app.component.timeSlot.func.init.component = async()=>{
     await app.component.timeSlot.func.createAppend.timeSlots();
     app.component.timeSlot.func.give.height_to_scrollBall();
     app.component.timeSlot.func.give.scrollListener_to_timeSlots();
 };
 
-/* REMOVE */
+/*****
+REMOVE
+******/
 app.component.timeSlot.func.remove.blurTile = ()=>{
     let blurTile = document.querySelector(".blurTile");
         blurTile.remove();
@@ -205,7 +193,9 @@ app.component.timeSlot.func.remove.timeSlotsDivElement = ()=>{
         timeSlotsWrap.remove();
 };
 
-/* TRANSITION */
+/*********
+TRANSITION
+**********/
 app.component.timeSlot.func.transition.createdItem = (element)=>{
     app.component.timeSlot.func.createAppend.blurTile();
     let headerTime = element.children[0];

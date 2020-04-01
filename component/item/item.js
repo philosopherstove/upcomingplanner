@@ -15,19 +15,37 @@ app.component.item.func.transition   = {};
 app.component.item.func.update       = {};
 
 /* func hotkeys:
+CREATE
 app.component.item.func.create.componentObj = (item)=>{
+CREATEAPPEND
 app.component.item.func.createAppend.filledItem = (obj)=>{
+app.component.item.func.createAppend.itemElementToViewPage = async()=>{
 app.component.item.func.createAppend.itemsForDay = (dayId)=>{
+app.component.item.func.createAppend.newItemToAddPage = (timeSlot)=>{
+GET
 app.component.item.func.get.isObjExist = ()=>{
 app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
+GIVE
 app.component.item.func.give.item_to_dataStore = async()=>{
+INIT
 app.component.item.func.init.component = ()=>{
+IS
+app.component.item.func.is.itemsUnderViewPageDay = ()=>{
+REMOVE
 app.component.item.func.remove.itemObj = ()=>{
 app.component.item.func.remove.itemElementFromViewPage = ()=>{
 app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
 app.component.item.func.remove.itemObj_from_localStorage = ()=>{
 app.component.item.func.remove.oldItemObjs_from_itemObjs = ()=>{
 app.component.item.func.remove.oldItemObjs_from_localStorage = ()=>{
+SET
+app.component.item.func.set.componentObj_in_objs = (selectedObj, fieldValue)=>{
+app.component.item.func.set.componentObj_in_localStorage = (selectedObj, fieldValue)=>{
+
+TRANSITION
+
+app.component.item.func.transition.createNewItem = async(timeSlot)=>{
+
 app.component.item.func.transition.hideItem = ()=>{
 app.component.item.func.transition.hideItem_field = (item)=>{
 app.component.item.func.transition.hideItem_headerTime = (item)=>{
@@ -40,9 +58,13 @@ app.component.item.func.transition.showItem = async(item)=>{
 app.component.item.func.transition.showItem_field = (tile)=>{
 app.component.item.func.transition.showItem_tile = (tile)=>{
 app.component.item.func.transition.showItem_trash = (tile)=>{
+UPDATE
+app.component.item.func.update.dayInfoOnViewPage = async(dayId)=>{
 */
 
-/* CREATE */
+/*****
+CREATE
+******/
 app.component.item.func.create.componentObj = (item)=>{
     let obj = {};
         obj.associated = {};
@@ -61,8 +83,9 @@ app.component.item.func.create.componentObj = (item)=>{
     window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
 };
 
-/* createAppend */
-
+/***********
+CREATEAPPEND
+************/
 app.component.item.func.createAppend.filledItem = (obj)=>{
     let createdId = obj.associated.createdId;
     let itemText  = obj.setting.text;
@@ -245,8 +268,28 @@ app.component.item.func.createAppend.itemsForDay = (dayId)=>{
     });
 };
 
-/* get */
+app.component.item.func.createAppend.newItemToAddPage = (timeSlot)=>{
+    return new Promise((resolve)=>{
+        let createdId = Date.now();
+        let dayId     = app.component.dayDropper.setting.day[0];
+        let hourId    = Number(timeSlot.children[0].getAttribute("data_hour"));
+        let html = `
+            <div class="itemTile zIndex2" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem(this)">
+                <span class="dot"></span>
+                <input class="itemField background_white" spellcheck="false" onkeyup="app.component.item.func.give.item_to_dataStore();">
+                <div class="minValues displayNone"></div>
+                <div class="trashIcon" onclick="app.component.item.func.transition.removeItem();"></div>
+            </div>
+        `;
+        let slotBody = timeSlot.nextElementSibling;
+            slotBody.insertAdjacentHTML("afterbegin", html);
+        resolve();
+    });
+};
 
+/**
+GET
+***/
 app.component.item.func.get.isObjExist = ()=>{
     return new Promise((resolve)=>{
         let selectedItem = app.component.item.state.selected[1];
@@ -276,8 +319,9 @@ app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
     });
 };
 
-/* GIVE */
-
+/***
+GIVE
+****/
 app.component.item.func.give.item_to_dataStore = async()=>{
     event.stopPropagation();
     let fieldValue = app.component.item.state.selected[1].children[1].value;
@@ -332,7 +376,9 @@ app.component.item.func.give.value_to_itemElementOnViewPage = ()=>{
         itemElementField.readonly = true;
 };
 
-/* INIT */
+/***
+INIT
+****/
 app.component.item.func.init.component = ()=>{
     let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
     app.component.item.objs = localStorageObj.items; // move item data into local item objs array
@@ -343,8 +389,9 @@ app.component.item.func.init.component = ()=>{
     app.component.item.func.remove.oldItemObjs_from_localStorage();
 };
 
-/* is */
-
+/*
+IS
+**/
 app.component.item.func.is.itemsUnderViewPageDay = ()=>{
     let createdId = Number(app.component.item.state.selected[1].getAttribute("createdId"));
     let dayId     = null;
@@ -387,7 +434,9 @@ app.component.item.func.is.itemsUnderViewPageHour = ()=>{
     };
 };
 
-/* REMOVE */
+/*****
+REMOVE
+******/
 app.component.item.func.remove.dayHeader = (dayId)=>{
     let dayHeader = document.querySelector(`.dayBlock[dayMS="${dayId}"]`);
         dayHeader.remove();
@@ -493,7 +542,9 @@ app.component.item.func.remove.oldItemObjs_from_localStorage = ()=>{
     };
 };
 
-/* SET */
+/**
+SET
+***/
 app.component.item.func.set.componentObj_in_objs = (selectedObj, fieldValue)=>{
     return new Promise((resolve)=>{
         for(i in app.component.item.objs){
@@ -522,7 +573,21 @@ app.component.item.func.set.componentObj_in_localStorage = (selectedObj, fieldVa
     });
 };
 
-/* TRANSITION */
+/*********
+TRANSITION
+**********/
+app.component.item.func.transition.createNewItem = async(timeSlot)=>{
+    if(app.component.timeSlot.state.active === true){
+        return;
+    };
+    await app.component.item.func.createAppend.newItemToAddPage(timeSlot);
+    app.component.timeSlot.func.transition.createdItem(timeSlot);
+    /* STATES - timeSlot (active ON), item (selected ON) */
+    app.component.timeSlot.state.active = true;
+    let item = timeSlot.nextElementSibling.children[0];
+    app.component.item.state.selected = [true, item];
+};
+
 app.component.item.func.transition.hideItem = ()=>{
     /* TRANSITION - blurTile, field, headerTime, min, tile, trash elements*/
     let item = app.component.item.state.selected[1];
@@ -630,8 +695,9 @@ app.component.item.func.transition.showItem_trash = (tile)=>{
         trash.classList.remove("displayNone");
 };
 
-/* update */
-
+/*****
+UPDATE
+******/
 app.component.item.func.update.dayInfoOnViewPage = async(dayId)=>{
     let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
     let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayId);
