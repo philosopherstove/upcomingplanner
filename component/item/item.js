@@ -600,15 +600,14 @@ app.component.item.func.set.componentObj_in_localStorage = (selectedObj, fieldVa
 TRANSITION
 **********/
 app.component.item.func.transition.createNewItem = async(timeSlot)=>{
-    if(app.component.timeSlot.state.active === true){
+    if(app.component.item.state.selected[0] === true){
         return;
     };
     await app.component.item.func.createAppend.itemToAddPage(timeSlot);
     app.component.item.func.createAppend.blurTile();
     app.component.item.func.give.focus_to_itemField(timeSlot);
     app.component.item.func.give.zIndex2_to_timeHeader(timeSlot);
-    /* STATES - timeSlot (active ON), item (selected ON) */
-    app.component.timeSlot.state.active = true;
+    /* STATES - item (selected ON) */
     let item = timeSlot.nextElementSibling.children[0];
     app.component.item.state.selected = [true, item];
 };
@@ -621,8 +620,7 @@ app.component.item.func.transition.hideItem = ()=>{
     app.component.item.func.transition.hideItem_min(item);
     app.component.item.func.transition.hideItem_tile();
     app.component.item.func.transition.hideItem_trash(item);
-    /* STATE - timeSlot(active OFF), item(selected OFF) */
-    app.component.timeSlot.state.active = false;
+    /* STATE - item(selected OFF) */
     app.component.item.state.selected   = [false, null];
 };
 
@@ -676,8 +674,7 @@ app.component.item.func.transition.removeItem = async()=>{
     /* UPDATE - dayInfo on */
     let dayId = Number(app.component.item.state.selected[1].getAttribute("dayId"));
     app.component.item.func.update.dayInfoOnViewPage(dayId);
-    /* STATE - timeSlot(editting OFF), item(selected OFF)) */
-    app.component.timeSlot.state.active = false;
+    /* STATE - item(selected OFF) */
     app.component.item.state.selected   = [false, null];
 };
 
@@ -689,9 +686,8 @@ app.component.item.func.transition.removeItem_headerTime = ()=>{
 app.component.item.func.transition.showItem = async(item)=>{
     event.stopPropagation();
     // if timeSlot(active OFF)
-    if( app.component.timeSlot.state.active === false){
-        /* STATE - timeSlot(active ON), item(selected ON) */
-        app.component.timeSlot.state.active = true;
+    if( app.component.item.state.selected[0] === false){
+        /* STATE - item(selected ON) */
         app.component.item.state.selected   = [true, item];
         /* TRANSITION - field, tile, trash elements */
         app.component.item.func.transition.showItem_field(item);

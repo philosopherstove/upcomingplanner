@@ -1,8 +1,6 @@
 app.component.timeSlot = {};
 app.component.timeSlot.setting = {};
 app.component.timeSlot.setting.element = document.querySelector(".timeSlots");
-app.component.timeSlot.state = {};
-app.component.timeSlot.state.active = false;
 app.component.timeSlot.func = {};
 app.component.timeSlot.func.create       = {};
 app.component.timeSlot.func.createAppend = {};
