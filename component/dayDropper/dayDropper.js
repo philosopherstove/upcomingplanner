@@ -5,7 +5,7 @@ app.component.dayDropper.associated.innerWrapper = document.querySelector(".drop
 app.component.dayDropper.setting = {};
 app.component.dayDropper.setting.day = null;
 app.component.dayDropper.state = {};
-app.component.dayDropper.state.open = false;
+app.component.dayDropper.state.open = [false, false, null];
 app.component.dayDropper.func = {};
 app.component.dayDropper.func.createAppend = {};
 app.component.dayDropper.func.get          = {};
@@ -333,30 +333,34 @@ app.component.dayDropper.func.set.day = async(dayDropperDayElement)=>{
 TRANSITION
 **********/
 app.component.dayDropper.func.transition.closeDropdown = async()=>{
-    if( app.component.dayDropper.state.open === true){
+    if( app.component.dayDropper.state.open[0] === true
+    &&  app.component.dayDropper.state.open[1] === false){
         event.stopPropagation();
-        app.component.dayDropper.state.open = null; // null while transitioning avoids erroneous quick double clicks
+        app.component.dayDropper.state.open[1] = true; // turn transitioning bool ON
         app.component.dayDropper.func.give.closedHeight_to_dropdownMenu();
         app.component.dayDropper.func.give.closedHeight_to_dropdownMenuScrollBar();
         app.component.dayDropper.func.remove.blurTile();
         app.component.dayDropper.func.remove.zIndex2_from_dropper();
         app.component.dayDropper.func.give.closedBorder_to_dropdownMenu()
         .then(()=>{
-            app.component.dayDropper.state.open = false;
+            app.component.dayDropper.state.open[0] = false; // turn open state OFF
+            app.component.dayDropper.state.open[1] = false; // turn transitioning bool OFF
         });
     };
 };
 
 app.component.dayDropper.func.transition.openDropdown = ()=>{
-    if( app.component.dayDropper.state.open === false){
+    if( app.component.dayDropper.state.open[0] === false
+    &&  app.component.dayDropper.state.open[1] === false){
         event.stopPropagation();
-        app.component.dayDropper.state.open = null; // null while transitioning avoids erroneous quick double clicks
+        app.component.dayDropper.state.open[1] = true; // turn transitioning bool ON
         app.component.dayDropper.func.createAppend.blurTile();
         app.component.dayDropper.func.give.openBorder_to_dropdowMenu();
         app.component.dayDropper.func.give.openHeight_to_dropdownMenu();
         app.component.dayDropper.func.give.openHeight_to_dropdownMenuScrollBar();
         app.component.dayDropper.func.give.scrollTopDefault_to_dropdownMenu();
         app.component.dayDropper.func.give.zIndex2_to_dropper();
-        app.component.dayDropper.state.open = true;
+        app.component.dayDropper.state.open[0] = true;  // turn open state bool ON
+        app.component.dayDropper.state.open[1] = false; // turn transition bool OFF
     };
 };

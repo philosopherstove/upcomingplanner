@@ -685,7 +685,7 @@ app.component.item.func.transition.removeItem_headerTime = ()=>{
 
 app.component.item.func.transition.showItem = async(item)=>{
     event.stopPropagation();
-    // if timeSlot(active OFF)
+    // if item (selected OFF)
     if( app.component.item.state.selected[0] === false){
         /* STATE - item(selected ON) */
         app.component.item.state.selected   = [true, item];
