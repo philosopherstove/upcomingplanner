@@ -1,7 +1,7 @@
 app.component.item = {};
 app.component.item.objs = [];
 app.component.item.state = {};
-app.component.item.state.selected = [false, null];
+app.component.item.state.selected = [false, false, null];
 app.component.item.func = {};
 app.component.item.func.create       = {};
 app.component.item.func.createAppend = {};
@@ -145,7 +145,7 @@ app.component.item.func.createAppend.itemToAddPage = (timeSlot)=>{
 };
 
 app.component.item.func.createAppend.itemToViewPage = async()=>{
-    let createdId                 = Number(app.component.item.state.selected[1].getAttribute("createdId"));
+    let createdId                 = Number(app.component.item.state.selected[2].getAttribute("createdId"));
     let itemObj                   = await app.component.item.func.get.itemObj_from_createdId(createdId);
     let dayId                     = itemObj.associated.day;
     let hourId                    = itemObj.associated.timeSlot;
@@ -300,7 +300,7 @@ GET
 ***/
 app.component.item.func.get.isObjExist = ()=>{
     return new Promise((resolve)=>{
-        let selectedItem = app.component.item.state.selected[1];
+        let selectedItem = app.component.item.state.selected[2];
         if(app.component.item.objs.length === 0){
             resolve([false, null]);
         };
@@ -337,7 +337,7 @@ app.component.item.func.give.focus_to_itemField = (element)=>{
 
 app.component.item.func.give.item_to_dataStore = async()=>{
     event.stopPropagation();
-    let fieldValue = app.component.item.state.selected[1].children[1].value;
+    let fieldValue = app.component.item.state.selected[2].children[1].value;
     if( fieldValue.trim().length > 0 // field NOT empty
     &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
         let isObjExist = await app.component.item.func.get.isObjExist();
@@ -349,12 +349,11 @@ app.component.item.func.give.item_to_dataStore = async()=>{
             app.component.item.func.give.value_to_itemElementOnViewPage();
         }
         else{
-            app.component.item.func.create.componentObj(app.component.item.state.selected[1]); // add to objs array and data store
+            app.component.item.func.create.componentObj(app.component.item.state.selected[2]); // add to objs array and data store
             app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
             app.component.dayDropper.func.createAppend.htmlInsideDropdown();
             app.component.item.func.createAppend.itemToViewPage();
-
-            let dayId = Number(app.component.item.state.selected[1].getAttribute("dayId"));
+            let dayId = Number(app.component.item.state.selected[2].getAttribute("dayId"));
             app.component.item.func.update.dayInfoOnViewPage(dayId);
         };
         app.component.item.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
@@ -371,8 +370,8 @@ app.component.item.func.give.item_to_dataStore = async()=>{
 };
 
 app.component.item.func.give.value_to_itemElementOnAddPage = ()=>{
-    let createdId        = app.component.item.state.selected[1].getAttribute("createdId");
-    let updatedValue     = app.component.item.state.selected[1].children[1].value;
+    let createdId        = app.component.item.state.selected[2].getAttribute("createdId");
+    let updatedValue     = app.component.item.state.selected[2].children[1].value;
     let itemElementField = document.querySelector(`.itemTile[createdId="${createdId}"] > input`);
         itemElementField.readonly = false;
         itemElementField.value = updatedValue;
@@ -381,8 +380,8 @@ app.component.item.func.give.value_to_itemElementOnAddPage = ()=>{
 }
 
 app.component.item.func.give.value_to_itemElementOnViewPage = ()=>{
-    let createdId        = app.component.item.state.selected[1].getAttribute("createdId");
-    let updatedValue     = app.component.item.state.selected[1].children[1].value;
+    let createdId        = app.component.item.state.selected[2].getAttribute("createdId");
+    let updatedValue     = app.component.item.state.selected[2].children[1].value;
     let itemElementField = document.querySelector(`.itemTile_vl[createdId="${createdId}"] > input`);
         itemElementField.readonly = false;
         itemElementField.value = updatedValue;
@@ -411,7 +410,7 @@ app.component.item.func.init.component = ()=>{
 IS
 **/
 app.component.item.func.is.itemsUnderViewPageDay = ()=>{
-    let createdId = Number(app.component.item.state.selected[1].getAttribute("createdId"));
+    let createdId = Number(app.component.item.state.selected[2].getAttribute("createdId"));
     let dayId     = null;
     for(i in app.component.item.objs){
         let obj = app.component.item.objs[i];
@@ -432,7 +431,7 @@ app.component.item.func.is.itemsUnderViewPageDay = ()=>{
 };
 
 app.component.item.func.is.itemsUnderViewPageHour = ()=>{
-    let createdId = Number(app.component.item.state.selected[1].getAttribute("createdId"));
+    let createdId = Number(app.component.item.state.selected[2].getAttribute("createdId"));
     let hourId     = null;
     for(i in app.component.item.objs){
         let obj = app.component.item.objs[i];
@@ -472,7 +471,7 @@ app.component.item.func.remove.hourHeader = (hourId)=>{
 
 app.component.item.func.remove.itemElementFromViewPage = ()=>{
     return new Promise((resolve)=>{
-        let createdId = Number(app.component.item.state.selected[1].getAttribute("createdId"));
+        let createdId = Number(app.component.item.state.selected[2].getAttribute("createdId"));
         let itemElementFromViewPage = document.querySelector(`.itemTile_vl[createdId="${createdId}"]`);
         if (itemElementFromViewPage === null){ // need to avoid in case of removing an as yet to be created item(pre-submission)
             resolve();
@@ -506,7 +505,7 @@ app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
         };
         for(i in app.component.item.objs){
             let obj = app.component.item.objs[i];
-            if( obj.associated.createdId === Number(app.component.item.state.selected[1].getAttribute("createdId"))){
+            if( obj.associated.createdId === Number(app.component.item.state.selected[2].getAttribute("createdId"))){
                 app.component.item.objs.splice(i,1);
                 resolve();
             };
@@ -526,7 +525,7 @@ app.component.item.func.remove.itemObj_from_localStorage = ()=>{
         };
         for(i in localStorageItemObjs){
             let obj = localStorageItemObjs[i];
-            if( obj.associated.createdId === Number(app.component.item.state.selected[1].getAttribute("createdId"))){
+            if( obj.associated.createdId === Number(app.component.item.state.selected[2].getAttribute("createdId"))){
                 localStorageItemObjs.splice(i,1);
                 localStorageObj.items = localStorageItemObjs;
                 window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
@@ -609,19 +608,19 @@ app.component.item.func.transition.createNewItem = async(timeSlot)=>{
     app.component.item.func.give.zIndex2_to_timeHeader(timeSlot);
     /* STATES - item (selected ON) */
     let item = timeSlot.nextElementSibling.children[0];
-    app.component.item.state.selected = [true, item];
+    app.component.item.state.selected = [true, false, item];
 };
 
 app.component.item.func.transition.hideItem = ()=>{
     /* TRANSITION - blurTile, field, headerTime, min, tile, trash elements*/
-    let item = app.component.item.state.selected[1];
+    let item = app.component.item.state.selected[2];
     app.component.item.func.transition.hideItem_field(item);
     app.component.item.func.transition.hideItem_headerTime(item);
     app.component.item.func.transition.hideItem_min(item);
     app.component.item.func.transition.hideItem_tile();
     app.component.item.func.transition.hideItem_trash(item);
     /* STATE - item(selected OFF) */
-    app.component.item.state.selected   = [false, null];
+    app.component.item.state.selected   = [false, false, null];
 };
 
 app.component.item.func.transition.hideItem_field = (item)=>{
@@ -642,7 +641,7 @@ app.component.item.func.transition.hideItem_min = (item)=>{
 };
 
 app.component.item.func.transition.hideItem_tile = ()=>{
-    let tile = app.component.item.state.selected[1];
+    let tile = app.component.item.state.selected[2];
         tile.classList.add("hideItemTile");
         tile.classList.remove("zIndex2");
 };
@@ -657,7 +656,7 @@ app.component.item.func.transition.removeItem = async()=>{
     /* TRANSITION - headerTime */
     app.component.item.func.transition.removeItem_headerTime();
     /* REMOVE - item, blurTile */
-    app.component.item.state.selected[1].remove();
+    app.component.item.state.selected[2].remove();
     app.component.item.func.remove.blurTile();
     /* REMOVE - itemElement from viewPage */
     // await app.component.item.func.remove.itemElementFromViewPage();
@@ -672,14 +671,14 @@ app.component.item.func.transition.removeItem = async()=>{
     app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
     app.component.dayDropper.func.createAppend.htmlInsideDropdown();
     /* UPDATE - dayInfo on */
-    let dayId = Number(app.component.item.state.selected[1].getAttribute("dayId"));
+    let dayId = Number(app.component.item.state.selected[2].getAttribute("dayId"));
     app.component.item.func.update.dayInfoOnViewPage(dayId);
     /* STATE - item(selected OFF) */
-    app.component.item.state.selected   = [false, null];
+    app.component.item.state.selected = [false, false, null];
 };
 
 app.component.item.func.transition.removeItem_headerTime = ()=>{
-    let timeHeader = app.component.item.state.selected[1].parentNode.previousElementSibling.children[0];
+    let timeHeader = app.component.item.state.selected[2].parentNode.previousElementSibling.children[0];
         timeHeader.classList.remove("zIndex2");
 };
 
@@ -688,7 +687,7 @@ app.component.item.func.transition.showItem = async(item)=>{
     // if item (selected OFF)
     if( app.component.item.state.selected[0] === false){
         /* STATE - item(selected ON) */
-        app.component.item.state.selected   = [true, item];
+        app.component.item.state.selected = [true, false, item];
         /* TRANSITION - field, tile, trash elements */
         app.component.item.func.transition.showItem_field(item);
         app.component.item.func.transition.showItem_tile(item);
