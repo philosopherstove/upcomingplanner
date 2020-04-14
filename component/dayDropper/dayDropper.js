@@ -1,7 +1,4 @@
 app.component.dayDropper = {};
-app.component.dayDropper.associated = {};
-app.component.dayDropper.associated.menu         = document.querySelector(".dropdownMenu_day");
-app.component.dayDropper.associated.innerWrapper = document.querySelector(".dropdownMenu_innerWrapper");
 app.component.dayDropper.setting = {};
 app.component.dayDropper.setting.day = null;
 app.component.dayDropper.state = {};
@@ -111,8 +108,9 @@ app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
         html    += html_piece;
         incr_ms += msInADay;
         if( i === lookAheadRange - 1){ // end of loop
-            app.component.dayDropper.associated.innerWrapper.innerHTML = "";
-            app.component.dayDropper.associated.innerWrapper.insertAdjacentHTML("beforeend", html);
+            let dropdownMenuInnerWrapper = document.querySelector(".dropdownMenu_innerWrapper");
+                dropdownMenuInnerWrapper.innerHTML = "";
+                dropdownMenuInnerWrapper.insertAdjacentHTML("beforeend", html);
         };
     };
 };
@@ -214,16 +212,18 @@ app.component.dayDropper.func.give.closeDropdownListener_to_body = ()=>{
 app.component.dayDropper.func.give.closedBorder_to_dropdownMenu = ()=>{
     return new Promise((resolve)=>{
         let waitForHeightTransitionToFinish = setTimeout(()=>{
-            app.component.dayDropper.associated.menu.classList.add("closedBorder");
-            app.component.dayDropper.associated.menu.classList.remove("openBorder");
+            let dropdownMenu = document.querySelector(".dropdownMenu_day");
+                dropdownMenu.classList.add("closedBorder");
+                dropdownMenu.classList.remove("openBorder");
             resolve();
         },200);
     });
 };
 
 app.component.dayDropper.func.give.closedHeight_to_dropdownMenu = ()=>{
-    app.component.dayDropper.associated.menu.classList.add("closedHeight");
-    app.component.dayDropper.associated.menu.classList.remove("openHeight");
+    let dropdownMenu = document.querySelector(".dropdownMenu_day");
+        dropdownMenu.classList.add("closedHeight");
+        dropdownMenu.classList.remove("openHeight");
 };
 
 app.component.dayDropper.func.give.closedHeight_to_dropdownMenuScrollBar = ()=>{
@@ -233,13 +233,15 @@ app.component.dayDropper.func.give.closedHeight_to_dropdownMenuScrollBar = ()=>{
 };
 
 app.component.dayDropper.func.give.openBorder_to_dropdowMenu = ()=>{
-    app.component.dayDropper.associated.menu.classList.add("openBorder");
-    app.component.dayDropper.associated.menu.classList.remove("closedBorder");
+    let dropdownMenu = document.querySelector(".dropdownMenu_day");
+        dropdownMenu.classList.add("openBorder");
+        dropdownMenu.classList.remove("closedBorder");
 };
 
 app.component.dayDropper.func.give.openHeight_to_dropdownMenu = ()=>{
-    app.component.dayDropper.associated.menu.classList.add("openHeight");
-    app.component.dayDropper.associated.menu.classList.remove("closedHeight");
+    let dropdownMenu = document.querySelector(".dropdownMenu_day");
+        dropdownMenu.classList.add("openHeight");
+        dropdownMenu.classList.remove("closedHeight");
 };
 
 app.component.dayDropper.func.give.openHeight_to_dropdownMenuScrollBar = ()=>{
@@ -270,7 +272,8 @@ app.component.dayDropper.func.give.scrollListener_to_dropdownMenu = ()=>{
 };
 
 app.component.dayDropper.func.give.scrollTopDefault_to_dropdownMenu = ()=>{
-    app.component.dayDropper.associated.menu.scrollTop = 0;
+    let dropdownMenu = document.querySelector(".dropdownMenu_day");
+        dropdownMenu.scrollTop = 0;
 };
 
 app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day_text)=>{
