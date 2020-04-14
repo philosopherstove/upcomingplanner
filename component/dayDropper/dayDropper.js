@@ -34,6 +34,7 @@ app.component.dayDropper.func.give.openHeight_to_dropdownMenu = ()=>{
 app.component.dayDropper.func.give.openHeight_to_dropdownMenuScrollBar = ()=>{
 app.component.dayDropper.func.give.height_to_scrollBall = ()=>{
 app.component.dayDropper.func.give.scrollListener_to_dropdownMenu = ()=>{
+app.component.dayDropper.func.give.scrollTopDefault_to_dropdownMenu = ()=>{
 app.component.dayDropper.func.give.selectedDayString_to_dayDropperElement = (day_text)=>{
 app.component.dayDropper.func.give.zIndex2_to_dropper = ()=>{
 INIT
