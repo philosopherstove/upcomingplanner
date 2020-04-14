@@ -1,6 +1,4 @@
 app.component.timeSlot = {};
-app.component.timeSlot.setting = {};
-app.component.timeSlot.setting.element = document.querySelector(".timeSlots");
 app.component.timeSlot.func = {};
 app.component.timeSlot.func.create       = {};
 app.component.timeSlot.func.createAppend = {};
@@ -77,7 +75,8 @@ app.component.timeSlot.func.createAppend.timeSlots = ()=>{
             let html_timeSlot = app.component.timeSlot.func.create.timeSlotHTML(hr, hr_12, AMorPM);
             wrapper.insertAdjacentHTML("beforeend", html_timeSlot);
             if(i === hours - 1){
-                app.component.timeSlot.setting.element.appendChild(wrapper);
+                let timeSlots = document.querySelector(".timeSlots");
+                    timeSlots.appendChild(wrapper);
                 app.component.timeSlot.func.give.scrollTopDefault_to_timeSlots();
                 resolve();
             };
