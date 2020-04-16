@@ -3,9 +3,10 @@ app.component.item.objs = [];
 app.component.item.state = {};
 app.component.item.state.selected = [false, false, null];
 app.component.item.func = {};
-app.component.item.func.create       = {};
 app.component.item.func.createAppend = {};
+app.component.item.func.createSet    = {};
 app.component.item.func.get          = {};
+app.component.item.func.give         = {};
 app.component.item.func.init         = {};
 app.component.item.func.is           = {};
 app.component.item.func.post         = {};
@@ -15,31 +16,45 @@ app.component.item.func.transition   = {};
 app.component.item.func.update       = {};
 
 /* func hotkeys:
-CREATE
-app.component.item.func.create.componentObj = (item)=>{
 CREATEAPPEND
 app.component.item.func.createAppend.blurTile = ()=>{
 app.component.item.func.createAppend.filledItem = (obj)=>{
-app.component.item.func.createAppend.itemToViewPage = async()=>{
 app.component.item.func.createAppend.itemsForDay = (dayId)=>{
 app.component.item.func.createAppend.itemToAddPage = (timeSlot)=>{
+app.component.item.func.createAppend.itemToViewPage = async()=>{
+CREATESET
+app.component.item.func.createSet.componentObj = (item)=>{
 GET
-app.component.item.func.get.isObjExist = ()=>{
+app.component.item.func.give.focus_to_itemField = (element)=>{
 app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
+GIVE
+app.component.item.func.give.focus_to_itemField = (element)=>{
+app.component.item.func.give.hiding_to_field = (item)=>{
+app.component.item.func.give.hiding_to_min = (item)=>{
+app.component.item.func.give.hiding_to_tile = ()=>{
+app.component.item.func.give.hiding_to_trash = (item)=>{
+app.component.item.func.give.value_to_itemElement_on_addPage = ()=>{
+app.component.item.func.give.value_to_itemElement_on_viewPage = ()=>{
+app.component.item.func.give.zIndex2_to_timeHeader = (element)=>{
 INIT
 app.component.item.func.init.component = ()=>{
 IS
 app.component.item.func.is.itemsUnderViewPageDay = ()=>{
+app.component.item.func.is.itemsUnderViewPageHour = ()=>{
+app.component.item.func.is.objExist = ()=>{
 POST
 app.component.item.func.post.item_to_dataStore = async()=>{
 REMOVE
 app.component.item.func.remove.blurTile = ()=>{
+app.component.item.func.remove.dayHeader = (dayId)=>{
+app.component.item.func.remove.hourHeader = (hourId)=>{
+app.component.item.func.remove.itemElement_from_viewPage = ()=>{
 app.component.item.func.remove.itemObj = ()=>{
-app.component.item.func.remove.itemElementFromViewPage = ()=>{
 app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
 app.component.item.func.remove.itemObj_from_localStorage = ()=>{
 app.component.item.func.remove.oldItemObjs_from_itemObjs = ()=>{
 app.component.item.func.remove.oldItemObjs_from_localStorage = ()=>{
+app.component.item.func.remove.showing_from_headerTime = (item)=>{
 SET
 app.component.item.func.set.componentObj_in_objs = (selectedObj, fieldValue)=>{
 app.component.item.func.set.componentObj_in_localStorage = (selectedObj, fieldValue)=>{
@@ -49,9 +64,7 @@ TRANSITION
 app.component.item.func.transition.createNewItem = async(timeSlot)=>{
 
 app.component.item.func.transition.hideItem = ()=>{
-app.component.item.func.transition.hideItem_field = (item)=>{
-app.component.item.func.transition.hideItem_headerTime = (item)=>{
-app.component.item.func.transition.hideItem_min = (item)=>{
+
 app.component.item.func.transition.hideItem_tile = ()=>{
 app.component.item.func.transition.hideItem_trash = (item)=>{
 app.component.item.func.transition.removeItem = async()=>{
@@ -60,30 +73,11 @@ app.component.item.func.transition.showItem = async(item)=>{
 app.component.item.func.transition.showItem_field = (tile)=>{
 app.component.item.func.transition.showItem_tile = (tile)=>{
 app.component.item.func.transition.showItem_trash = (tile)=>{
+
+
 UPDATE
 app.component.item.func.update.dayInfoOnViewPage = async(dayId)=>{
 */
-
-/*****
-CREATE
-******/
-app.component.item.func.create.componentObj = (item)=>{
-    let obj = {};
-        obj.associated = {};
-        obj.associated.createdId = Number(item.getAttribute("createdId"));
-        obj.associated.day       = app.component.dayDropper.setting.day[0];
-        obj.associated.timeSlot  = item.parentNode.previousElementSibling.children[0].getAttribute("data_hour"); // 24hr
-        obj.setting = {};
-        obj.setting.text = item.children[1].value;
-        obj.state = {};
-        obj.state.selected = false;
-    // push to objs
-    app.component.item.objs.push(obj);
-    // push to data store(for now, that's localStorage)
-    let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
-        localStorageObj.items.push(obj);
-    window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
-};
 
 /***********
 CREATEAPPEND
@@ -295,27 +289,30 @@ app.component.item.func.createAppend.itemToViewPage = async()=>{
     };
 };
 
+/********
+CREATESET
+*********/
+app.component.item.func.createSet.componentObj = (item)=>{
+    let obj = {};
+        obj.associated = {};
+        obj.associated.createdId = Number(item.getAttribute("createdId"));
+        obj.associated.day       = app.component.dayDropper.setting.day[0];
+        obj.associated.timeSlot  = item.parentNode.previousElementSibling.children[0].getAttribute("data_hour"); // 24hr
+        obj.setting = {};
+        obj.setting.text = item.children[1].value;
+        obj.state = {};
+        obj.state.selected = false;
+    /* push to objs */
+    app.component.item.objs.push(obj);
+    /* push to data store(for now, localStorage; later, DB) */
+    let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
+        localStorageObj.items.push(obj);
+    window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
+};
+
 /**
 GET
 ***/
-app.component.item.func.get.isObjExist = ()=>{
-    return new Promise((resolve)=>{
-        let selectedItem = app.component.item.state.selected[2];
-        if(app.component.item.objs.length === 0){
-            resolve([false, null]);
-        };
-        for(i in app.component.item.objs){
-            let obj = app.component.item.objs[i];
-            if( obj.associated.createdId === Number(selectedItem.getAttribute("createdId"))){
-                resolve([true, obj])
-            };
-            if(Number(i) === app.component.item.objs.length-1){ // end of loop
-                resolve([false, null]);
-            };
-        };
-    });
-};
-
 app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
     return new Promise((resolve)=>{
         for(i in app.component.item.objs){
@@ -330,23 +327,44 @@ app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
 /***
 GIVE
 ****/
-app.component.item.func.give = {};
 app.component.item.func.give.focus_to_itemField = (element)=>{
     let itemField = element.nextElementSibling.children[0].children[1];
-        itemField.focus(); // focus in field
+        itemField.focus();
 };
 
-app.component.item.func.give.value_to_itemElementOnAddPage = ()=>{
+app.component.item.func.give.hiding_to_field = (item)=>{
+    let field = item.children[1];
+        field.classList.add("background_main");
+        field.classList.remove("background_white");
+        field.setAttribute("readonly", "readonly");
+};
+
+app.component.item.func.give.hiding_to_min = (item)=>{
+    let min = item.children[2];
+        min.classList.add("displayNone");
+};
+
+app.component.item.func.give.hiding_to_tile = ()=>{
+    let tile = app.component.item.state.selected[2];
+        tile.classList.add("hideItemTile");
+        tile.classList.remove("zIndex2");
+};
+
+app.component.item.func.give.hiding_to_trash = (item)=>{
+    let trash = item.children[3];
+        trash.classList.add("displayNone");
+};
+
+app.component.item.func.give.value_to_itemElement_on_addPage = ()=>{
     let createdId        = app.component.item.state.selected[2].getAttribute("createdId");
     let updatedValue     = app.component.item.state.selected[2].children[1].value;
     let itemElementField = document.querySelector(`.itemTile[createdId="${createdId}"] > input`);
         itemElementField.readonly = false;
         itemElementField.value = updatedValue;
         itemElementField.readonly = true;
+};
 
-}
-
-app.component.item.func.give.value_to_itemElementOnViewPage = ()=>{
+app.component.item.func.give.value_to_itemElement_on_viewPage = ()=>{
     let createdId        = app.component.item.state.selected[2].getAttribute("createdId");
     let updatedValue     = app.component.item.state.selected[2].children[1].value;
     let itemElementField = document.querySelector(`.itemTile_vl[createdId="${createdId}"] > input`);
@@ -366,8 +384,8 @@ INIT
 app.component.item.func.init.component = ()=>{
     let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
     app.component.item.objs = localStorageObj.items; // move item data into local item objs array
-    app.component.dayDropper.func.createAppend.dayDropperText();
-    app.component.dayDropper.func.createAppend.htmlInsideDropdown();
+    app.component.dayDropper.func.createAppend.dayDropperText();     // fires here instead of in dayDropper init, because needs # of items for day to fill out dayDropperText
+    app.component.dayDropper.func.createAppend.htmlInsideDropdown(); // fires here instead of in dayDropper init, because needs # of items for day to fill out dayDropperText
     app.component.item.func.createAppend.itemsForDay(app.component.dayDropper.setting.day[0]);
     app.component.item.func.remove.oldItemObjs_from_itemObjs();
     app.component.item.func.remove.oldItemObjs_from_localStorage();
@@ -418,6 +436,24 @@ app.component.item.func.is.itemsUnderViewPageHour = ()=>{
     };
 };
 
+app.component.item.func.is.objExist = ()=>{
+    return new Promise((resolve)=>{
+        let selectedItem = app.component.item.state.selected[2];
+        if(app.component.item.objs.length === 0){
+            resolve([false, null]);
+        };
+        for(i in app.component.item.objs){
+            let obj = app.component.item.objs[i];
+            if( obj.associated.createdId === Number(selectedItem.getAttribute("createdId"))){
+                resolve([true, obj])
+            };
+            if(Number(i) === app.component.item.objs.length-1){ // end of loop
+                resolve([false, null]);
+            };
+        };
+    });
+};
+
 /***
 POST
 ****/
@@ -426,16 +462,16 @@ app.component.item.func.post.item_to_dataStore = async()=>{
     let fieldValue = app.component.item.state.selected[2].children[1].value;
     if( fieldValue.trim().length > 0 // field NOT empty
     &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
-        let isObjExist = await app.component.item.func.get.isObjExist();
+        let isObjExist = await app.component.item.func.is.objExist();
         if( isObjExist[0] === true){ // update old componentObj
             let selectedObj = isObjExist[1];
             await app.component.item.func.set.componentObj_in_objs(selectedObj, fieldValue);
             await app.component.item.func.set.componentObj_in_localStorage(selectedObj, fieldValue);
-            app.component.item.func.give.value_to_itemElementOnAddPage();
-            app.component.item.func.give.value_to_itemElementOnViewPage();
+            app.component.item.func.give.value_to_itemElement_on_addPage();
+            app.component.item.func.give.value_to_itemElement_on_viewPage();
         }
         else{
-            app.component.item.func.create.componentObj(app.component.item.state.selected[2]); // add to objs array and data store
+            app.component.item.func.createSet.componentObj(app.component.item.state.selected[2]); // add to objs array and data store
             app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
             app.component.dayDropper.func.createAppend.htmlInsideDropdown();
             app.component.item.func.createAppend.itemToViewPage();
@@ -473,23 +509,26 @@ app.component.item.func.remove.hourHeader = (hourId)=>{
         hourHeader.remove();
 };
 
-app.component.item.func.remove.itemElementFromViewPage = ()=>{
+app.component.item.func.remove.itemElement_from_viewPage = ()=>{
     return new Promise((resolve)=>{
         let createdId = Number(app.component.item.state.selected[2].getAttribute("createdId"));
         let itemElementFromViewPage = document.querySelector(`.itemTile_vl[createdId="${createdId}"]`);
         if (itemElementFromViewPage === null){ // need to avoid in case of removing an as yet to be created item(pre-submission)
             resolve();
+            // return;
         };
         let dayId  = Number(itemElementFromViewPage.getAttribute("dayMS"));
         let hourId = Number(itemElementFromViewPage.getAttribute("data_hour"));
         itemElementFromViewPage.remove();
-        if(app.component.item.func.is.itemsUnderViewPageHour() === false){
+        if( app.component.item.func.is.itemsUnderViewPageHour() === false){
             app.component.item.func.remove.hourHeader(hourId);
             resolve();
+            // return;
         };
         if( app.component.item.func.is.itemsUnderViewPageDay() === false){
             app.component.item.func.remove.dayHeader(dayId)
             resolve();
+            // return;
         };
     });
 };
@@ -568,6 +607,11 @@ app.component.item.func.remove.oldItemObjs_from_localStorage = ()=>{
     };
 };
 
+app.component.item.func.remove.showing_from_headerTime = (item)=>{
+    let headerTime = item.parentNode.previousElementSibling.children[0]
+        headerTime.classList.remove("zIndex2");
+};
+
 /**
 SET
 ***/
@@ -618,41 +662,13 @@ app.component.item.func.transition.createNewItem = async(timeSlot)=>{
 app.component.item.func.transition.hideItem = ()=>{
     /* TRANSITION - blurTile, field, headerTime, min, tile, trash elements*/
     let item = app.component.item.state.selected[2];
-    app.component.item.func.transition.hideItem_field(item);
-    app.component.item.func.transition.hideItem_headerTime(item);
-    app.component.item.func.transition.hideItem_min(item);
-    app.component.item.func.transition.hideItem_tile();
-    app.component.item.func.transition.hideItem_trash(item);
+    app.component.item.func.give.hiding_to_field(item);
+    app.component.item.func.give.hiding_to_min(item);
+    app.component.item.func.give.hiding_to_tile();
+    app.component.item.func.give.hiding_to_trash(item);
+    app.component.item.func.remove.showing_from_headerTime(item);
     /* STATE - item(selected OFF) */
-    app.component.item.state.selected   = [false, false, null];
-};
-
-app.component.item.func.transition.hideItem_field = (item)=>{
-    let field = item.children[1];
-        field.classList.add("background_main");
-        field.classList.remove("background_white");
-        field.setAttribute("readonly", "readonly");
-};
-
-app.component.item.func.transition.hideItem_headerTime = (item)=>{
-    let headerTime = item.parentNode.previousElementSibling.children[0]
-        headerTime.classList.remove("zIndex2");
-};
-
-app.component.item.func.transition.hideItem_min = (item)=>{
-    let min = item.children[2];
-        min.classList.add("displayNone");
-};
-
-app.component.item.func.transition.hideItem_tile = ()=>{
-    let tile = app.component.item.state.selected[2];
-        tile.classList.add("hideItemTile");
-        tile.classList.remove("zIndex2");
-};
-
-app.component.item.func.transition.hideItem_trash = (item)=>{
-    let trash = item.children[3];
-        trash.classList.add("displayNone");
+    app.component.item.state.selected = [false, false, null];
 };
 
 app.component.item.func.transition.removeItem = async()=>{
@@ -663,8 +679,8 @@ app.component.item.func.transition.removeItem = async()=>{
     app.component.item.state.selected[2].remove();
     app.component.item.func.remove.blurTile();
     /* REMOVE - itemElement from viewPage */
-    // await app.component.item.func.remove.itemElementFromViewPage();
-    app.component.item.func.remove.itemElementFromViewPage();
+    // await app.component.item.func.remove.itemElement_from_viewPage();
+    app.component.item.func.remove.itemElement_from_viewPage();
     /* GIVE - height to scrollBall */
     let delay_forKeyboardExitOnMobile = setTimeout(()=>{
         app.component.timeSlot.func.give.height_to_scrollBall(); // must happen after item element removal, since scrollBall height takes into account the number of item elements present
