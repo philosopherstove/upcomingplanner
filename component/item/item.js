@@ -29,10 +29,10 @@ app.component.item.func.give.focus_to_itemField = (element)=>{
 app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
 GIVE
 app.component.item.func.give.focus_to_itemField = (element)=>{
-app.component.item.func.give.hiding_to_field = (item)=>{
-app.component.item.func.give.hiding_to_min = (item)=>{
-app.component.item.func.give.hiding_to_tile = ()=>{
-app.component.item.func.give.hiding_to_trash = (item)=>{
+app.component.item.func.give.hidingAttributes_to_field = (item)=>{
+app.component.item.func.give.hidingAttributes_to_min = (item)=>{
+app.component.item.func.give.hidingAttributes_to_tile = ()=>{
+app.component.item.func.give.hidingAttributes_to_trash = (item)=>{
 app.component.item.func.give.value_to_itemElement_on_addPage = ()=>{
 app.component.item.func.give.value_to_itemElement_on_viewPage = ()=>{
 app.component.item.func.give.zIndex2_to_timeHeader = (element)=>{
@@ -54,7 +54,7 @@ app.component.item.func.remove.itemObj_from_itemObjs = ()=>{
 app.component.item.func.remove.itemObj_from_localStorage = ()=>{
 app.component.item.func.remove.oldItemObjs_from_itemObjs = ()=>{
 app.component.item.func.remove.oldItemObjs_from_localStorage = ()=>{
-app.component.item.func.remove.showing_from_headerTime = (item)=>{
+app.component.item.func.remove.showingAttributes_from_headerTime = (item)=>{
 SET
 app.component.item.func.set.componentObj_in_objs = (selectedObj, fieldValue)=>{
 app.component.item.func.set.componentObj_in_localStorage = (selectedObj, fieldValue)=>{
@@ -70,7 +70,7 @@ app.component.item.func.transition.hideItem_trash = (item)=>{
 app.component.item.func.transition.removeItem = async()=>{
 app.component.item.func.transition.removeItem_headerTime = ()=>{
 app.component.item.func.transition.showItem = async(item)=>{
-app.component.item.func.transition.showItem_field = (tile)=>{
+app.component.item.func.give.showingAttributes_to_field = (tile)=>{
 app.component.item.func.transition.showItem_tile = (tile)=>{
 app.component.item.func.transition.showItem_trash = (tile)=>{
 
@@ -332,27 +332,35 @@ app.component.item.func.give.focus_to_itemField = (element)=>{
         itemField.focus();
 };
 
-app.component.item.func.give.hiding_to_field = (item)=>{
+app.component.item.func.give.hidingAttributes_to_field = (item)=>{
     let field = item.children[1];
         field.classList.add("background_main");
         field.classList.remove("background_white");
         field.setAttribute("readonly", "readonly");
 };
 
-app.component.item.func.give.hiding_to_min = (item)=>{
+app.component.item.func.give.hidingAttributes_to_min = (item)=>{
     let min = item.children[2];
         min.classList.add("displayNone");
 };
 
-app.component.item.func.give.hiding_to_tile = ()=>{
+app.component.item.func.give.hidingAttributes_to_tile = ()=>{
     let tile = app.component.item.state.selected[2];
         tile.classList.add("hideItemTile");
         tile.classList.remove("zIndex2");
 };
 
-app.component.item.func.give.hiding_to_trash = (item)=>{
+app.component.item.func.give.hidingAttributes_to_trash = (item)=>{
     let trash = item.children[3];
         trash.classList.add("displayNone");
+};
+
+app.component.item.func.give.showingAttributes_to_field = (tile)=>{
+    let field = tile.children[1];
+        field.classList.add("background_white");
+        field.classList.remove("background_main");
+        field.removeAttribute("readonly");
+        field.blur();
 };
 
 app.component.item.func.give.value_to_itemElement_on_addPage = ()=>{
@@ -607,7 +615,7 @@ app.component.item.func.remove.oldItemObjs_from_localStorage = ()=>{
     };
 };
 
-app.component.item.func.remove.showing_from_headerTime = (item)=>{
+app.component.item.func.remove.showingAttributes_from_headerTime = (item)=>{
     let headerTime = item.parentNode.previousElementSibling.children[0]
         headerTime.classList.remove("zIndex2");
 };
@@ -662,11 +670,11 @@ app.component.item.func.transition.createNewItem = async(timeSlot)=>{
 app.component.item.func.transition.hideItem = ()=>{
     /* TRANSITION - blurTile, field, headerTime, min, tile, trash elements*/
     let item = app.component.item.state.selected[2];
-    app.component.item.func.give.hiding_to_field(item);
-    app.component.item.func.give.hiding_to_min(item);
-    app.component.item.func.give.hiding_to_tile();
-    app.component.item.func.give.hiding_to_trash(item);
-    app.component.item.func.remove.showing_from_headerTime(item);
+    app.component.item.func.give.hidingAttributes_to_field(item);
+    app.component.item.func.give.hidingAttributes_to_min(item);
+    app.component.item.func.give.hidingAttributes_to_tile();
+    app.component.item.func.give.hidingAttributes_to_trash(item);
+    app.component.item.func.remove.showingAttributes_from_headerTime(item);
     /* STATE - item(selected OFF) */
     app.component.item.state.selected = [false, false, null];
 };
@@ -709,20 +717,12 @@ app.component.item.func.transition.showItem = async(item)=>{
         /* STATE - item(selected ON) */
         app.component.item.state.selected = [true, false, item];
         /* TRANSITION - field, tile, trash elements */
-        app.component.item.func.transition.showItem_field(item);
+        app.component.item.func.give.showingAttributes_to_field(item);
         app.component.item.func.transition.showItem_tile(item);
         app.component.item.func.transition.showItem_trash(item);
         /* CREATEAPPEND - blurTile */
         app.component.item.func.createAppend.blurTile();
     };
-};
-
-app.component.item.func.transition.showItem_field = (tile)=>{
-    let field = tile.children[1];
-        field.classList.add("background_white");
-        field.classList.remove("background_main");
-        field.removeAttribute("readonly");
-        field.blur();
 };
 
 app.component.item.func.transition.showItem_tile = (tile)=>{
