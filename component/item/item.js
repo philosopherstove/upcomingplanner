@@ -6,9 +6,9 @@ app.component.item.func = {};
 app.component.item.func.create       = {};
 app.component.item.func.createAppend = {};
 app.component.item.func.get          = {};
-app.component.item.func.give         = {};
 app.component.item.func.init         = {};
 app.component.item.func.is           = {};
+app.component.item.func.post         = {};
 app.component.item.func.remove       = {};
 app.component.item.func.set          = {};
 app.component.item.func.transition   = {};
@@ -26,12 +26,12 @@ app.component.item.func.createAppend.itemToAddPage = (timeSlot)=>{
 GET
 app.component.item.func.get.isObjExist = ()=>{
 app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
-GIVE
-app.component.item.func.give.item_to_dataStore = async()=>{
 INIT
 app.component.item.func.init.component = ()=>{
 IS
 app.component.item.func.is.itemsUnderViewPageDay = ()=>{
+POST
+app.component.item.func.post.item_to_dataStore = async()=>{
 REMOVE
 app.component.item.func.remove.blurTile = ()=>{
 app.component.item.func.remove.itemObj = ()=>{
@@ -89,7 +89,7 @@ app.component.item.func.create.componentObj = (item)=>{
 CREATEAPPEND
 ************/
 app.component.item.func.createAppend.blurTile = ()=>{
-    let html = `<div class="blurTile" onclick="app.component.item.func.give.item_to_dataStore();"></div>`;
+    let html = `<div class="blurTile" onclick="app.component.item.func.post.item_to_dataStore();"></div>`;
     let addPage = document.querySelector(".addPage");
         addPage.insertAdjacentHTML("afterbegin", html);
 };
@@ -102,7 +102,7 @@ app.component.item.func.createAppend.filledItem = (obj)=>{
     let html = `
         <div class="itemTile hideItemTile" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem(this)">
             <span class="dot"></span>
-            <input class="itemField background_main" spellcheck="false" onkeyup="app.component.item.func.give.item_to_dataStore()" value="${itemText}">
+            <input class="itemField background_main" spellcheck="false" onkeyup="app.component.item.func.post.item_to_dataStore()" value="${itemText}">
             <div class="minValues displayNone"></div>
             <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem();"></div>
         </div>
@@ -133,7 +133,7 @@ app.component.item.func.createAppend.itemToAddPage = (timeSlot)=>{
         let html = `
             <div class="itemTile zIndex2" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem(this)">
                 <span class="dot"></span>
-                <input class="itemField background_white" spellcheck="false" onkeyup="app.component.item.func.give.item_to_dataStore();">
+                <input class="itemField background_white" spellcheck="false" onkeyup="app.component.item.func.post.item_to_dataStore();">
                 <div class="minValues displayNone"></div>
                 <div class="trashIcon" onclick="app.component.item.func.transition.removeItem();"></div>
             </div>
@@ -330,43 +330,10 @@ app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
 /***
 GIVE
 ****/
+app.component.item.func.give = {};
 app.component.item.func.give.focus_to_itemField = (element)=>{
     let itemField = element.nextElementSibling.children[0].children[1];
         itemField.focus(); // focus in field
-};
-
-app.component.item.func.give.item_to_dataStore = async()=>{
-    event.stopPropagation();
-    let fieldValue = app.component.item.state.selected[2].children[1].value;
-    if( fieldValue.trim().length > 0 // field NOT empty
-    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
-        let isObjExist = await app.component.item.func.get.isObjExist();
-        if( isObjExist[0] === true){ // update old componentObj
-            let selectedObj = isObjExist[1];
-            await app.component.item.func.set.componentObj_in_objs(selectedObj, fieldValue);
-            await app.component.item.func.set.componentObj_in_localStorage(selectedObj, fieldValue);
-            app.component.item.func.give.value_to_itemElementOnAddPage();
-            app.component.item.func.give.value_to_itemElementOnViewPage();
-        }
-        else{
-            app.component.item.func.create.componentObj(app.component.item.state.selected[2]); // add to objs array and data store
-            app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
-            app.component.dayDropper.func.createAppend.htmlInsideDropdown();
-            app.component.item.func.createAppend.itemToViewPage();
-            let dayId = Number(app.component.item.state.selected[2].getAttribute("dayId"));
-            app.component.item.func.update.dayInfoOnViewPage(dayId);
-        };
-        app.component.item.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
-        app.component.item.func.remove.blurTile();
-        let delay_forKeyboardExitOnMobile = setTimeout(()=>{
-            app.component.timeSlot.func.give.height_to_scrollBall();
-        },300);
-    }
-    else
-    if( fieldValue.trim().length === 0 // field empty
-    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
-        app.component.item.func.transition.removeItem();
-    };
 };
 
 app.component.item.func.give.value_to_itemElementOnAddPage = ()=>{
@@ -448,6 +415,43 @@ app.component.item.func.is.itemsUnderViewPageHour = ()=>{
                 return true;
             };
         };
+    };
+};
+
+/***
+POST
+****/
+app.component.item.func.post.item_to_dataStore = async()=>{
+    event.stopPropagation();
+    let fieldValue = app.component.item.state.selected[2].children[1].value;
+    if( fieldValue.trim().length > 0 // field NOT empty
+    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
+        let isObjExist = await app.component.item.func.get.isObjExist();
+        if( isObjExist[0] === true){ // update old componentObj
+            let selectedObj = isObjExist[1];
+            await app.component.item.func.set.componentObj_in_objs(selectedObj, fieldValue);
+            await app.component.item.func.set.componentObj_in_localStorage(selectedObj, fieldValue);
+            app.component.item.func.give.value_to_itemElementOnAddPage();
+            app.component.item.func.give.value_to_itemElementOnViewPage();
+        }
+        else{
+            app.component.item.func.create.componentObj(app.component.item.state.selected[2]); // add to objs array and data store
+            app.component.dayDropper.func.createAppend.dayDropperText(app.component.dayDropper.setting.day[0]);
+            app.component.dayDropper.func.createAppend.htmlInsideDropdown();
+            app.component.item.func.createAppend.itemToViewPage();
+            let dayId = Number(app.component.item.state.selected[2].getAttribute("dayId"));
+            app.component.item.func.update.dayInfoOnViewPage(dayId);
+        };
+        app.component.item.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
+        app.component.item.func.remove.blurTile();
+        let delay_forKeyboardExitOnMobile = setTimeout(()=>{
+            app.component.timeSlot.func.give.height_to_scrollBall();
+        },300);
+    }
+    else
+    if( fieldValue.trim().length === 0 // field empty
+    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
+        app.component.item.func.transition.removeItem();
     };
 };
 
