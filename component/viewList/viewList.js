@@ -80,6 +80,7 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
         };
 
         if( setDay === null){  // first iteration
+            console.log('1st');
             setDay     = dayMS;
             setHour    = timeSlot;
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
@@ -109,6 +110,11 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
         else
         if( setDay  === dayMS      // same day
         &&  setHour === timeSlot){ // same hour
+            console.log(`same day & hour
+                text=${obj.setting.text}
+                dayMS=${dayMS}, setDay=${setDay}
+                timeSlot=${timeSlot}, setHour=${setHour}
+            `);
             html += `
                         <div class="itemTile_vl hideItemTile_vl" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.viewList.func.transition.showItem(this)">
                             <span class="dot_vl"></span>
@@ -121,6 +127,11 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
         else
         if( setDay  === dayMS      // same day
         &&  setHour !== timeSlot){ // diff hour
+            console.log(`same day, diff hour
+                text=${obj.setting.text}
+                dayMS=${dayMS}, setDay=${setDay}
+                timeSlot=${timeSlot}, setHour=${setHour}
+            `);
             setHour    = timeSlot;
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
             let hr_12  = app.component.timeSlot.func.get.to12Hour(timeSlot);
@@ -141,8 +152,13 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
         }
         else
         if(setDay !== dayMS){      // diff day
+            console.log(`diff day
+                text=${obj.setting.text}
+                dayMS=${dayMS}
+                timeSlot=${timeSlot}
+            `);
             setDay     = dayMS;
-            setHour    = null;
+            setHour    = timeSlot;
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
             let hr_12  = app.component.timeSlot.func.get.to12Hour(timeSlot);
             let spacingClass = "";
