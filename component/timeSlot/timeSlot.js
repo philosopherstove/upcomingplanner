@@ -1,11 +1,11 @@
 app.component.timeSlot = {};
 app.component.timeSlot.func = {};
-app.component.timeSlot.func.createAppend = {};
-app.component.timeSlot.func.get          = {};
-app.component.timeSlot.func.give         = {};
-app.component.timeSlot.func.init         = {};
-app.component.timeSlot.func.make         = {};
-app.component.timeSlot.func.remove       = {};
+app.component.timeSlot.func.get        = {};
+app.component.timeSlot.func.give       = {};
+app.component.timeSlot.func.init       = {};
+app.component.timeSlot.func.make       = {};
+app.component.timeSlot.func.makeAppend = {};
+app.component.timeSlot.func.remove     = {};
 
 /* func hotkeys:
 GET
