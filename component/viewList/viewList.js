@@ -80,7 +80,7 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
         };
 
         if( setDay === null){  // first iteration
-            console.log('1st');
+            // console.log('1st');
             setDay     = dayMS;
             setHour    = timeSlot;
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
@@ -110,11 +110,11 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
         else
         if( setDay  === dayMS      // same day
         &&  setHour === timeSlot){ // same hour
-            console.log(`same day & hour
-                text=${obj.setting.text}
-                dayMS=${dayMS}, setDay=${setDay}
-                timeSlot=${timeSlot}, setHour=${setHour}
-            `);
+            // console.log(`same day & hour
+            //     text=${obj.setting.text}
+            //     dayMS=${dayMS}, setDay=${setDay}
+            //     timeSlot=${timeSlot}, setHour=${setHour}
+            // `);
             html += `
                         <div class="itemTile_vl hideItemTile_vl" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.viewList.func.transition.showItem(this)">
                             <span class="dot_vl"></span>
@@ -127,11 +127,11 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
         else
         if( setDay  === dayMS      // same day
         &&  setHour !== timeSlot){ // diff hour
-            console.log(`same day, diff hour
-                text=${obj.setting.text}
-                dayMS=${dayMS}, setDay=${setDay}
-                timeSlot=${timeSlot}, setHour=${setHour}
-            `);
+            // console.log(`same day, diff hour
+            //     text=${obj.setting.text}
+            //     dayMS=${dayMS}, setDay=${setDay}
+            //     timeSlot=${timeSlot}, setHour=${setHour}
+            // `);
             setHour    = timeSlot;
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
             let hr_12  = app.component.timeSlot.func.get.to12Hour(timeSlot);
@@ -152,11 +152,11 @@ app.component.viewList.func.createAppend.viewItems = async(sorted)=>{
         }
         else
         if(setDay !== dayMS){      // diff day
-            console.log(`diff day
-                text=${obj.setting.text}
-                dayMS=${dayMS}
-                timeSlot=${timeSlot}
-            `);
+            // console.log(`diff day
+            //     text=${obj.setting.text}
+            //     dayMS=${dayMS}
+            //     timeSlot=${timeSlot}
+            // `);
             setDay     = dayMS;
             setHour    = timeSlot;
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
@@ -314,18 +314,19 @@ app.component.viewList.func.remove.dayHeader = ()=>{
 };
 
 app.component.viewList.func.remove.hourHeader = ()=>{
-    let hourId       = app.component.viewList.state.itemActive[1].getAttribute("data_hour");
-    let hourHeader = document.querySelector(`.dayBlock > p.hourHeader_vl[data_hour="${hourId}"]`);
+    let dayId      = app.component.viewList.state.itemActive[1].getAttribute("dayMS");
+    let hourId     = app.component.viewList.state.itemActive[1].getAttribute("data_hour");
+    let hourHeader = document.querySelector(`.dayBlock[dayMS="${dayId}"] > p.hourHeader_vl[data_hour="${hourId}"]`);
         hourHeader.remove();
 };
 
 app.component.viewList.func.remove.itemElement = ()=>{
     let itemElement = app.component.viewList.state.itemActive[1];
         itemElement.remove();
-    if(app.component.viewList.func.is.itemsUnderHour() === false){
+    if( app.component.viewList.func.is.itemsUnderHour() === false){
         app.component.viewList.func.remove.hourHeader();
     };
-    if(app.component.viewList.func.is.itemsUnderDay() === false){
+    if( app.component.viewList.func.is.itemsUnderDay() === false){
         app.component.viewList.func.remove.dayHeader();
     };
 };
