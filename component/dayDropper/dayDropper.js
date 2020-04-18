@@ -15,10 +15,10 @@ app.component.dayDropper.func.transition   = {};
 /* func hotkeys:
 CREATEAPPEND
 app.component.dayDropper.func.createAppend.blurTile = ()=>{
-app.component.dayDropper.func.createAppend.dayDropperText = (ms)=>{
-app.component.dayDropper.func.createAppend.dayDropperText_day = (dayText)=>{
-app.component.dayDropper.func.createAppend.dayDropperText_info = async(dayId)=>{
-app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
+app.component.dayDropper.func.createAppend.dropperText = (ms)=>{
+app.component.dayDropper.func.createAppend.dropperText_day = (dayText)=>{
+app.component.dayDropper.func.createAppend.dropperText_info = async(dayId)=>{
+app.component.dayDropper.func.createAppend.menuItems = async()=>{
 GET
 app.component.dayDropper.func.get.day = (ms)=>{
 app.component.dayDropper.func.get.daysUntilString = (ms)=>{
@@ -55,27 +55,27 @@ app.component.dayDropper.func.createAppend.blurTile = ()=>{
         addPage.insertAdjacentHTML("afterbegin", html);
 };
 
-app.component.dayDropper.func.createAppend.dayDropperText = (ms)=>{
+app.component.dayDropper.func.createAppend.dropperText = (ms)=>{
     let day     = app.component.dayDropper.func.get.day(ms);
     let dayId   = day[0];
     let dayText = day[1];
-    app.component.dayDropper.func.createAppend.dayDropperText_day(dayText);
-    app.component.dayDropper.func.createAppend.dayDropperText_info(dayId);
+    app.component.dayDropper.func.createAppend.dropperText_day(dayText);
+    app.component.dayDropper.func.createAppend.dropperText_info(dayId);
 };
 
-app.component.dayDropper.func.createAppend.dayDropperText_day = (dayText)=>{
+app.component.dayDropper.func.createAppend.dropperText_day = (dayText)=>{
     let currDay_text = document.querySelector(".currDay_text");
         currDay_text.innerHTML = dayText;
 };
 
-app.component.dayDropper.func.createAppend.dayDropperText_info = async(dayId)=>{
+app.component.dayDropper.func.createAppend.dropperText_info = async(dayId)=>{
     let numberOfItemsForDayString     = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
     let daysUntilString               = app.component.dayDropper.func.get.daysUntilString(dayId);
     let items_daysCountdown           = document.querySelector(".items_daysCountdown");
         items_daysCountdown.innerHTML = `${numberOfItemsForDayString}${daysUntilString}`;
 };
 
-app.component.dayDropper.func.createAppend.htmlInsideDropdown = async()=>{
+app.component.dayDropper.func.createAppend.menuItems = async()=>{
     let startOfDay_ms  = app.component.dayDropper.func.get.day()[0];
     let incr_ms        = startOfDay_ms;
     let html           = "";
@@ -281,8 +281,8 @@ INIT
 ****/
 /*
 One might expect to find the following functions in the dayDropper initialization:
-- app.component.dayDropper.func.createAppend.dayDropperText()
-- app.component.dayDropper.func.createAppend.htmlInsideDropdown()
+- app.component.dayDropper.func.createAppend.dropperText()
+- app.component.dayDropper.func.createAppend.menuItems()
 The firing of these functions is deferred to the item component initialization.
 The reason is because the dayDropperText and htmlInsideDropdown need to be aware of the items to be set properly.
 Also, one cannot simply initialize the dayDropper after the item component because the item component has initial functions that need to be aware of the day.
@@ -310,7 +310,7 @@ app.component.dayDropper.func.set.day = async(dayDropperDayElement)=>{
     let day_ms   = Number(dayDropperDayElement.getAttribute("dayId"));
     let day_text = dayDropperDayElement.getAttribute("day_text");
     app.component.dayDropper.setting.day = [day_ms, day_text];
-    app.component.dayDropper.func.createAppend.dayDropperText(day_ms);
+    app.component.dayDropper.func.createAppend.dropperText(day_ms);
     app.component.timeSlot.func.remove.timeSlotsDivElement();       // remove - old timeSlots
     await app.component.timeSlot.func.createAppend.timeSlots();     // createAppend - new timeSlots
     await app.component.item.func.createAppend.itemsForDay(day_ms); // must happen after createAppend.timeSlots()
