@@ -209,7 +209,6 @@ app.component.viewList.func.get.isObjExist = ()=>{
 };
 
 /* give */
-
 app.component.viewList.func.give.item_to_dataStore = async()=>{
     event.stopPropagation();
     let fieldValue = app.component.viewList.state.itemActive[1].children[1].value;
@@ -217,8 +216,8 @@ app.component.viewList.func.give.item_to_dataStore = async()=>{
     &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
         let createdId = app.component.viewList.state.itemActive[1].getAttribute("createdId");
         let itemObj   = await app.component.item.func.get.itemObj_from_createdId(createdId);
-        await app.component.item.func.set.componentObj_in_objs(itemObj, fieldValue);
-        await app.component.item.func.set.componentObj_in_localStorage(itemObj, fieldValue);
+        await app.component.item.func.set.itemObj_in_itemObjs(itemObj, fieldValue);
+        await app.component.item.func.set.itemObj_in_localStorage(itemObj, fieldValue);
         app.component.viewList.func.give.value_to_itemElementOnAddPage();
         app.component.viewList.func.give.value_to_itemElementOnViewPage();
         app.component.viewList.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
@@ -478,7 +477,7 @@ app.component.viewList.func.transition.removeItem = async()=>{
     app.component.dayDropper.func.createAppend.menuItems();
     /* UPDATE - dayInfoOnViewPage */
     let dayId = Number(itemElement.getAttribute("dayMS"));
-    app.component.item.func.update.dayInfoOnViewPage(dayId);
+    app.component.item.func.give.dayInfoOnViewPage_updatedInfo(dayId);
     /* STATE - itemActive OFF */
     app.component.viewList.state.itemActive = [false, null];
 };

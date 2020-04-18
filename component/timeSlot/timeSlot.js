@@ -48,7 +48,7 @@ app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
     if( hr12 < 10){spacingClass = "spacing";}
     let html = `
         <div class="slot">
-            <div class="slotHeader" onclick="app.component.item.func.transition.createNewItem(this)">
+            <div class="slotHeader" onclick="app.component.item.func.transition.createItem(this)">
                 <p class="time" data_hour="${hr}">
                     <span class="${spacingClass}">${hr12}</span>
                     <span>${AMorPM}</span>
