@@ -473,8 +473,8 @@ app.component.viewList.func.transition.removeItem = async()=>{
     /* GIVE - height to timeSlot scrollBall */
     app.component.timeSlot.func.give.scrollBall_heightAttributes();
     /* CREATEAPPEND - daydropper text, htmlInsideDropdown (has to happen after itemObj removed) */
-    app.component.dayDropper.func.createAppend.dropperText(app.component.dayDropper.setting.day[0]);
-    app.component.dayDropper.func.createAppend.menuItems();
+    app.component.dayDropper.func.makeAppend.dropperText(app.component.dayDropper.setting.day[0]);
+    app.component.dayDropper.func.makeAppend.menuItems();
     /* UPDATE - dayInfoOnViewPage */
     let dayId = Number(itemElement.getAttribute("dayMS"));
     app.component.item.func.give.dayInfoOnViewPage_updatedInfo(dayId);

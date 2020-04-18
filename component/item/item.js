@@ -489,8 +489,8 @@ INIT
 app.component.item.func.init.component = ()=>{
     let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
     app.component.item.objs = localStorageObj.items; // move item data into local item objs array
-    app.component.dayDropper.func.createAppend.dropperText();     // fires here instead of in dayDropper init, because needs # of items for day to fill out dayDropperText
-    app.component.dayDropper.func.createAppend.menuItems(); // fires here instead of in dayDropper init, because needs # of items for day to fill out dayDropperText
+    app.component.dayDropper.func.makeAppend.dropperText();     // fires here instead of in dayDropper init, because needs # of items for day to fill out dayDropperText
+    app.component.dayDropper.func.makeAppend.menuItems(); // fires here instead of in dayDropper init, because needs # of items for day to fill out dayDropperText
     app.component.item.func.createAppend.itemsForDay(app.component.dayDropper.setting.day[0]);
     app.component.item.func.delete.oldItemObjs_from_itemObjs();
     app.component.item.func.delete.oldItemObjs_from_localStorage();
@@ -577,8 +577,8 @@ app.component.item.func.post.item_to_dataStore = async()=>{
         }
         else{
             app.component.item.func.createSet.itemObj(app.component.item.state.selected[2]); // add to objs array and data store
-            app.component.dayDropper.func.createAppend.dropperText(app.component.dayDropper.setting.day[0]);
-            app.component.dayDropper.func.createAppend.menuItems();
+            app.component.dayDropper.func.makeAppend.dropperText(app.component.dayDropper.setting.day[0]);
+            app.component.dayDropper.func.makeAppend.menuItems();
             app.component.item.func.createAppend.itemToViewPage();
             let dayId = Number(app.component.item.state.selected[2].getAttribute("dayId"));
             app.component.item.func.give.dayInfoOnViewPage_updatedInfo(dayId);
@@ -714,8 +714,8 @@ app.component.item.func.transition.removeItem = async()=>{
     /* REMOVE - itemObj */
     await app.component.item.func.delete.itemObj();
     /* CREATEAPPEND - daydropper text, htmlInsideDropdown */
-    app.component.dayDropper.func.createAppend.dropperText(app.component.dayDropper.setting.day[0]);
-    app.component.dayDropper.func.createAppend.menuItems();
+    app.component.dayDropper.func.makeAppend.dropperText(app.component.dayDropper.setting.day[0]);
+    app.component.dayDropper.func.makeAppend.menuItems();
     /* UPDATE - dayInfo on */
     let dayId = Number(app.component.item.state.selected[2].getAttribute("dayId"));
     app.component.item.func.give.dayInfoOnViewPage_updatedInfo(dayId);

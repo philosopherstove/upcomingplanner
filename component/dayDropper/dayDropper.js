@@ -4,21 +4,15 @@ app.component.dayDropper.setting.day = null;
 app.component.dayDropper.state = {};
 app.component.dayDropper.state.open = [false, false, null];
 app.component.dayDropper.func = {};
-app.component.dayDropper.func.createAppend = {};
 app.component.dayDropper.func.get          = {};
 app.component.dayDropper.func.give         = {};
 app.component.dayDropper.func.init         = {};
+app.component.dayDropper.func.makeAppend   = {};
 app.component.dayDropper.func.remove       = {};
 app.component.dayDropper.func.set          = {};
 app.component.dayDropper.func.transition   = {};
 
 /* func hotkeys:
-CREATEAPPEND
-app.component.dayDropper.func.createAppend.blurTile = ()=>{
-app.component.dayDropper.func.createAppend.dropperText = (ms)=>{
-app.component.dayDropper.func.createAppend.dropperText_day = (dayText)=>{
-app.component.dayDropper.func.createAppend.dropperText_info = async(dayId)=>{
-app.component.dayDropper.func.createAppend.menuItems = async()=>{
 GET
 app.component.dayDropper.func.get.day = (ms)=>{
 app.component.dayDropper.func.get.daysUntilString = (ms)=>{
@@ -37,6 +31,12 @@ app.component.dayDropper.func.give.scrollBar_closedAttributes = ()=>{
 app.component.dayDropper.func.give.scrollBar_openAttributes = ()=>{
 INIT
 app.component.dayDropper.func.init.component = ()=>{
+MAKEAPPEND
+app.component.dayDropper.func.makeAppend.blurTile = ()=>{
+app.component.dayDropper.func.makeAppend.dropperText = (ms)=>{
+app.component.dayDropper.func.makeAppend.dropperText_day = (dayText)=>{
+app.component.dayDropper.func.makeAppend.dropperText_info = async(dayId)=>{
+app.component.dayDropper.func.makeAppend.menuItems = async()=>{
 REMOVE
 app.component.dayDropper.func.remove.blurTile = ()=>{
 SET
@@ -45,73 +45,6 @@ TRANSITION
 app.component.dayDropper.func.transition.closeDropdown = async()=>{
 app.component.dayDropper.func.transition.openDropdown = ()=>{
 */
-
-/***********
-CREATEAPPEND
-************/
-app.component.dayDropper.func.createAppend.blurTile = ()=>{
-    let html = `<div class="blurTile" onclick="app.component.dayDropper.func.transition.closeDropdown()"></div>`;
-    let addPage = document.querySelector(".addPage");
-        addPage.insertAdjacentHTML("afterbegin", html);
-};
-
-app.component.dayDropper.func.createAppend.dropperText = (ms)=>{
-    let day     = app.component.dayDropper.func.get.day(ms);
-    let dayId   = day[0];
-    let dayText = day[1];
-    app.component.dayDropper.func.createAppend.dropperText_day(dayText);
-    app.component.dayDropper.func.createAppend.dropperText_info(dayId);
-};
-
-app.component.dayDropper.func.createAppend.dropperText_day = (dayText)=>{
-    let currDay_text = document.querySelector(".currDay_text");
-        currDay_text.innerHTML = dayText;
-};
-
-app.component.dayDropper.func.createAppend.dropperText_info = async(dayId)=>{
-    let numberOfItemsForDayString     = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
-    let daysUntilString               = app.component.dayDropper.func.get.daysUntilString(dayId);
-    let items_daysCountdown           = document.querySelector(".items_daysCountdown");
-        items_daysCountdown.innerHTML = `${numberOfItemsForDayString}${daysUntilString}`;
-};
-
-app.component.dayDropper.func.createAppend.menuItems = async()=>{
-    let startOfDay_ms  = app.component.dayDropper.func.get.day()[0];
-    let incr_ms        = startOfDay_ms;
-    let html           = "";
-    let lookAheadRange = 365; // 1 year
-    let msInADay       = 86400000;
-    for(let i = 0; i < lookAheadRange; i++){ // year loop
-        let dateString                = `${new Date(incr_ms)}`;
-        let splits                    = dateString.split(" ");
-        let month                     = splits[1];
-        let dayName                   = splits[0];
-        let dayNum                    = splits[2];
-        let day_text                  = `${dayName} ${month} ${dayNum}`;
-        let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(incr_ms);
-        let dropdownHighlightClass    = app.component.dayDropper.func.get.dropdownHighlightClass(numberOfItemsForDayString);
-        let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(incr_ms);
-        let html_piece = `
-            <p dayId="${incr_ms}" day_text="${day_text}" class="${dropdownHighlightClass}" onclick="app.component.dayDropper.func.set.day(this)">
-                <span class="dd_date">
-                    <span>${dayName}</span>
-                    <span>${month}</span>
-                    <span>${dayNum}</span>
-                </span>
-                <span class="dd_info">
-                    <span">(${numberOfItemsForDayString}${daysUntilString})</span>
-                </span>
-            </p>
-        `;
-        html    += html_piece;
-        incr_ms += msInADay;
-        if( i === lookAheadRange - 1){ // end of loop
-            let dropdownMenuInnerWrapper = document.querySelector(".dropdownMenu_innerWrapper");
-                dropdownMenuInnerWrapper.innerHTML = "";
-                dropdownMenuInnerWrapper.insertAdjacentHTML("beforeend", html);
-        };
-    };
-};
 
 /**
 GET
@@ -281,8 +214,8 @@ INIT
 ****/
 /*
 One might expect to find the following functions in the dayDropper initialization:
-- app.component.dayDropper.func.createAppend.dropperText()
-- app.component.dayDropper.func.createAppend.menuItems()
+- app.component.dayDropper.func.makeAppend.dropperText()
+- app.component.dayDropper.func.makeAppend.menuItems()
 The firing of these functions is deferred to the item component initialization.
 The reason is because the dayDropperText and htmlInsideDropdown need to be aware of the items to be set properly.
 Also, one cannot simply initialize the dayDropper after the item component because the item component has initial functions that need to be aware of the day.
@@ -293,6 +226,73 @@ app.component.dayDropper.func.init.component = ()=>{
     app.component.dayDropper.func.give.menu_scrollListener();
     app.component.dayDropper.func.give.scrollBall_heightAttributes();
     app.component.dayDropper.setting.day = app.component.dayDropper.func.get.day();
+};
+
+/*********
+MAKEAPPEND
+**********/
+app.component.dayDropper.func.makeAppend.blurTile = ()=>{
+    let html = `<div class="blurTile" onclick="app.component.dayDropper.func.transition.closeDropdown()"></div>`;
+    let addPage = document.querySelector(".addPage");
+        addPage.insertAdjacentHTML("afterbegin", html);
+};
+
+app.component.dayDropper.func.makeAppend.dropperText = (ms)=>{
+    let day     = app.component.dayDropper.func.get.day(ms);
+    let dayId   = day[0];
+    let dayText = day[1];
+    app.component.dayDropper.func.makeAppend.dropperText_day(dayText);
+    app.component.dayDropper.func.makeAppend.dropperText_info(dayId);
+};
+
+app.component.dayDropper.func.makeAppend.dropperText_day = (dayText)=>{
+    let currDay_text = document.querySelector(".currDay_text");
+        currDay_text.innerHTML = dayText;
+};
+
+app.component.dayDropper.func.makeAppend.dropperText_info = async(dayId)=>{
+    let numberOfItemsForDayString     = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
+    let daysUntilString               = app.component.dayDropper.func.get.daysUntilString(dayId);
+    let items_daysCountdown           = document.querySelector(".items_daysCountdown");
+        items_daysCountdown.innerHTML = `${numberOfItemsForDayString}${daysUntilString}`;
+};
+
+app.component.dayDropper.func.makeAppend.menuItems = async()=>{
+    let startOfDay_ms  = app.component.dayDropper.func.get.day()[0];
+    let incr_ms        = startOfDay_ms;
+    let html           = "";
+    let lookAheadRange = 365; // 1 year
+    let msInADay       = 86400000;
+    for(let i = 0; i < lookAheadRange; i++){ // year loop
+        let dateString                = `${new Date(incr_ms)}`;
+        let splits                    = dateString.split(" ");
+        let month                     = splits[1];
+        let dayName                   = splits[0];
+        let dayNum                    = splits[2];
+        let day_text                  = `${dayName} ${month} ${dayNum}`;
+        let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(incr_ms);
+        let dropdownHighlightClass    = app.component.dayDropper.func.get.dropdownHighlightClass(numberOfItemsForDayString);
+        let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(incr_ms);
+        let html_piece = `
+            <p dayId="${incr_ms}" day_text="${day_text}" class="${dropdownHighlightClass}" onclick="app.component.dayDropper.func.set.day(this)">
+                <span class="dd_date">
+                    <span>${dayName}</span>
+                    <span>${month}</span>
+                    <span>${dayNum}</span>
+                </span>
+                <span class="dd_info">
+                    <span">(${numberOfItemsForDayString}${daysUntilString})</span>
+                </span>
+            </p>
+        `;
+        html    += html_piece;
+        incr_ms += msInADay;
+        if( i === lookAheadRange - 1){ // end of loop
+            let dropdownMenuInnerWrapper = document.querySelector(".dropdownMenu_innerWrapper");
+                dropdownMenuInnerWrapper.innerHTML = "";
+                dropdownMenuInnerWrapper.insertAdjacentHTML("beforeend", html);
+        };
+    };
 };
 
 /*****
@@ -310,7 +310,7 @@ app.component.dayDropper.func.set.day = async(dayDropperDayElement)=>{
     let day_ms   = Number(dayDropperDayElement.getAttribute("dayId"));
     let day_text = dayDropperDayElement.getAttribute("day_text");
     app.component.dayDropper.setting.day = [day_ms, day_text];
-    app.component.dayDropper.func.createAppend.dropperText(day_ms);
+    app.component.dayDropper.func.makeAppend.dropperText(day_ms);
     app.component.timeSlot.func.remove.timeSlotsWrap();       // remove - old timeSlots
     await app.component.timeSlot.func.createAppend.timeSlots();     // createAppend - new timeSlots
     await app.component.item.func.createAppend.itemsForDay(day_ms); // must happen after createAppend.timeSlots()
@@ -341,7 +341,7 @@ app.component.dayDropper.func.transition.openDropdown = ()=>{
     &&  app.component.dayDropper.state.open[1] === false){
         event.stopPropagation();
         app.component.dayDropper.state.open[1] = true; // turn transitioning bool ON
-        app.component.dayDropper.func.createAppend.blurTile();
+        app.component.dayDropper.func.makeAppend.blurTile();
         app.component.dayDropper.func.give.dropper_openAttributes();
         app.component.dayDropper.func.give.menu_openAttributes();
         app.component.dayDropper.func.give.menu_scrollTopDefault();
