@@ -1,18 +1,13 @@
 app.component.timeSlot = {};
 app.component.timeSlot.func = {};
-app.component.timeSlot.func.create       = {};
 app.component.timeSlot.func.createAppend = {};
 app.component.timeSlot.func.get          = {};
 app.component.timeSlot.func.give         = {};
 app.component.timeSlot.func.init         = {};
+app.component.timeSlot.func.make         = {};
 app.component.timeSlot.func.remove       = {};
 
 /* func hotkeys:
-CREATE
-app.component.timeSlot.func.create.minValuesHTML = ()=>{
-app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
-CREATEAPPEND
-app.component.timeSlot.func.createAppend.timeSlots = ()=>{
 GET
 app.component.timeSlot.func.get.AMorPM = (hr)=>{
 app.component.timeSlot.func.get.to12Hour = (hr)=>{
@@ -22,49 +17,19 @@ app.component.timeSlot.func.give.timeSlots_scrollListener = ()=>{
 app.component.timeSlot.func.give.timeSlots_scrollTopDefault = ()=>{
 INIT
 app.component.timeSlot.func.init.component = async()=>{
+MAKE
+app.component.timeSlot.func.make.minItems = ()=>{
+app.component.timeSlot.func.make.timeSlot = (hr, hr12, AMorPM)=>{
+MAKEAPPEND
+app.component.timeSlot.func.makeAppend.timeSlots = ()=>{
 REMOVE
 app.component.timeSlot.func.remove.timeSlotsWrap = ()=>{
 */
 
-/*****
-CREATE
-******/
-app.component.timeSlot.func.create.minValuesHTML = ()=>{
-    return new Promise((resolve)=>{
-        let html = "";
-        let minuteNumbers = ["--", "10", "15", "20", "30", "40", "45", "50"];
-        for(let i = 0; i < minuteNumbers.length; i++){
-            let number = minuteNumbers[i];
-            html += `<p>${number}</p>`;
-            if(i === minuteNumbers.length - 1){
-                resolve(html);
-            };
-        };
-    });
-};
-
-app.component.timeSlot.func.create.timeSlotHTML = (hr, hr12, AMorPM)=>{
-    let spacingClass = "";
-    if( hr12 < 10){spacingClass = "spacing";}
-    let html = `
-        <div class="slot">
-            <div class="slotHeader" onclick="app.component.item.func.transition.createItem(this)">
-                <p class="time" data_hour="${hr}">
-                    <span class="${spacingClass}">${hr12}</span>
-                    <span>${AMorPM}</span>
-                </p>
-                <div class="addButton"></div>
-            </div>
-            <div class="slotBody"></div>
-        </div>
-    `;
-    return html;
-};
-
 /***********
 CREATEAPPEND
 ************/
-app.component.timeSlot.func.createAppend.timeSlots = ()=>{
+app.component.timeSlot.func.makeAppend.timeSlots = ()=>{
     return new Promise((resolve)=>{
         let wrapper = document.createElement("div");
         let hours   = 24;
@@ -72,7 +37,7 @@ app.component.timeSlot.func.createAppend.timeSlots = ()=>{
             let hr            = i + 1;
             let AMorPM        = app.component.timeSlot.func.get.AMorPM(hr);
             let hr_12         = app.component.timeSlot.func.get.to12Hour(hr);
-            let html_timeSlot = app.component.timeSlot.func.create.timeSlotHTML(hr, hr_12, AMorPM);
+            let html_timeSlot = app.component.timeSlot.func.make.timeSlot(hr, hr_12, AMorPM);
             wrapper.insertAdjacentHTML("beforeend", html_timeSlot);
             if(i === hours - 1){
                 let timeSlots = document.querySelector(".timeSlots");
@@ -160,9 +125,44 @@ app.component.timeSlot.func.give.timeSlots_scrollTopDefault = ()=>{
 INIT
 ****/
 app.component.timeSlot.func.init.component = async()=>{
-    await app.component.timeSlot.func.createAppend.timeSlots();
+    await app.component.timeSlot.func.makeAppend.timeSlots();
     app.component.timeSlot.func.give.scrollBall_heightAttributes();
     app.component.timeSlot.func.give.timeSlots_scrollListener();
+};
+
+/***
+MAKE
+****/
+app.component.timeSlot.func.make.minItems = ()=>{
+    return new Promise((resolve)=>{
+        let html = "";
+        let minuteNumbers = ["--", "10", "15", "20", "30", "40", "45", "50"];
+        for(let i = 0; i < minuteNumbers.length; i++){
+            let number = minuteNumbers[i];
+            html += `<p>${number}</p>`;
+            if(i === minuteNumbers.length - 1){
+                resolve(html);
+            };
+        };
+    });
+};
+
+app.component.timeSlot.func.make.timeSlot = (hr, hr12, AMorPM)=>{
+    let spacingClass = "";
+    if( hr12 < 10){spacingClass = "spacing";}
+    let html = `
+        <div class="slot">
+            <div class="slotHeader" onclick="app.component.item.func.transition.createItem(this)">
+                <p class="time" data_hour="${hr}">
+                    <span class="${spacingClass}">${hr12}</span>
+                    <span>${AMorPM}</span>
+                </p>
+                <div class="addButton"></div>
+            </div>
+            <div class="slotBody"></div>
+        </div>
+    `;
+    return html;
 };
 
 /*****
