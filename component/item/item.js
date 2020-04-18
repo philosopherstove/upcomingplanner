@@ -489,7 +489,7 @@ app.component.item.func.post.item_to_dataStore = async()=>{
         app.component.item.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
         app.component.item.func.remove.blurTile();
         let delay_forKeyboardExitOnMobile = setTimeout(()=>{
-            app.component.timeSlot.func.give.height_to_scrollBall();
+            app.component.timeSlot.func.give.scrollBall_heightAttributes();
         },300);
     }
     else
@@ -691,7 +691,7 @@ app.component.item.func.transition.removeItem = async()=>{
     app.component.item.func.remove.itemElement_from_viewPage();
     /* GIVE - height to scrollBall */
     let delay_forKeyboardExitOnMobile = setTimeout(()=>{
-        app.component.timeSlot.func.give.height_to_scrollBall(); // must happen after item element removal, since scrollBall height takes into account the number of item elements present
+        app.component.timeSlot.func.give.scrollBall_heightAttributes(); // must happen after item element removal, since scrollBall height takes into account the number of item elements present
     },300);
     /* REMOVE - itemObj */
     await app.component.item.func.remove.itemObj();
