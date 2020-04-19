@@ -448,7 +448,7 @@ app.component.item.func.makeAppend.itemToViewPage = async()=>{
                 </p>
                 <div class="itemTile_vl hideItemTile_vl" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.viewList.func.transition.showItem(this)">
                     <span class="dot_vl"></span>
-                    <input class="itemField_vl background_main_vl" value="${itemObj.setting.text}" onkeyup="app.component.viewList.func.give.item_to_dataStore()" spellcheck="false" readonly>
+                    <input class="itemField_vl background_main_vl" value="${itemObj.setting.text}" onkeyup="app.component.viewList.func.post.item_to_dataStore()" spellcheck="false" readonly>
                     <div class="minValues_vl displayNone"></div>
                     <div class="trashIcon_vl displayNone" onclick="app.component.viewList.func.transition.removeItem();"></div>
                 </div>
@@ -483,7 +483,7 @@ app.component.item.func.makeAppend.itemToViewPage = async()=>{
                 </p>
                 <div class="itemTile_vl hideItemTile_vl" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.viewList.func.transition.showItem(this)">
                     <span class="dot_vl"></span>
-                    <input class="itemField_vl background_main_vl" value="${itemObj.setting.text}" onkeyup="app.component.viewList.func.give.item_to_dataStore()" spellcheck="false" readonly>
+                    <input class="itemField_vl background_main_vl" value="${itemObj.setting.text}" onkeyup="app.component.viewList.func.post.item_to_dataStore()" spellcheck="false" readonly>
                     <div class="minValues_vl displayNone"></div>
                     <div class="trashIcon_vl displayNone" onclick="app.component.viewList.func.transition.removeItem();"></div>
                 </div>
@@ -523,7 +523,7 @@ app.component.item.func.makeAppend.itemToViewPage = async()=>{
             </p>
             <div class="itemTile_vl hideItemTile_vl" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.viewList.func.transition.showItem(this)">
                 <span class="dot_vl"></span>
-                <input class="itemField_vl background_main_vl" value="${itemObj.setting.text}" onkeyup="app.component.viewList.func.give.item_to_dataStore()" spellcheck="false" readonly>
+                <input class="itemField_vl background_main_vl" value="${itemObj.setting.text}" onkeyup="app.component.viewList.func.post.item_to_dataStore()" spellcheck="false" readonly>
                 <div class="minValues_vl displayNone"></div>
                 <div class="trashIcon_vl displayNone" onclick="app.component.viewList.func.transition.removeItem();"></div>
             </div>
@@ -549,7 +549,7 @@ app.component.item.func.makeAppend.itemToViewPage = async()=>{
         let html = `
             <div class="itemTile_vl hideItemTile_vl" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.viewList.func.transition.showItem(this)">
                 <span class="dot_vl"></span>
-                <input class="itemField_vl background_main_vl" value="${itemObj.setting.text}" onkeyup="app.component.viewList.func.give.item_to_dataStore()" spellcheck="false" readonly>
+                <input class="itemField_vl background_main_vl" value="${itemObj.setting.text}" onkeyup="app.component.viewList.func.post.item_to_dataStore()" spellcheck="false" readonly>
                 <div class="minValues_vl displayNone"></div>
                 <div class="trashIcon_vl displayNone" onclick="app.component.viewList.func.transition.removeItem();"></div>
             </div>
