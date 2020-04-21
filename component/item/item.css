@@ -15,7 +15,7 @@
 	background-color: white;
 	box-shadow: 0 0.75px 0.75px 0 rgba(0,0,0,0.2);
 }
-.hideItemTile {
+div.hideItemTile {
 	background-color: rgba(0,0,0,0);
 	box-shadow: none;
 }

@@ -313,7 +313,7 @@ app.component.dayDropper.func.set.day = async(dayDropperDayElement)=>{
     app.component.dayDropper.func.makeAppend.dropperText(day_ms);
     app.component.timeSlot.func.remove.timeSlotsWrap();       // remove - old timeSlots
     await app.component.timeSlot.func.makeAppend.timeSlots();     // createAppend - new timeSlots
-    await app.component.item.func.makeAppend.itemsForDay(day_ms); // must happen after createAppend.timeSlots()
+    await app.component.item.func.makeAppend.items_onAddPage_forDay(day_ms); // must happen after createAppend.timeSlots()
     app.component.timeSlot.func.give.scrollBall_heightAttributes(); // must happen after createAppend.itemsForDay(). timeSlots with items have a larger height than timeSlots without, thus need to calculate different scrollBall height based on number of number of items for the given day
 };
 

@@ -1,10 +1,10 @@
-.background_main_vl {
+/* .background_main_vl {
 	background-color: var(--background_main);
 }
 
 .background_white_vl {
 	background-color: white;
-}
+} */
 
 .viewItemsWrapper {
     height: 100%;
@@ -77,10 +77,14 @@
     background-color: white;
     box-shadow: 0 0.75px 0.75px 0 rgba(0,0,0,0.2);
 }
-.hideItemTile_vl {
+/* .hideItemTile_vl {
 	background-color: rgba(0,0,0,0);
 	box-shadow: none;
-}
+} */
+/* .hideItemTile {
+	background-color: rgba(0,0,0,0);
+	box-shadow: none;
+} */
 
 .dot_vl {
     display: block;
