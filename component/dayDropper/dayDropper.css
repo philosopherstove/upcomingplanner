@@ -1,13 +1,10 @@
 .dropdownItemHighlight {
     color: var(--blue_1);
-    /* color: var(--red); */
-    /* font-weight: 600; */
 }
 
 .dropper {
 	display: flex;
 	position: relative;
-	/* width: 240px; */
     width: 80%;
 	min-height: 47px;
 	margin-top: 34px;
@@ -52,13 +49,10 @@
 	position: absolute;
 	top: 81px;
 	width: 80%;
-	/* min-height: 390px; */
-	/* max-height: 390px; */
     transition: max-height 0.2s ease-out, opacity 0.3s ease-out;
 	margin-top: 2px;
     background-color: white;
 	border-radius: 2px;
-	/* border: 1px solid var(--blue_1); */
 	box-shadow: var(--boxShadow_1);
 	overflow-y: scroll;
 	z-index: 1;

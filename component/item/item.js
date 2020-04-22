@@ -228,7 +228,7 @@ app.component.item.func.give.dayHeader_onViewPage_showingAttributes = (itemEleme
 app.component.item.func.give.dayInfo_onViewPage_updatedInfo = async(dayId)=>{
     let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
     let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayId);
-    let dayInfoElement            = document.querySelector(`.viewPage .dayBlock[dayMS="${dayId}"] .dayInfo_vl`);
+    let dayInfoElement            = document.querySelector(`.viewPage .dayBlock[dayMS="${dayId}"] .dayInfo`);
     if( dayInfoElement === null){return};
         dayInfoElement.innerHTML  = `(${numberOfItemsForDayString}${daysUntilString})`;
 };
@@ -271,14 +271,14 @@ app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withTimeSlot
 app.component.item.func.give.hourHeader_onViewPage_hidingAttributes = (itemElement)=>{
     let dayId        = itemElement.getAttribute("dayMS");
     let hourId       = itemElement.getAttribute("data_hour");
-    let headerOfItem = document.querySelector(`.dayBlock[dayMS="${dayId}"] > p.hourHeader_vl[data_hour="${hourId}"]`);
+    let headerOfItem = document.querySelector(`.dayBlock[dayMS="${dayId}"] > p.hourHeader[data_hour="${hourId}"]`);
         headerOfItem.classList.remove("zIndex2");
 };
 
 app.component.item.func.give.hourHeader_onViewPage_showingAttributes = (itemElement)=>{
     let dayId        = itemElement.getAttribute("dayMS");
     let hourId       = itemElement.getAttribute("data_hour");
-    let headerOfItem = document.querySelector(`.dayBlock[dayMS="${dayId}"] > p.hourHeader_vl[data_hour="${hourId}"]`);
+    let headerOfItem = document.querySelector(`.dayBlock[dayMS="${dayId}"] > p.hourHeader[data_hour="${hourId}"]`);
         headerOfItem.classList.add("zIndex2");
 };
 
@@ -295,7 +295,7 @@ app.component.item.func.give.item_onAddPage_value = ()=>{
 app.component.item.func.give.item_onViewPage_value = ()=>{
     let createdId        = app.component.item.state.selected[2].getAttribute("createdId");
     let updatedValue     = app.component.item.state.selected[2].children[1].value;
-    let itemElementField = document.querySelector(`.viewPage .itemTile_vl[createdId="${createdId}"] > input`);
+    let itemElementField = document.querySelector(`.viewPage .itemTile[createdId="${createdId}"] > input`);
     if (itemElementField === null){return;};
         itemElementField.readonly = false;
         itemElementField.value = updatedValue;
@@ -356,7 +356,7 @@ app.component.item.func.is.itemsUnderViewPageDay = ()=>{
         };
         if(Number(i) === app.component.item.objs.length-1
         && dayId !== null){
-            let itemsUnderViewPageDay = document.querySelectorAll(`.viewPage div.itemTile_vl[dayMS="${dayId}"]`);
+            let itemsUnderViewPageDay = document.querySelectorAll(`.viewPage div.itemTile[dayMS="${dayId}"]`);
             if( itemsUnderViewPageDay.length === 0){ // no itemsUnderHour
                 return false;
             }
@@ -377,7 +377,7 @@ app.component.item.func.is.itemsUnderViewPageHour = ()=>{
         };
         if(Number(i) === app.component.item.objs.length-1
         && hourId !== null){
-            let itemsUnderViewPageDay = document.querySelectorAll(`.viewPage div.itemTile_vl[data_hour="${hourId}"]`);
+            let itemsUnderViewPageDay = document.querySelectorAll(`.viewPage div.itemTile[data_hour="${hourId}"]`);
             if( itemsUnderViewPageDay.length === 0){ // no itemsUnderHour
                 return false;
             }
@@ -475,7 +475,7 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     // if, day there but no hour, add under day with new hour
     let dayBlocks  = document.querySelectorAll('.dayBlock');
     let dayBlock   = document.querySelector(`.dayBlock[dayMS="${dayId}"]`);
-    let hourHeader = document.querySelector(`.hourHeader_vl[dayMS="${dayId}"][data_hour="${hourId}"]`);
+    let hourHeader = document.querySelector(`.hourHeader[dayMS="${dayId}"][data_hour="${hourId}"]`);
 
     let currentDayMS = app.component.dayDropper.func.get.day()[0];
     let colorRed = "";
@@ -489,19 +489,19 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
         if(hr_12 < 10){spacingClass = "spacing";}
         let html = `
             <div class="dayBlock" dayMS="${dayId}">
-                <div class="dayHeader_vl">
-                    <p class="dayText_vl ${colorRed}">${dayText}</p>
-                    <p class="dayInfo_vl ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
+                <div class="dayHeader">
+                    <p class="dayText ${colorRed}">${dayText}</p>
+                    <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
                 </div>
-                <p class="hourHeader_vl ${colorRed}" dayMS="${dayId}" data_hour="${hourId}">
+                <p class="hourHeader ${colorRed}" dayMS="${dayId}" data_hour="${hourId}">
                     <span class="${spacingClass}">${hr_12}</span>
                     <span>${AMorPM}</span>
                 </p>
-                <div class="itemTile_vl hideItemTile" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
-                    <span class="dot_vl"></span>
-                    <input class="itemField_vl background_main" value="${itemObj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
-                    <div class="minValues_vl displayNone"></div>
-                    <div class="trashIcon_vl displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
+                <div class="itemTile hideItemTile" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+                    <span class="dot"></span>
+                    <input class="itemField background_main" value="${itemObj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
+                    <div class="minValues displayNone"></div>
+                    <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
                 </div>
             </div>
         `;
@@ -524,19 +524,19 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
         if(hr_12 < 10){spacingClass = "spacing";}
         let html = `
             <div class="dayBlock" dayMS="${dayId}">
-                <div class="dayHeader_vl">
-                    <p class="dayText_vl ${colorRed}">${dayText}</p>
-                    <p class="dayInfo_vl ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
+                <div class="dayHeader">
+                    <p class="dayText ${colorRed}">${dayText}</p>
+                    <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
                 </div>
-                <p class="hourHeader_vl ${colorRed}" dayMS="${dayId}" data_hour="${hourId}">
+                <p class="hourHeader ${colorRed}" dayMS="${dayId}" data_hour="${hourId}">
                     <span class="${spacingClass}">${hr_12}</span>
                     <span>${AMorPM}</span>
                 </p>
-                <div class="itemTile_vl hideItemTile" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
-                    <span class="dot_vl"></span>
-                    <input class="itemField_vl background_main" value="${itemObj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
-                    <div class="minValues_vl displayNone"></div>
-                    <div class="trashIcon_vl displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
+                <div class="itemTile hideItemTile" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+                    <span class="dot"></span>
+                    <input class="itemField background_main" value="${itemObj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
+                    <div class="minValues displayNone"></div>
+                    <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
                 </div>
             </div>
         `;
@@ -564,31 +564,31 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     else
     if( dayBlock   !== null
     &&  hourHeader === null){
-        let hourHeaders = document.querySelectorAll(`.hourHeader_vl[dayMS="${dayId}"]`);
+        let hourHeaders = document.querySelectorAll(`.hourHeader[dayMS="${dayId}"]`);
         let spacingClass = "";
         if(hr_12 < 10){spacingClass = "spacing";}
         let html = `
-            <p class="hourHeader_vl ${colorRed}" dayMS="${dayId}" data_hour="${hourId}">
+            <p class="hourHeader ${colorRed}" dayMS="${dayId}" data_hour="${hourId}">
                 <span class="${spacingClass}">${hr_12}</span>
                 <span>${AMorPM}</span>
             </p>
-            <div class="itemTile_vl hideItemTile" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
-                <span class="dot_vl"></span>
-                <input class="itemField_vl background_main" value="${itemObj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
-                <div class="minValues_vl displayNone"></div>
-                <div class="trashIcon_vl displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
+            <div class="itemTile hideItemTile" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+                <span class="dot"></span>
+                <input class="itemField background_main" value="${itemObj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
+                <div class="minValues displayNone"></div>
+                <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
             </div>
         `;
         for(let i = 0; i < hourHeaders.length; i++){
             let hourHeaderId = Number(hourHeaders[i].getAttribute("data_hour"));
             if(hourId > hourHeaderId){ // exceed hourHeaderId, append as last of itemTiles for that hour
-                let itemTilesForLastHourHeader = document.querySelectorAll(`.viewPage .itemTile_vl[dayMS="${dayId}"][data_hour="${hourHeaderId}"]`);
+                let itemTilesForLastHourHeader = document.querySelectorAll(`.viewPage .itemTile[dayMS="${dayId}"][data_hour="${hourHeaderId}"]`);
                     itemTilesForLastHourHeader[itemTilesForLastHourHeader.length-1].insertAdjacentHTML("afterend", html);
                 break;
             }
             else
             if(i === hourHeaders.length-1){ // get to end/never exceeded a present hourHeaderId, append after matching hourHeader
-                let dayHeader = document.querySelector(`.dayBlock[dayMS="${dayId}"] > .dayHeader_vl`);
+                let dayHeader = document.querySelector(`.dayBlock[dayMS="${dayId}"] > .dayHeader`);
                     dayHeader.insertAdjacentHTML('afterend', html);
             };
         };
@@ -598,14 +598,14 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     if( dayBlock   !== null
     &&  hourHeader !== null){ // there is an hourHeader
         let html = `
-            <div class="itemTile_vl hideItemTile" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
-                <span class="dot_vl"></span>
-                <input class="itemField_vl background_main" value="${itemObj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
-                <div class="minValues_vl displayNone"></div>
-                <div class="trashIcon_vl displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
+            <div class="itemTile hideItemTile" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+                <span class="dot"></span>
+                <input class="itemField background_main" value="${itemObj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
+                <div class="minValues displayNone"></div>
+                <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
             </div>
         `;
-        let itemTilesForMatchingHourHeader = document.querySelectorAll(`.viewPage .itemTile_vl[dayMS="${dayId}"][data_hour="${hourId}"]`);
+        let itemTilesForMatchingHourHeader = document.querySelectorAll(`.viewPage .itemTile[dayMS="${dayId}"][data_hour="${hourId}"]`);
             itemTilesForMatchingHourHeader[0].insertAdjacentHTML("beforebegin", html);
     };
 };
@@ -665,19 +665,19 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
             };
             html += `
                     <div class="dayBlock" dayMS="${setDay}">
-                        <div class="dayHeader_vl" onclick="app.component.item.func.transition.hideItem_onViewPage(); app.component.item.func.remove.blurTile_fromViewPage()">
-                            <p class="dayText_vl ${colorRed}">${day_text}</p>
-                            <p class="dayInfo_vl ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
+                        <div class="dayHeader" onclick="app.component.item.func.transition.hideItem_onViewPage(); app.component.item.func.remove.blurTile_fromViewPage()">
+                            <p class="dayText ${colorRed}">${day_text}</p>
+                            <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
                         </div>
-                        <p class="hourHeader_vl ${colorRed}" dayMS="${setDay}" data_hour="${timeSlot}">
+                        <p class="hourHeader ${colorRed}" dayMS="${setDay}" data_hour="${timeSlot}">
                             <span class="${spacingClass}">${hr_12}</span>
                             <span>${AMorPM}</span>
                         </p>
-                        <div class="itemTile_vl hideItemTile" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
-                            <span class="dot_vl"></span>
-                            <input class="itemField_vl background_main" value="${obj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
-                            <div class="minValues_vl displayNone"></div>
-                            <div class="trashIcon_vl displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
+                        <div class="itemTile hideItemTile" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+                            <span class="dot"></span>
+                            <input class="itemField background_main" value="${obj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
+                            <div class="minValues displayNone"></div>
+                            <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
                         </div>
             `;
         }
@@ -690,11 +690,11 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
             //     timeSlot=${timeSlot}, setHour=${setHour}
             // `);
             html += `
-                        <div class="itemTile_vl hideItemTile" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
-                            <span class="dot_vl"></span>
-                            <input class="itemField_vl background_main" value="${obj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
-                            <div class="minValues_vl displayNone"></div>
-                            <div class="trashIcon_vl displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
+                        <div class="itemTile hideItemTile" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+                            <span class="dot"></span>
+                            <input class="itemField background_main" value="${obj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
+                            <div class="minValues displayNone"></div>
+                            <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
                         </div>
             `;
         }
@@ -712,15 +712,15 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
             let spacingClass = "";
             if(hr_12 < 10){spacingClass = "spacing";}
             html += `
-                        <p class="hourHeader_vl ${colorRed}" dayMS="${setDay}" data_hour="${timeSlot}">
+                        <p class="hourHeader ${colorRed}" dayMS="${setDay}" data_hour="${timeSlot}">
                             <span class="${spacingClass}">${hr_12}</span>
                             <span>${AMorPM}</span>
                         </p>
-                        <div class="itemTile_vl hideItemTile" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
-                            <span class="dot_vl"></span>
-                            <input class="itemField_vl background_main" value="${obj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
-                            <div class="minValues_vl displayNone"></div>
-                            <div class="trashIcon_vl displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
+                        <div class="itemTile hideItemTile" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+                            <span class="dot"></span>
+                            <input class="itemField background_main" value="${obj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
+                            <div class="minValues displayNone"></div>
+                            <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
                         </div>
             `;
         }
@@ -740,19 +740,19 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
             html += `
                     </div>
                     <div class="dayBlock" dayMS="${setDay}">
-                        <div class="dayHeader_vl" onclick="app.component.item.func.transition.hideItem_onViewPage(); app.component.item.func.remove.blurTile_fromViewPage()">
-                            <p class="dayText_vl ${colorRed}">${day_text}</p>
-                            <p class="dayInfo_vl ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
+                        <div class="dayHeader" onclick="app.component.item.func.transition.hideItem_onViewPage(); app.component.item.func.remove.blurTile_fromViewPage()">
+                            <p class="dayText ${colorRed}">${day_text}</p>
+                            <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
                         </div>
-                        <p class="hourHeader_vl ${colorRed}" dayMS="${setDay}" data_hour="${timeSlot}">
+                        <p class="hourHeader ${colorRed}" dayMS="${setDay}" data_hour="${timeSlot}">
                             <span class="${spacingClass}">${hr_12}</span>
                             <span>${AMorPM}</span>
                         </p>
-                        <div class="itemTile_vl hideItemTile" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
-                            <span class="dot_vl"></span>
-                            <input class="itemField_vl background_main" value="${obj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
-                            <div class="minValues_vl displayNone"></div>
-                            <div class="trashIcon_vl displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
+                        <div class="itemTile hideItemTile" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+                            <span class="dot"></span>
+                            <input class="itemField background_main" value="${obj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
+                            <div class="minValues displayNone"></div>
+                            <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
                         </div>
             `;
         };
@@ -846,7 +846,7 @@ app.component.item.func.remove.dayHeader = (dayId)=>{
 };
 
 app.component.item.func.remove.hourHeader = (hourId)=>{
-    let hourHeader = document.querySelector(`.dayBlock > p.hourHeader_vl[data_hour="${hourId}"]`);
+    let hourHeader = document.querySelector(`.dayBlock > p.hourHeader[data_hour="${hourId}"]`);
         hourHeader.remove();
 };
 
@@ -861,7 +861,7 @@ app.component.item.func.remove.item_fromAddPage = ()=>{
 app.component.item.func.remove.item_fromViewPage = ()=>{
     return new Promise((resolve)=>{
         let createdId = Number(app.component.item.state.selected[2].getAttribute("createdId"));
-        let itemElementFromViewPage = document.querySelector(`.viewPage .itemTile_vl[createdId="${createdId}"]`);
+        let itemElementFromViewPage = document.querySelector(`.viewPage .itemTile[createdId="${createdId}"]`);
         if (itemElementFromViewPage === null){ // need to avoid in case of removing an as yet to be created item(pre-submission)
             resolve();
         };

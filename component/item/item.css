@@ -9,9 +9,7 @@
 .itemTile {
 	display: flex;
 	position: relative;
-
     width: 100%;
-
     height: 36px;
 	border-radius: 6px;
 	background-color: white;
@@ -22,7 +20,7 @@ div.hideItemTile {
 	box-shadow: none;
 }
 
-.itemTile .dot {
+.dot {
 	display: block;
 	position: absolute;
 	top: 16px;
@@ -35,8 +33,7 @@ div.hideItemTile {
 }
 
 .itemField {
-	width: 70%;
-
+	width: 64%;
 	height: 22px;
 	margin-top: 7px;
 	margin-left: 19.9%;
@@ -57,17 +54,13 @@ div.hideItemTile {
 	font-size: 13px;
 	font-weight: 500;
 	letter-spacing: 0.2px;
-
-	/* border: 1px solid red; */
 }
 
 .trashIcon {
 	width: 16px;
 	height: 16px;
 	margin-top: 11px;
-
-    margin-left: -4%;
-    
+    margin-left: 2%;
 	background-image: url('trashIcon.svg');
 	background-repeat: no-repeat;
 	background-size: contain;

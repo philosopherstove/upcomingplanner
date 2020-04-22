@@ -1,3 +1,6 @@
+/****************
+Classes and Reset
+*****************/
 :root {
 	--blue_1:          rgb(0,119,181);
 	--grey:            rgb(176,192,205);
@@ -12,30 +15,25 @@
 }
 
 * {
-	/* general box model & position */
+	/* Background */
+	background-repeat: no-repeat;
+	/* Border */
+	border-style: none;
+    /* Box Model */
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-
-	/* background-image */
-	background-repeat: no-repeat;
-
-	/* input */
-	border-style: none;
-
-	/* text */
-	user-select: none;
-
+    /* Smoothing */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: antialiased;
 	font-smoothing: antialiased;
+	/* Text Select */
+	user-select: none;
 }
 
-body {
-	background-color: var(--background_main);
-}
-
-
+/*****************
+General Add/Remove
+******************/
 .displayNone {
 	display: none;
 }
@@ -56,11 +54,21 @@ body {
 	z-index: 2;
 }
 
+.spacing {
+	margin-left: 8px;
+}
+
+/****************
+APP GENERAL PARTS
+*****************/
+body {
+	background-color: var(--background_main);
+}
 
 .app {
 	position: relative;
     min-width: 320px; /* smallest mobilewidth: iphone4 */
-    max-width: 414px; /* largest mobile width: iphone6/7/8Plus */
+    max-width: 414px; /* largest  mobile width: iphone6/7/8Plus */
     height: 100vh;
 	margin: 0 auto;
 	overflow: hidden;
@@ -72,6 +80,18 @@ body {
     height: 100%;
 }
 
+.blurTile {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgb(236,236,236);
+	opacity: 0.8;
+	z-index: 1;
+}
+
+/*******
+ADD PAGE
+********/
 .addPage {
 	position: absolute;
     width: 100%;
@@ -81,6 +101,9 @@ body {
 	align-items: center;
 }
 
+/********
+VIEW PAGE
+*********/
 .viewPage {
     width: 100%;
     height: 100%;
@@ -88,11 +111,60 @@ body {
     left: 100%;
 }
 
-.blurTile {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background-color: rgb(236,236,236);
-	opacity: 0.8;
-	z-index: 1;
+.viewItemsWrapper {
+    width: 80%;
+    height: 100%;
+    margin: 0 auto;
+    padding-top: 40px;
+    padding-bottom: 78px;
+    overflow-y: scroll;
+}
+.viewItemsWrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.dayBlock {
+    margin-top: 16px;
+}
+
+.dayHeader {
+    position: relative;
+    color: var(--blue_1);
+}
+
+.hourHeader {
+    position: relative;
+    margin-top: 15px;
+    color: var(--blue_1);
+    font-family: Avenir Next;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+.dayBlock .dayHeader .colorRed,
+.dayBlock .hourHeader.colorRed {
+    color: var(--red);
+}
+
+.hourHeader > span:nth-of-type(2) {
+    margin-left: 1px;
+}
+
+.dayText,
+.dayInfo {
+    font-family: var(--font_main);
+    text-align: center;
+}
+
+.dayText {
+    letter-spacing: 0.26px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.dayInfo {
+    letter-spacing: 0.16px;
+    font-size: 11px;
+    font-style: italic;
 }

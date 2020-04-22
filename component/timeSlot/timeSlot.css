@@ -1,22 +1,17 @@
 .timeSlots {
-	/* width: 250px; */
     width: 80%;
 	height: 81%;
 	margin-top: 11px;
 	padding-top: 15px;
 	overflow-y: scroll;
-
-	/* border: 1px solid black; */
 }
 .timeSlots::before {
 	display: block;
 	position: absolute;
 	top: 91px;
 	content: "";
-	/* width: 240px; */
     width: 80%;
 	height: 1px;
-	/* margin-left: calc(50% - 155px); */
 	background-color: rgb(176,192,205);
 }
 .timeSlots::-webkit-scrollbar {
@@ -24,9 +19,7 @@
 }
 
 .timeSlots > div {
-    /* padding-bottom: 46px; */
     padding-bottom: 16.5%;
-    /* padding-bottom: 16%; */
 }
 
 .slot {
@@ -39,16 +32,9 @@
 
 .slotHeader {
 	position: relative;
-    /* width: 88%; */
     width: 91%;
     height: 20px;
 	display: flex;
-
-	/* border: 1px solid red; */
-}
-
-.spacing {
-	margin-left: 8px;
 }
 
 .time {
@@ -66,7 +52,6 @@
 }
 
 .addButton {
-    /* width: 154px; */
     width: 80%;
     height: 10px;
     margin-top: 4px;
@@ -77,8 +62,6 @@
     background-size: 8px;
 	background-position-x: 50%;
 	background-position-y: 1px;
-
-	/*border: 1px solid black;*/
 }
 
 .scrollbar_timeSlots {
