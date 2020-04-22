@@ -20,8 +20,8 @@ app.component.dayDropper.func.get.dropdownHighlightClass = (numberOfItemsForDayS
 app.component.dayDropper.func.get.numberOfItemsForDayString = (ms)=>{
 GIVE
 app.component.dayDropper.func.give.body_closingDropdownListener = ()=>{
-app.component.dayDropper.func.give.dropper_openAttributes = ()=>{
 app.component.dayDropper.func.give.dropper_closedAttributes = ()=>{
+app.component.dayDropper.func.give.dropper_openAttributes = ()=>{
 app.component.dayDropper.func.give.menu_closedAttributes = ()=>{
 app.component.dayDropper.func.give.menu_openAttributes = ()=>{
 app.component.dayDropper.func.give.menu_scrollListener = ()=>{
@@ -50,9 +50,9 @@ app.component.dayDropper.func.transition.openDropdown = ()=>{
 GET
 ***/
 /*
-Will return day as an array: [ ms(startOfDay), `${dayName} ${month} ${dayNum}` ].
-If pass-in ms, will return for passed in day, otherwise, will do for current day.
-*/
+ * Will return day as an array: [ ms(startOfDay), `${dayName} ${month} ${dayNum}` ].
+ * If pass-in ms, will return for passed in day, otherwise, will do for current day.
+**/
 app.component.dayDropper.func.get.day = (ms)=>{
     let now_dateString;
     if( ms === undefined){
@@ -213,14 +213,14 @@ app.component.dayDropper.func.give.scrollBar_openAttributes = ()=>{
 INIT
 ****/
 /*
-One might expect to find the following functions in the dayDropper initialization:
-- app.component.dayDropper.func.makeAppend.dropperText()
-- app.component.dayDropper.func.makeAppend.menuItems()
-The firing of these functions is deferred to the item component initialization.
-The reason is because the dayDropperText and htmlInsideDropdown need to be aware of the items to be set properly.
-Also, one cannot simply initialize the dayDropper after the item component because the item component has initial functions that need to be aware of the day.
-Either way, there is a catch-22 between these two components.
-*/
+ * One might expect to find the following functions in the dayDropper initialization:
+ * - app.component.dayDropper.func.makeAppend.dropperText()
+ * - app.component.dayDropper.func.makeAppend.menuItems()
+ * The firing of these functions is deferred to the item component initialization.
+ * The reason is because the dayDropperText and htmlInsideDropdown need to be aware of the items to be set properly.
+ * Also, one cannot simply initialize the dayDropper after the item component because the item component has initial functions that need to be aware of the day.
+ * Either way, there is a catch-22 between these two components.
+**/
 app.component.dayDropper.func.init.component = ()=>{
     app.component.dayDropper.func.give.body_closingDropdownListener();
     app.component.dayDropper.func.give.menu_scrollListener();
@@ -263,7 +263,7 @@ app.component.dayDropper.func.makeAppend.menuItems = async()=>{
     let html           = "";
     let lookAheadRange = 365; // 1 year
     let msInADay       = 86400000;
-    for(let i = 0; i < lookAheadRange; i++){ // year loop
+    for(let i = 0; i < lookAheadRange; i++){ // 1 year loop
         let dateString                = `${new Date(incr_ms)}`;
         let splits                    = dateString.split(" ");
         let month                     = splits[1];
@@ -311,10 +311,10 @@ app.component.dayDropper.func.set.day = async(dayDropperDayElement)=>{
     let day_text = dayDropperDayElement.getAttribute("day_text");
     app.component.dayDropper.setting.day = [day_ms, day_text];
     app.component.dayDropper.func.makeAppend.dropperText(day_ms);
-    app.component.timeSlot.func.remove.timeSlotsWrap();       // remove - old timeSlots
-    await app.component.timeSlot.func.makeAppend.timeSlots();     // createAppend - new timeSlots
-    await app.component.item.func.makeAppend.items_onAddPage_forDay(day_ms); // must happen after createAppend.timeSlots()
-    app.component.timeSlot.func.give.scrollBall_heightAttributes(); // must happen after createAppend.itemsForDay(). timeSlots with items have a larger height than timeSlots without, thus need to calculate different scrollBall height based on number of number of items for the given day
+    app.component.timeSlot.func.remove.timeSlotsWrap();                      // remove - old timeSlots
+    await app.component.timeSlot.func.makeAppend.timeSlots();                // makeAppend - new timeSlots
+    await app.component.item.func.makeAppend.items_onAddPage_forDay(day_ms); // must happen after makeAppen.timeSlots()
+    app.component.timeSlot.func.give.scrollBall_heightAttributes();          // must happen after makeAppend.items_onAddPage_forDay(). timeSlots with items have a larger height than timeSlots without, thus need to calculate different scrollBall height based on number of number of items for the given day
 };
 
 /*********

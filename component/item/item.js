@@ -26,7 +26,6 @@ app.component.item.func.delete.itemObj = ()=>{
 app.component.item.func.delete.itemObj_from_itemObjs = ()=>{
 app.component.item.func.delete.itemObj_from_localStorage = ()=>{
 app.component.item.func.delete.oldItemObjs_from_itemObjs = ()=>{
-app.component.item.func.delete.oldItemObjs_from_localStorage = ()=>{
 GET
 app.component.item.func.get.dayText_from_dayMS = (dayMS)=>{
 app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
@@ -143,43 +142,6 @@ app.component.item.func.delete.itemObj_from_itemObjs = ()=>{
     });
 };
 
-    // return new Promise((resolve)=>{
-    //     if(app.component.item.objs.length === 0){ // no objs
-    //         resolve();
-    //     };
-    //     for(i in app.component.item.objs){
-    //         let obj = app.component.item.objs[i];
-    //         if( obj.associated.createdId === Number(app.component.item.state.selected[2].getAttribute("createdId"))){
-    //             app.component.item.objs.splice(i,1);
-    //             resolve();
-    //             return;
-    //         };
-    //         if(Number(i) === app.component.item.objs.length-1){ // end of loop, no match found
-    //             resolve();
-    //         };
-    //     };
-    // });
-
-    // return new Promise((resolve)=>{
-    //     let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
-    //     let localStorageItemObjs = localStorageObj.items;
-    //     if( localStorageItemObjs.length === 0){ // no objs
-    //         resolve();
-    //     };
-    //     for(i in localStorageItemObjs){
-    //         let obj = localStorageItemObjs[i];
-    //         if( obj.associated.createdId === Number(app.component.item.state.selected[2].getAttribute("createdId"))){
-    //             localStorageItemObjs.splice(i,1);
-    //             localStorageObj.items = localStorageItemObjs;
-    //             window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
-    //             resolve();
-    //         };
-    //         if(Number(i) === localStorageItemObjs.length-1){ // end of loop, no match found
-    //             resolve();
-    //         };
-    //     };
-    // });
-
 app.component.item.func.delete.itemObj_from_localStorage = ()=>{
     return new Promise((resolve)=>{
         let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
@@ -194,6 +156,7 @@ app.component.item.func.delete.itemObj_from_localStorage = ()=>{
                 localStorageObj.items = localStorageItemObjs;
                 window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
                 resolve();
+                return;
             };
             if(Number(i) === localStorageItemObjs.length-1){ // end of loop, no match found
                 resolve();
@@ -221,22 +184,6 @@ app.component.item.func.delete.oldItemObjs_from_itemObjs = ()=>{
     });
 };
 
-app.component.item.func.delete.oldItemObjs_from_localStorage = ()=>{
-    let startOfToday_ms      = app.component.dayDropper.setting.day[0];
-    let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
-    let localStorageItemObjs = localStorageObj.items;
-    for(let i = localStorageItemObjs.length-1; i > -1; i--){
-        let obj = localStorageItemObjs[i];
-        if( obj.associated.day < startOfToday_ms){
-            localStorageItemObjs.splice(i,1);
-        };
-        if(i === 0){ // end of loop, update localStorage
-            localStorageObj.items = localStorageItemObjs;
-            window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
-        };
-    };
-};
-
 /**
 GET
 ***/
@@ -256,6 +203,7 @@ app.component.item.func.get.itemObj_from_createdId = (createdId)=>{
             let obj = app.component.item.objs[i];
             if( Number(obj.associated.createdId) === Number(createdId)){
                 resolve(obj);
+                return;
             };
         };
     });
@@ -682,10 +630,8 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
     let setHour      = null;
     let currentDayMS = app.component.dayDropper.func.get.day()[0];
 
-    // for(let i in sorted){
     for(let i in app.component.item.objs){
 
-        // let obj      = sorted[i];
         let obj      = app.component.item.objs[i];
         let dayMS    = obj.associated.day;
         let timeSlot = Number(obj.associated.timeSlot);
@@ -777,7 +723,7 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
             `;
         }
         else
-        if(setDay !== dayMS){      // diff day
+        if(setDay !== dayMS){ // diff day
             // console.log(`diff day
             //     text=${obj.setting.text}
             //     dayMS=${dayMS}
@@ -809,8 +755,7 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
             `;
         };
 
-        //if(Number(i) === sorted.length-1){ // end of loop, closing tags
-        if(Number(i) === app.component.item.objs.length-1){
+        if(Number(i) === app.component.item.objs.length-1){ // end of loop, closing tags & append
             html += `
                     </div>
                 </div>
@@ -846,15 +791,15 @@ app.component.item.func.post.item_fromAddPage_toDataStore = async()=>{
             let dayId = Number(app.component.item.state.selected[2].getAttribute("dayId"));
             app.component.item.func.give.dayInfoOnViewPage_updatedInfo(dayId);
         };
-        app.component.item.func.transition.hideItem(); // needs to fire after create.componentObj, because the transition turns state off
+        app.component.item.func.transition.hideItem(); // needs to fire after createSet.itemObj, because the transition turns state off
         app.component.item.func.remove.blurTile();
         let delay_forKeyboardExitOnMobile = setTimeout(()=>{
             app.component.timeSlot.func.give.scrollBall_heightAttributes();
         },300);
     }
-    else
-    if( fieldValue.trim().length === 0 // field empty
-    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
+    else // field empty && (either hit enter || clicked off(clicked blurTile))
+    if( fieldValue.trim().length === 0
+    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){
         app.component.item.func.transition.removeItem();
     };
 };
@@ -862,8 +807,8 @@ app.component.item.func.post.item_fromAddPage_toDataStore = async()=>{
 app.component.item.func.post.item_fromViewPage_toDataStore = async()=>{
     event.stopPropagation();
     let fieldValue = app.component.item.state.selected[2].children[1].value;
-    if( fieldValue.trim().length > 0 // field NOT empty
-    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
+    if( fieldValue.trim().length > 0 // field NOT empty && (either hit enter || clicked off(clicked blurTile))
+    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){
         let createdId = app.component.item.state.selected[2].getAttribute("createdId");
         let itemObj   = await app.component.item.func.get.itemObj_from_createdId(createdId);
         await app.component.item.func.set.itemObj_in_itemObjs(itemObj, fieldValue);
@@ -874,8 +819,8 @@ app.component.item.func.post.item_fromViewPage_toDataStore = async()=>{
         app.component.item.func.remove.blurTile_fromViewPage();
     }
     else
-    if( fieldValue.trim().length === 0 // field empty
-    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
+    if( fieldValue.trim().length === 0 // field empty && (either hit enter || clicked off(clicked blurTile))
+    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){
         app.component.item.func.transition.removeItem_fromViewPage();
     };
 };
@@ -890,7 +835,6 @@ app.component.item.func.remove.blurTile = ()=>{
 
 app.component.item.func.remove.blurTile_fromViewPage = ()=>{
     let blurTile = document.querySelector(".viewPage .blurTile");
-    // if( blurTile === null){return};
         blurTile.remove();
 };
 
@@ -918,7 +862,6 @@ app.component.item.func.remove.item_from_viewPage = ()=>{
         let itemElementFromViewPage = document.querySelector(`.viewPage .itemTile_vl[createdId="${createdId}"]`);
         if (itemElementFromViewPage === null){ // need to avoid in case of removing an as yet to be created item(pre-submission)
             resolve();
-            // return;
         };
         let dayId  = Number(itemElementFromViewPage.getAttribute("dayMS"));
         let hourId = Number(itemElementFromViewPage.getAttribute("data_hour"));
@@ -926,15 +869,14 @@ app.component.item.func.remove.item_from_viewPage = ()=>{
         if( app.component.item.func.is.itemsUnderViewPageHour() === false){
             app.component.item.func.remove.hourHeader(hourId);
             resolve();
-            // return;
         };
         if( app.component.item.func.is.itemsUnderViewPageDay() === false){
             app.component.item.func.remove.dayHeader(dayId)
             resolve();
-            // return;
         };
     });
 };
+// above function needs improvement. It works, but should promise to check itemsUnderViewPageHour, then check hoursUnderViewPageDay, then resolve
 
 /*******
 RETRIEVE
@@ -957,6 +899,7 @@ app.component.item.func.set.itemObj_in_itemObjs = (selectedObj, fieldValue)=>{
             if(obj.associated.createdId === selectedObj.associated.createdId){
                 obj.setting.text = fieldValue;
                 resolve();
+                return;
             };
         };
     });
@@ -969,10 +912,11 @@ app.component.item.func.set.itemObj_in_localStorage = (selectedObj, fieldValue)=
         for(i in localStorageItemObjs){
             let obj = localStorageItemObjs[i];
             if( obj.associated.createdId === selectedObj.associated.createdId){
-                obj.setting.text = fieldValue;
+                obj.setting.text      = fieldValue;
                 localStorageObj.items = localStorageItemObjs;
                 window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
                 resolve();
+                return;
             };
         };
     });
@@ -1036,13 +980,13 @@ app.component.item.func.transition.createItem = async(timeSlot)=>{
     app.component.item.func.makeAppend.blurTile_toAddPage();
     app.component.item.func.give.field_focus(timeSlot);
     app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withTimeSlot(timeSlot);
-    /* STATES - item (selected ON) */
+    /* state - selected ON */
     let item = timeSlot.nextElementSibling.children[0];
     app.component.item.state.selected = [true, false, item];
 };
 
 app.component.item.func.transition.hideItem = ()=>{
-    /* give - blurTile, field, headerTime, min, tile, trash elements */
+    /* give - hidingAttributes to addPage's blurTile, field, headerTime, min, tile, trash */
     let item = app.component.item.state.selected[2];
     app.component.item.func.give.field_hidingAttributes(item);
     app.component.item.func.give.min_hidingAttributes(item);
@@ -1054,7 +998,7 @@ app.component.item.func.transition.hideItem = ()=>{
 };
 
 app.component.item.func.transition.hideItem_onViewPage = ()=>{
-    /* give */
+    /* give - hidingAttributes to viewPage's dayHeader, field, hourHeader, tile, trash */
     let itemElement = app.component.item.state.selected[2];
     if( itemElement === null){return};
     app.component.item.func.give.dayHeader_onViewPage_hidingAttributes(itemElement); // DIFF
@@ -1068,83 +1012,76 @@ app.component.item.func.transition.hideItem_onViewPage = ()=>{
 
 app.component.item.func.transition.removeItem = async()=>{
     event.stopPropagation();
-    /* TRANSITION - headerTime */
+    let itemElement = app.component.item.state.selected[2];
+    /* give - hourHeader */
     app.component.item.func.give.hourHeader_onAddPage_hidingAttributes();
-    /* REMOVE - item, blurTile */
-    // app.component.item.state.selected[2].remove();
-    app.component.item.func.remove.item_fromAddPage();
-
+    /* remove - blurTile, items from both pages */
     app.component.item.func.remove.blurTile();
-    /* REMOVE - itemElement from viewPage */
-    // await app.component.item.func.remove.item_from_viewPage();
+    app.component.item.func.remove.item_fromAddPage();
     app.component.item.func.remove.item_from_viewPage();
-    /* GIVE - height to scrollBall */
-    let delay_forKeyboardExitOnMobile = setTimeout(()=>{
-        app.component.timeSlot.func.give.scrollBall_heightAttributes(); // must happen after item element removal, since scrollBall height takes into account the number of item elements present
-    },300);
-    /* REMOVE - itemObj */
+    /* delete - itemObj */
     await app.component.item.func.delete.itemObj();
-    /* CREATEAPPEND - daydropper text, htmlInsideDropdown */
+    /* give - height to timeSlot scrollBall - must happen after item element removal, since scrollBall height takes into account the number of item elements present */
+    let delay_forKeyboardExitOnMobile = setTimeout(()=>{
+        app.component.timeSlot.func.give.scrollBall_heightAttributes();
+    },300);
+    /* makeAppend - dropperText, menuItems */
     app.component.dayDropper.func.makeAppend.dropperText(app.component.dayDropper.setting.day[0]);
     app.component.dayDropper.func.makeAppend.menuItems();
-    /* UPDATE - dayInfo on */
-    let dayId = Number(app.component.item.state.selected[2].getAttribute("dayId"));
+    /* give - dayInfoOnViewPage */
+    let dayId = Number(itemElement.getAttribute("dayId"));
     app.component.item.func.give.dayInfoOnViewPage_updatedInfo(dayId);
-    /* STATE - item(selected OFF) */
+    /* state - selected OFF */
     app.component.item.state.selected = [false, false, null];
 };
 
 app.component.item.func.transition.removeItem_fromViewPage = async()=>{
     event.stopPropagation();
     let itemElement = app.component.item.state.selected[2];
-    /* give - attributes */
+    /* give - hidingAttributes to dayHeader, hourHeader */
     app.component.item.func.give.dayHeader_onViewPage_hidingAttributes(itemElement);
     app.component.item.func.give.hourHeader_onViewPage_hidingAttributes(itemElement);
-    /* remove */
+    /* remove - blurTile, items from both pages */
     app.component.item.func.remove.blurTile_fromViewPage();
     app.component.item.func.remove.item_from_viewPage();
     app.component.item.func.remove.item_fromAddPage();
     /* delete - itemObj */
     await app.component.item.func.delete.itemObj();
-    /* give - height to timeSlot scrollBall */
+    /* give - height to timeSlot scrollBall - must happen after item element removal, since scrollBall height takes into account the number of item elements present */
     let delay_forKeyboardExitOnMobile = setTimeout(()=>{
-        app.component.timeSlot.func.give.scrollBall_heightAttributes(); // must happen after item element removal, since scrollBall height takes into account the number of item elements present
+        app.component.timeSlot.func.give.scrollBall_heightAttributes();
     },300);
-
-
-    /* makeAppend */
+    /* makeAppend - dropperText, menuItems */
     app.component.dayDropper.func.makeAppend.dropperText(app.component.dayDropper.setting.day[0]);
     app.component.dayDropper.func.makeAppend.menuItems();
     /* give - dayInfoOnViewPage */
     let dayId = Number(itemElement.getAttribute("dayMS"));
     app.component.item.func.give.dayInfoOnViewPage_updatedInfo(dayId);
-    /* state - itemActive OFF */
+    /* state - selected OFF */
     app.component.item.state.selected = [false, false, null];
 };
 
 app.component.item.func.transition.showItem = async(item)=>{
     event.stopPropagation();
-    // if item (selected OFF)
     if( app.component.item.state.selected[0] === false){
-        /* STATE - item (selected ON) */
+        /* state - selected ON */
         app.component.item.state.selected = [true, false, item];
-        /* TRANSITION - field, tile, trash elements */
+        /* give - showingAttribiutes field, hourHeader, tile, trash */
         app.component.item.func.give.field_showingAttributes(item);
         app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withItem(item);
         app.component.item.func.give.tile_showingAttributes(item);
         app.component.item.func.give.trash_showingAttributes(item);
-        /* CREATEAPPEND - blurTile */
+        /* makeAppend - blurTile */
         app.component.item.func.makeAppend.blurTile_toAddPage();
     };
 };
 
 app.component.item.func.transition.showItem_onViewPage = (itemElement)=>{
     event.stopPropagation();
-    // if item (selected OFF)
     if( app.component.item.state.selected[0] === false){
-        /* state - item (selected ON) */
+        /* state - selected ON */
         app.component.item.state.selected = [true, false, itemElement];
-        /* give - attributes */
+        /* give - showingAttributes dayHeader, field, hourHeader, tile, trash */
         app.component.item.func.give.dayHeader_onViewPage_showingAttributes(itemElement); // DIFF
         app.component.item.func.give.field_showingAttributes(itemElement); // SAME
         app.component.item.func.give.hourHeader_onViewPage_showingAttributes(itemElement); // DIFF

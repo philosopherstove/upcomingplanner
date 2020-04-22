@@ -26,29 +26,6 @@ REMOVE
 app.component.timeSlot.func.remove.timeSlotsWrap = ()=>{
 */
 
-/***********
-CREATEAPPEND
-************/
-app.component.timeSlot.func.makeAppend.timeSlots = ()=>{
-    return new Promise((resolve)=>{
-        let wrapper = document.createElement("div");
-        let hours   = 24;
-        for(let i = 0; i < hours; i++){
-            let hr            = i + 1;
-            let AMorPM        = app.component.timeSlot.func.get.AMorPM(hr);
-            let hr_12         = app.component.timeSlot.func.get.to12Hour(hr);
-            let html_timeSlot = app.component.timeSlot.func.make.timeSlot(hr, hr_12, AMorPM);
-            wrapper.insertAdjacentHTML("beforeend", html_timeSlot);
-            if(i === hours - 1){
-                let timeSlots = document.querySelector(".timeSlots");
-                    timeSlots.appendChild(wrapper);
-                app.component.timeSlot.func.give.timeSlots_scrollTopDefault();
-                resolve();
-            };
-        };
-    });
-};
-
 /**
 GET
 ***/
@@ -140,7 +117,7 @@ app.component.timeSlot.func.make.minItems = ()=>{
         for(let i = 0; i < minuteNumbers.length; i++){
             let number = minuteNumbers[i];
             html += `<p>${number}</p>`;
-            if(i === minuteNumbers.length - 1){
+            if(i === minuteNumbers.length - 1){ // end of loop
                 resolve(html);
             };
         };
@@ -163,6 +140,29 @@ app.component.timeSlot.func.make.timeSlot = (hr, hr12, AMorPM)=>{
         </div>
     `;
     return html;
+};
+
+/*********
+MAKEAPPEND
+**********/
+app.component.timeSlot.func.makeAppend.timeSlots = ()=>{
+    return new Promise((resolve)=>{
+        let wrapper = document.createElement("div");
+        let hours   = 24;
+        for(let i = 0; i < hours; i++){
+            let hr            = i + 1;
+            let AMorPM        = app.component.timeSlot.func.get.AMorPM(hr);
+            let hr_12         = app.component.timeSlot.func.get.to12Hour(hr);
+            let html_timeSlot = app.component.timeSlot.func.make.timeSlot(hr, hr_12, AMorPM);
+            wrapper.insertAdjacentHTML("beforeend", html_timeSlot);
+            if(i === hours - 1){ // end of loop
+                let timeSlots = document.querySelector(".timeSlots");
+                    timeSlots.appendChild(wrapper);
+                app.component.timeSlot.func.give.timeSlots_scrollTopDefault();
+                resolve();
+            };
+        };
+    });
 };
 
 /*****
