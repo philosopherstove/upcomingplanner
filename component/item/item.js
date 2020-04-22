@@ -286,6 +286,7 @@ app.component.item.func.give.item_onAddPage_value = ()=>{
     let createdId        = app.component.item.state.selected[2].getAttribute("createdId");
     let updatedValue     = app.component.item.state.selected[2].children[1].value;
     let itemElementField = document.querySelector(`.addPage .itemTile[createdId="${createdId}"] > input`);
+    if (itemElementField === null){return;};
         itemElementField.readonly = false;
         itemElementField.value = updatedValue;
         itemElementField.readonly = true;
@@ -295,6 +296,7 @@ app.component.item.func.give.item_onViewPage_value = ()=>{
     let createdId        = app.component.item.state.selected[2].getAttribute("createdId");
     let updatedValue     = app.component.item.state.selected[2].children[1].value;
     let itemElementField = document.querySelector(`.viewPage .itemTile_vl[createdId="${createdId}"] > input`);
+    if (itemElementField === null){return;};
         itemElementField.readonly = false;
         itemElementField.value = updatedValue;
         itemElementField.readonly = true;

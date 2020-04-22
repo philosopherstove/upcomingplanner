@@ -9,8 +9,10 @@
 .itemTile {
 	display: flex;
 	position: relative;
-	width: 100%;
-	height: 36px;
+
+    width: 100%;
+
+    height: 36px;
 	border-radius: 6px;
 	background-color: white;
 	box-shadow: 0 0.75px 0.75px 0 rgba(0,0,0,0.2);
@@ -34,6 +36,7 @@ div.hideItemTile {
 
 .itemField {
 	width: 70%;
+
 	height: 22px;
 	margin-top: 7px;
 	margin-left: 19.9%;
@@ -62,7 +65,9 @@ div.hideItemTile {
 	width: 16px;
 	height: 16px;
 	margin-top: 11px;
-	margin-left: -4%;
+
+    margin-left: -4%;
+    
 	background-image: url('trashIcon.svg');
 	background-repeat: no-repeat;
 	background-size: contain;
