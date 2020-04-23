@@ -33,16 +33,17 @@ app.component.timeSlot.func.get.AMorPM = (hr)=>{
     if(hr < 12){
         return 'AM';
     }
-    else
-    if(hr === 24){
-        return 'AM';
-    }
     else{
         return 'PM';
     };
 };
 
 app.component.timeSlot.func.get.to12Hour = (hr)=>{
+    hr = Number(hr);
+    if(hr === 0){
+        return 12;
+    }
+    else
     if(hr > 12){
         return (hr - 12);
     }
@@ -154,7 +155,8 @@ app.component.timeSlot.func.makeAppend.timeSlots = ()=>{
         let wrapper = document.createElement("div");
         let hours   = 24;
         for(let i = 0; i < hours; i++){
-            let hr            = i + 1;
+            // let hr            = i + 1;
+            let hr = i;
             let AMorPM        = app.component.timeSlot.func.get.AMorPM(hr);
             let hr_12         = app.component.timeSlot.func.get.to12Hour(hr);
             let html_timeSlot = app.component.timeSlot.func.make.timeSlot(hr, hr_12, AMorPM);

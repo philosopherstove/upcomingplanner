@@ -9,6 +9,7 @@ app.component.item.func.get        = {};
 app.component.item.func.give       = {};
 app.component.item.func.init       = {};
 app.component.item.func.is         = {};
+app.component.item.func.make       = {};
 app.component.item.func.makeAppend = {};
 app.component.item.func.post       = {};
 app.component.item.func.remove     = {};
@@ -54,6 +55,8 @@ IS
 app.component.item.func.is.itemsUnderViewPageDay = ()=>{
 app.component.item.func.is.itemsUnderViewPageHour = ()=>{
 app.component.item.func.is.objExist = ()=>{
+MAKE
+app.component.item.func.make.item = (itemObj)=>{
 MAKEAPPEND
 app.component.item.func.makeAppend.blurTile_toAddPage = ()=>{
 app.component.item.func.makeAppend.blurTile_toViewPage = ()=>{
@@ -271,14 +274,14 @@ app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withTimeSlot
 app.component.item.func.give.hourHeader_onViewPage_hidingAttributes = (itemElement)=>{
     let dayId        = itemElement.getAttribute("dayId");
     let hourId       = itemElement.getAttribute("hourId");
-    let headerOfItem = document.querySelector(`.dayBlock[dayId="${dayId}"] > p.hourHeader[hourId="${hourId}"]`);
+    let headerOfItem = document.querySelector(`.viewPage .hourHeader[dayId="${dayId}"][hourId="${hourId}"]`);
         headerOfItem.classList.remove("zIndex2");
 };
 
 app.component.item.func.give.hourHeader_onViewPage_showingAttributes = (itemElement)=>{
     let dayId        = itemElement.getAttribute("dayId");
     let hourId       = itemElement.getAttribute("hourId");
-    let headerOfItem = document.querySelector(`.dayBlock[dayId="${dayId}"] > p.hourHeader[hourId="${hourId}"]`);
+    let headerOfItem = document.querySelector(`.viewPage .hourHeader[dayId="${dayId}"][hourId="${hourId}"]`);
         headerOfItem.classList.add("zIndex2");
 };
 
@@ -357,7 +360,7 @@ app.component.item.func.is.itemsUnderViewPageDay = ()=>{
         if(Number(i) === app.component.item.objs.length-1
         && dayId !== null){
             let itemsUnderViewPageDay = document.querySelectorAll(`.viewPage div.itemTile[dayId="${dayId}"]`);
-            if( itemsUnderViewPageDay.length === 0){ // no itemsUnderHour
+            if( itemsUnderViewPageDay.length === 0){ // no items under dayHeader
                 return false;
             }
             else{
@@ -369,16 +372,18 @@ app.component.item.func.is.itemsUnderViewPageDay = ()=>{
 
 app.component.item.func.is.itemsUnderViewPageHour = ()=>{
     let createdId = Number(app.component.item.state.selected[2].getAttribute("createdId"));
-    let hourId     = null;
+    let dayId     = null;
+    let hourId    = null;
     for(i in app.component.item.objs){
         let obj = app.component.item.objs[i];
         if( obj.associated.createdId === createdId){
+            dayId  = obj.associated.day;
             hourId = obj.associated.timeSlot;
         };
         if(Number(i) === app.component.item.objs.length-1
         && hourId !== null){
-            let itemsUnderViewPageDay = document.querySelectorAll(`.viewPage div.itemTile[hourId="${hourId}"]`);
-            if( itemsUnderViewPageDay.length === 0){ // no itemsUnderHour
+            let itemsUnderViewPageHour = document.querySelectorAll(`.viewPage div.itemTile[dayId="${dayId}"][hourId="${hourId}"]`);
+            if( itemsUnderViewPageHour.length === 0){ // no items under dayHeader > hourHeader
                 return false;
             }
             else{
@@ -407,6 +412,25 @@ app.component.item.func.is.objExist = (itemId)=>{
     });
 };
 
+/***
+MAKE
+****/
+app.component.item.func.make.item = (itemObj)=>{
+    let createdId = itemObj.associated.createdId;
+    let dayId     = itemObj.associated.day;
+    let hourId    = itemObj.associated.timeSlot;
+    let itemText  = itemObj.setting.text;
+    let html = `
+        <div class="itemTile hideItemTile" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+            <span class="dot"></span>
+            <input class="itemField background_main" value="${itemText}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
+            <div class="minValues displayNone"></div>
+            <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
+        </div>
+    `;
+    return html;
+};
+
 
 /*********
 MAKEAPPEND
@@ -427,7 +451,7 @@ app.component.item.func.makeAppend.filledItem = (obj)=>{
     let createdId = obj.associated.createdId;
     let itemText  = obj.setting.text;
     let dayId     = obj.associated.day;
-    let hourId    = obj.associated.timeSlot; // hourId used to locate correct slotBody to append to
+    let hourId    = obj.associated.timeSlot;
     let html = `
         <div class="itemTile hideItemTile" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem_onAddPage(this)">
             <span class="dot"></span>
@@ -436,7 +460,8 @@ app.component.item.func.makeAppend.filledItem = (obj)=>{
             <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromAddPage();"></div>
         </div>
     `;
-    let slotBody = document.querySelector(".timeSlots").children[0].children[hourId-1].children[0].nextElementSibling;
+    // let slotBody = document.querySelector(".timeSlots").children[0].children[hourId-1].children[0].nextElementSibling; // hourId used to locate correct slotBody to append to
+    let slotBody = document.querySelector(".timeSlots").children[0].children[hourId].children[0].nextElementSibling; // hourId used to locate correct slotBody to append to
         slotBody.insertAdjacentHTML("beforeend", html);
 };
 
@@ -497,12 +522,7 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
                     <span class="${spacingClass}">${hr_12}</span>
                     <span>${AMorPM}</span>
                 </p>
-                <div class="itemTile hideItemTile" createdId="${itemObj.associated.createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
-                    <span class="dot"></span>
-                    <input class="itemField background_main" value="${itemObj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
-                    <div class="minValues displayNone"></div>
-                    <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
-                </div>
+                ${app.component.item.func.make.item(itemObj)}
             </div>
         `;
         let viewItemsWrapper = document.querySelector(".viewItemsWrapper");
@@ -532,12 +552,7 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
                     <span class="${spacingClass}">${hr_12}</span>
                     <span>${AMorPM}</span>
                 </p>
-                <div class="itemTile hideItemTile" createdId="${itemObj.associated.createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
-                    <span class="dot"></span>
-                    <input class="itemField background_main" value="${itemObj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
-                    <div class="minValues displayNone"></div>
-                    <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
-                </div>
+                ${app.component.item.func.make.item(itemObj)}
             </div>
         `;
         /* How to determine where to append dayBlock:
@@ -572,24 +587,23 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
                 <span class="${spacingClass}">${hr_12}</span>
                 <span>${AMorPM}</span>
             </p>
-            <div class="itemTile hideItemTile" createdId="${itemObj.associated.createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
-                <span class="dot"></span>
-                <input class="itemField background_main" value="${itemObj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
-                <div class="minValues displayNone"></div>
-                <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
-            </div>
+            ${app.component.item.func.make.item(itemObj)}
         `;
         for(let i = 0; i < hourHeaders.length; i++){
-            let hourHeaderId = Number(hourHeaders[i].getAttribute("hourId"));
-            if(hourId > hourHeaderId){ // exceed hourHeaderId, append as last of itemTiles for that hour
-                let itemTilesForLastHourHeader = document.querySelectorAll(`.viewPage .itemTile[dayId="${dayId}"][hourId="${hourHeaderId}"]`);
-                    itemTilesForLastHourHeader[itemTilesForLastHourHeader.length-1].insertAdjacentHTML("afterend", html);
-                break;
+            let hourHeader_1    = hourHeaders[i];
+            let hourHeader_1_id = Number(hourHeader_1.getAttribute("hourId"));
+            let hourHeader_2    = hourHeaders[i+1];
+            if( hourHeader_2 === undefined){ // IF only 1 || the last hourHeader => append right inside hourHeader_1
+                let itemsForHourHeader_1 = document.querySelectorAll(`.viewPage .itemTile[dayId="${dayId}"][hourId="${hourHeader_1_id}"]`);
+                itemsForHourHeader_1[itemsForHourHeader_1.length-1].insertAdjacentHTML("afterend", html);
             }
-            else
-            if(i === hourHeaders.length-1){ // get to end/never exceeded a present hourHeaderId, append after matching hourHeader
-                let dayHeader = document.querySelector(`.dayBlock[dayId="${dayId}"] > .dayHeader`);
-                    dayHeader.insertAdjacentHTML('afterend', html);
+            else{ // get next hourHeader_2_id. IF item id falls between current header and next header => append before next header begins
+                let hourHeader_2_id = Number(hourHeader_2.getAttribute("hourId"));
+                if( hourId > hourHeader_1_id
+                &&  hourId < hourHeader_2_id){
+                    hourHeader_2.insertAdjacentHTML("beforebegin", html);
+                    break;
+                };
             };
         };
     }
@@ -597,14 +611,7 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     else
     if( dayBlock   !== null
     &&  hourHeader !== null){ // there is an hourHeader
-        let html = `
-            <div class="itemTile hideItemTile" createdId="${itemObj.associated.createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
-                <span class="dot"></span>
-                <input class="itemField background_main" value="${itemObj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
-                <div class="minValues displayNone"></div>
-                <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
-            </div>
-        `;
+        let html = `${app.component.item.func.make.item(itemObj)}`;
         let itemTilesForMatchingHourHeader = document.querySelectorAll(`.viewPage .itemTile[dayId="${dayId}"][hourId="${hourId}"]`);
             itemTilesForMatchingHourHeader[0].insertAdjacentHTML("beforebegin", html);
     };
@@ -845,8 +852,9 @@ app.component.item.func.remove.dayHeader = (dayId)=>{
         dayHeader.remove();
 };
 
-app.component.item.func.remove.hourHeader = (hourId)=>{
-    let hourHeader = document.querySelector(`.dayBlock > p.hourHeader[hourId="${hourId}"]`);
+app.component.item.func.remove.hourHeader = (dayId, hourId)=>{
+    let hourHeader = document.querySelector(`.dayBlock[dayId="${dayId}"] p.hourHeader[hourId="${hourId}"]`);
+    console.log('remove hourHeader', hourHeader);
         hourHeader.remove();
 };
 
@@ -860,16 +868,16 @@ app.component.item.func.remove.item_fromAddPage = ()=>{
 
 app.component.item.func.remove.item_fromViewPage = ()=>{
     return new Promise((resolve)=>{
-        let createdId = Number(app.component.item.state.selected[2].getAttribute("createdId"));
+        let createdId               = Number(app.component.item.state.selected[2].getAttribute("createdId"));
         let itemElementFromViewPage = document.querySelector(`.viewPage .itemTile[createdId="${createdId}"]`);
+        let dayId                   = Number(itemElementFromViewPage.getAttribute("dayId"));
+        let hourId                  = Number(itemElementFromViewPage.getAttribute("hourId"));
         if (itemElementFromViewPage === null){ // need to avoid in case of removing an as yet to be created item(pre-submission)
             resolve();
         };
-        let dayId  = Number(itemElementFromViewPage.getAttribute("dayId"));
-        let hourId = Number(itemElementFromViewPage.getAttribute("hourId"));
         itemElementFromViewPage.remove();
         if( app.component.item.func.is.itemsUnderViewPageHour() === false){
-            app.component.item.func.remove.hourHeader(hourId);
+            app.component.item.func.remove.hourHeader(dayId, hourId);
             resolve();
         };
         if( app.component.item.func.is.itemsUnderViewPageDay() === false){
