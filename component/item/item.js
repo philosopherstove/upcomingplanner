@@ -27,7 +27,7 @@ app.component.item.func.delete.itemObj_fromItemObjs = ()=>{
 app.component.item.func.delete.itemObj_fromLocalStorage = ()=>{
 app.component.item.func.delete.oldItemObjs_fromItemObjs = ()=>{
 GET
-app.component.item.func.get.dayText_fromDayMS = (dayMS)=>{
+app.component.item.func.get.dayText_fromDayId = (dayId)=>{
 app.component.item.func.get.itemObj_fromCreatedId = (createdId)=>{
 GIVE
 app.component.item.func.give.dayHeader_onViewPage_hidingAttributes = (itemElement)=>{
@@ -100,7 +100,7 @@ app.component.item.func.createSet.itemObj = (item)=>{
         obj.associated = {};
         obj.associated.createdId = Number(item.getAttribute("createdId"));
         obj.associated.day       = app.component.dayDropper.setting.day[0];
-        obj.associated.timeSlot  = item.parentNode.previousElementSibling.children[0].getAttribute("data_hour"); // 24hr
+        obj.associated.timeSlot  = item.parentNode.previousElementSibling.children[0].getAttribute("hourId"); // 24hr
         obj.setting = {};
         obj.setting.text = item.children[1].value;
         obj.state = {};
@@ -188,8 +188,8 @@ app.component.item.func.delete.oldItemObjs_fromItemObjs = ()=>{
 /**
 GET
 ***/
-app.component.item.func.get.dayText_fromDayMS = (dayMS)=>{
-    let dateString = `${new Date(dayMS)}`;
+app.component.item.func.get.dayText_fromDayId = (dayId)=>{
+    let dateString = `${new Date(dayId)}`;
     let splits     = dateString.split(" ");
     let month      = splits[1];
     let dayName    = splits[0];
@@ -214,21 +214,21 @@ app.component.item.func.get.itemObj_fromCreatedId = (createdId)=>{
 GIVE
 ****/
 app.component.item.func.give.dayHeader_onViewPage_hidingAttributes = (itemElement)=>{
-    let dayId     = itemElement.getAttribute("dayMS");
-    let dayHeader = document.querySelector(`.dayBlock[dayMS="${dayId}"]`).children[0];
+    let dayId     = itemElement.getAttribute("dayId");
+    let dayHeader = document.querySelector(`.dayBlock[dayId="${dayId}"]`).children[0];
         dayHeader.classList.remove("zIndex2");
 };
 
 app.component.item.func.give.dayHeader_onViewPage_showingAttributes = (itemElement)=>{
-    let dayId     = itemElement.getAttribute("dayMS");
-    let dayHeader = document.querySelector(`.dayBlock[dayMS="${dayId}"]`).children[0];
+    let dayId     = itemElement.getAttribute("dayId");
+    let dayHeader = document.querySelector(`.dayBlock[dayId="${dayId}"]`).children[0];
         dayHeader.classList.add("zIndex2");
 };
 
 app.component.item.func.give.dayInfo_onViewPage_updatedInfo = async(dayId)=>{
     let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
     let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayId);
-    let dayInfoElement            = document.querySelector(`.viewPage .dayBlock[dayMS="${dayId}"] .dayInfo`);
+    let dayInfoElement            = document.querySelector(`.viewPage .dayBlock[dayId="${dayId}"] .dayInfo`);
     if( dayInfoElement === null){return};
         dayInfoElement.innerHTML  = `(${numberOfItemsForDayString}${daysUntilString})`;
 };
@@ -269,16 +269,16 @@ app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withTimeSlot
 };
 
 app.component.item.func.give.hourHeader_onViewPage_hidingAttributes = (itemElement)=>{
-    let dayId        = itemElement.getAttribute("dayMS");
-    let hourId       = itemElement.getAttribute("data_hour");
-    let headerOfItem = document.querySelector(`.dayBlock[dayMS="${dayId}"] > p.hourHeader[data_hour="${hourId}"]`);
+    let dayId        = itemElement.getAttribute("dayId");
+    let hourId       = itemElement.getAttribute("hourId");
+    let headerOfItem = document.querySelector(`.dayBlock[dayId="${dayId}"] > p.hourHeader[hourId="${hourId}"]`);
         headerOfItem.classList.remove("zIndex2");
 };
 
 app.component.item.func.give.hourHeader_onViewPage_showingAttributes = (itemElement)=>{
-    let dayId        = itemElement.getAttribute("dayMS");
-    let hourId       = itemElement.getAttribute("data_hour");
-    let headerOfItem = document.querySelector(`.dayBlock[dayMS="${dayId}"] > p.hourHeader[data_hour="${hourId}"]`);
+    let dayId        = itemElement.getAttribute("dayId");
+    let hourId       = itemElement.getAttribute("hourId");
+    let headerOfItem = document.querySelector(`.dayBlock[dayId="${dayId}"] > p.hourHeader[hourId="${hourId}"]`);
         headerOfItem.classList.add("zIndex2");
 };
 
@@ -356,7 +356,7 @@ app.component.item.func.is.itemsUnderViewPageDay = ()=>{
         };
         if(Number(i) === app.component.item.objs.length-1
         && dayId !== null){
-            let itemsUnderViewPageDay = document.querySelectorAll(`.viewPage div.itemTile[dayMS="${dayId}"]`);
+            let itemsUnderViewPageDay = document.querySelectorAll(`.viewPage div.itemTile[dayId="${dayId}"]`);
             if( itemsUnderViewPageDay.length === 0){ // no itemsUnderHour
                 return false;
             }
@@ -377,7 +377,7 @@ app.component.item.func.is.itemsUnderViewPageHour = ()=>{
         };
         if(Number(i) === app.component.item.objs.length-1
         && hourId !== null){
-            let itemsUnderViewPageDay = document.querySelectorAll(`.viewPage div.itemTile[data_hour="${hourId}"]`);
+            let itemsUnderViewPageDay = document.querySelectorAll(`.viewPage div.itemTile[hourId="${hourId}"]`);
             if( itemsUnderViewPageDay.length === 0){ // no itemsUnderHour
                 return false;
             }
@@ -444,7 +444,7 @@ app.component.item.func.makeAppend.item_toAddPage = (timeSlot)=>{
     return new Promise((resolve)=>{
         let createdId = Date.now();
         let dayId     = app.component.dayDropper.setting.day[0];
-        let hourId    = Number(timeSlot.children[0].getAttribute("data_hour"));
+        let hourId    = Number(timeSlot.children[0].getAttribute("hourId"));
         let html = `
             <div class="itemTile zIndex2" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem_onAddPage(this)">
                 <span class="dot"></span>
@@ -464,7 +464,7 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     let itemObj                   = await app.component.item.func.get.itemObj_fromCreatedId(createdId);
     let dayId                     = itemObj.associated.day;
     let hourId                    = itemObj.associated.timeSlot;
-    let dayText                   = app.component.item.func.get.dayText_fromDayMS(dayId);
+    let dayText                   = app.component.item.func.get.dayText_fromDayId(dayId);
     let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
     let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayId);
     let AMorPM                    = app.component.timeSlot.func.get.AMorPM(hourId);
@@ -474,12 +474,12 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     // otherwise, check day and hour, if there, add under hour
     // if, day there but no hour, add under day with new hour
     let dayBlocks  = document.querySelectorAll('.dayBlock');
-    let dayBlock   = document.querySelector(`.dayBlock[dayMS="${dayId}"]`);
-    let hourHeader = document.querySelector(`.hourHeader[dayMS="${dayId}"][data_hour="${hourId}"]`);
+    let dayBlock   = document.querySelector(`.dayBlock[dayId="${dayId}"]`);
+    let hourHeader = document.querySelector(`.hourHeader[dayId="${dayId}"][hourId="${hourId}"]`);
 
-    let currentDayMS = app.component.dayDropper.func.get.day()[0];
+    let currentDayId = app.component.dayDropper.func.get.day()[0];
     let colorRed = "";
-    if( currentDayMS === dayId){
+    if( currentDayId === dayId){
         colorRed = "colorRed";
     };
 
@@ -488,16 +488,16 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
         let spacingClass = "";
         if(hr_12 < 10){spacingClass = "spacing";}
         let html = `
-            <div class="dayBlock" dayMS="${dayId}">
+            <div class="dayBlock" dayId="${dayId}">
                 <div class="dayHeader">
                     <p class="dayText ${colorRed}">${dayText}</p>
                     <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
                 </div>
-                <p class="hourHeader ${colorRed}" dayMS="${dayId}" data_hour="${hourId}">
+                <p class="hourHeader ${colorRed}" dayId="${dayId}" hourId="${hourId}">
                     <span class="${spacingClass}">${hr_12}</span>
                     <span>${AMorPM}</span>
                 </p>
-                <div class="itemTile hideItemTile" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+                <div class="itemTile hideItemTile" createdId="${itemObj.associated.createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
                     <span class="dot"></span>
                     <input class="itemField background_main" value="${itemObj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
                     <div class="minValues displayNone"></div>
@@ -523,16 +523,16 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
         let spacingClass = "";
         if(hr_12 < 10){spacingClass = "spacing";}
         let html = `
-            <div class="dayBlock" dayMS="${dayId}">
+            <div class="dayBlock" dayId="${dayId}">
                 <div class="dayHeader">
                     <p class="dayText ${colorRed}">${dayText}</p>
                     <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
                 </div>
-                <p class="hourHeader ${colorRed}" dayMS="${dayId}" data_hour="${hourId}">
+                <p class="hourHeader ${colorRed}" dayId="${dayId}" hourId="${hourId}">
                     <span class="${spacingClass}">${hr_12}</span>
                     <span>${AMorPM}</span>
                 </p>
-                <div class="itemTile hideItemTile" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+                <div class="itemTile hideItemTile" createdId="${itemObj.associated.createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
                     <span class="dot"></span>
                     <input class="itemField background_main" value="${itemObj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
                     <div class="minValues displayNone"></div>
@@ -549,7 +549,7 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
         let dayBlocks = document.querySelectorAll(`.dayBlock`);
         for(let i = 0; i < dayBlocks.length; i++){
             let dayBlock   = dayBlocks[i];
-            let dayBlockId = Number(dayBlocks[i].getAttribute("dayMS"));
+            let dayBlockId = Number(dayBlocks[i].getAttribute("dayId"));
             if( dayId < dayBlockId){
                 dayBlock.insertAdjacentHTML("beforebegin", html);
                 break;
@@ -564,15 +564,15 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     else
     if( dayBlock   !== null
     &&  hourHeader === null){
-        let hourHeaders = document.querySelectorAll(`.hourHeader[dayMS="${dayId}"]`);
+        let hourHeaders = document.querySelectorAll(`.hourHeader[dayId="${dayId}"]`);
         let spacingClass = "";
         if(hr_12 < 10){spacingClass = "spacing";}
         let html = `
-            <p class="hourHeader ${colorRed}" dayMS="${dayId}" data_hour="${hourId}">
+            <p class="hourHeader ${colorRed}" dayId="${dayId}" hourId="${hourId}">
                 <span class="${spacingClass}">${hr_12}</span>
                 <span>${AMorPM}</span>
             </p>
-            <div class="itemTile hideItemTile" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+            <div class="itemTile hideItemTile" createdId="${itemObj.associated.createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
                 <span class="dot"></span>
                 <input class="itemField background_main" value="${itemObj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
                 <div class="minValues displayNone"></div>
@@ -580,15 +580,15 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
             </div>
         `;
         for(let i = 0; i < hourHeaders.length; i++){
-            let hourHeaderId = Number(hourHeaders[i].getAttribute("data_hour"));
+            let hourHeaderId = Number(hourHeaders[i].getAttribute("hourId"));
             if(hourId > hourHeaderId){ // exceed hourHeaderId, append as last of itemTiles for that hour
-                let itemTilesForLastHourHeader = document.querySelectorAll(`.viewPage .itemTile[dayMS="${dayId}"][data_hour="${hourHeaderId}"]`);
+                let itemTilesForLastHourHeader = document.querySelectorAll(`.viewPage .itemTile[dayId="${dayId}"][hourId="${hourHeaderId}"]`);
                     itemTilesForLastHourHeader[itemTilesForLastHourHeader.length-1].insertAdjacentHTML("afterend", html);
                 break;
             }
             else
             if(i === hourHeaders.length-1){ // get to end/never exceeded a present hourHeaderId, append after matching hourHeader
-                let dayHeader = document.querySelector(`.dayBlock[dayMS="${dayId}"] > .dayHeader`);
+                let dayHeader = document.querySelector(`.dayBlock[dayId="${dayId}"] > .dayHeader`);
                     dayHeader.insertAdjacentHTML('afterend', html);
             };
         };
@@ -598,14 +598,14 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     if( dayBlock   !== null
     &&  hourHeader !== null){ // there is an hourHeader
         let html = `
-            <div class="itemTile hideItemTile" createdId="${itemObj.associated.createdId}" dayMS="${dayId}" data_hour="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+            <div class="itemTile hideItemTile" createdId="${itemObj.associated.createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
                 <span class="dot"></span>
                 <input class="itemField background_main" value="${itemObj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
                 <div class="minValues displayNone"></div>
                 <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
             </div>
         `;
-        let itemTilesForMatchingHourHeader = document.querySelectorAll(`.viewPage .itemTile[dayMS="${dayId}"][data_hour="${hourId}"]`);
+        let itemTilesForMatchingHourHeader = document.querySelectorAll(`.viewPage .itemTile[dayId="${dayId}"][hourId="${hourId}"]`);
             itemTilesForMatchingHourHeader[0].insertAdjacentHTML("beforebegin", html);
     };
 };
@@ -630,32 +630,32 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
     `;
     let setDay       = null;
     let setHour      = null;
-    let currentDayMS = app.component.dayDropper.func.get.day()[0];
+    let currentDayId = app.component.dayDropper.func.get.day()[0];
 
     for(let i in app.component.item.objs){
 
         let obj      = app.component.item.objs[i];
-        let dayMS    = obj.associated.day;
+        let dayId    = obj.associated.day;
         let timeSlot = Number(obj.associated.timeSlot);
 
-        let dateString                = `${new Date(dayMS)}`;
+        let dateString                = `${new Date(dayId)}`;
         let splits                    = dateString.split(" ");
         let month                     = splits[1];
         let dayName                   = splits[0];
         let dayNum                    = splits[2];
         let day_text                  = `${dayName} ${month} ${dayNum}`;
 
-        let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayMS);
-        let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayMS);
+        let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
+        let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayId);
 
         let colorRed = "";
-        if( currentDayMS === dayMS){
+        if( currentDayId === dayId){
             colorRed = "colorRed";
         };
 
         if( setDay === null){  // first iteration
             // console.log('1st');
-            setDay     = dayMS;
+            setDay     = dayId;
             setHour    = timeSlot;
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
             let hr_12  = app.component.timeSlot.func.get.to12Hour(timeSlot);
@@ -664,16 +664,16 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
                 spacingClass = "spacing";
             };
             html += `
-                    <div class="dayBlock" dayMS="${setDay}">
+                    <div class="dayBlock" dayId="${setDay}">
                         <div class="dayHeader" onclick="app.component.item.func.transition.hideItem_onViewPage(); app.component.item.func.remove.blurTile_fromViewPage()">
                             <p class="dayText ${colorRed}">${day_text}</p>
                             <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
                         </div>
-                        <p class="hourHeader ${colorRed}" dayMS="${setDay}" data_hour="${timeSlot}">
+                        <p class="hourHeader ${colorRed}" dayId="${setDay}" hourId="${timeSlot}">
                             <span class="${spacingClass}">${hr_12}</span>
                             <span>${AMorPM}</span>
                         </p>
-                        <div class="itemTile hideItemTile" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+                        <div class="itemTile hideItemTile" createdId="${obj.associated.createdId}" dayId="${setDay}" hourId="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
                             <span class="dot"></span>
                             <input class="itemField background_main" value="${obj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
                             <div class="minValues displayNone"></div>
@@ -682,15 +682,15 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
             `;
         }
         else
-        if( setDay  === dayMS      // same day
+        if( setDay  === dayId      // same day
         &&  setHour === timeSlot){ // same hour
             // console.log(`same day & hour
             //     text=${obj.setting.text}
-            //     dayMS=${dayMS}, setDay=${setDay}
+            //     dayId=${dayId}, setDay=${setDay}
             //     timeSlot=${timeSlot}, setHour=${setHour}
             // `);
             html += `
-                        <div class="itemTile hideItemTile" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+                        <div class="itemTile hideItemTile" createdId="${obj.associated.createdId}" dayId="${setDay}" hourId="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
                             <span class="dot"></span>
                             <input class="itemField background_main" value="${obj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
                             <div class="minValues displayNone"></div>
@@ -699,11 +699,11 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
             `;
         }
         else
-        if( setDay  === dayMS      // same day
+        if( setDay  === dayId      // same day
         &&  setHour !== timeSlot){ // diff hour
             // console.log(`same day, diff hour
             //     text=${obj.setting.text}
-            //     dayMS=${dayMS}, setDay=${setDay}
+            //     dayId=${dayId}, setDay=${setDay}
             //     timeSlot=${timeSlot}, setHour=${setHour}
             // `);
             setHour    = timeSlot;
@@ -712,11 +712,11 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
             let spacingClass = "";
             if(hr_12 < 10){spacingClass = "spacing";}
             html += `
-                        <p class="hourHeader ${colorRed}" dayMS="${setDay}" data_hour="${timeSlot}">
+                        <p class="hourHeader ${colorRed}" dayId="${setDay}" hourId="${timeSlot}">
                             <span class="${spacingClass}">${hr_12}</span>
                             <span>${AMorPM}</span>
                         </p>
-                        <div class="itemTile hideItemTile" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+                        <div class="itemTile hideItemTile" createdId="${obj.associated.createdId}" dayId="${setDay}" hourId="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
                             <span class="dot"></span>
                             <input class="itemField background_main" value="${obj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
                             <div class="minValues displayNone"></div>
@@ -725,13 +725,13 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
             `;
         }
         else
-        if(setDay !== dayMS){ // diff day
+        if(setDay !== dayId){ // diff day
             // console.log(`diff day
             //     text=${obj.setting.text}
-            //     dayMS=${dayMS}
+            //     dayId=${dayId}
             //     timeSlot=${timeSlot}
             // `);
-            setDay     = dayMS;
+            setDay     = dayId;
             setHour    = timeSlot;
             let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
             let hr_12  = app.component.timeSlot.func.get.to12Hour(timeSlot);
@@ -739,16 +739,16 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
             if(hr_12 < 10){spacingClass = "spacing";}
             html += `
                     </div>
-                    <div class="dayBlock" dayMS="${setDay}">
+                    <div class="dayBlock" dayId="${setDay}">
                         <div class="dayHeader" onclick="app.component.item.func.transition.hideItem_onViewPage(); app.component.item.func.remove.blurTile_fromViewPage()">
                             <p class="dayText ${colorRed}">${day_text}</p>
                             <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
                         </div>
-                        <p class="hourHeader ${colorRed}" dayMS="${setDay}" data_hour="${timeSlot}">
+                        <p class="hourHeader ${colorRed}" dayId="${setDay}" hourId="${timeSlot}">
                             <span class="${spacingClass}">${hr_12}</span>
                             <span>${AMorPM}</span>
                         </p>
-                        <div class="itemTile hideItemTile" createdId="${obj.associated.createdId}" dayMS="${setDay}" data_hour="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+                        <div class="itemTile hideItemTile" createdId="${obj.associated.createdId}" dayId="${setDay}" hourId="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
                             <span class="dot"></span>
                             <input class="itemField background_main" value="${obj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
                             <div class="minValues displayNone"></div>
@@ -841,12 +841,12 @@ app.component.item.func.remove.blurTile_fromViewPage = ()=>{
 };
 
 app.component.item.func.remove.dayHeader = (dayId)=>{
-    let dayHeader = document.querySelector(`.dayBlock[dayMS="${dayId}"]`);
+    let dayHeader = document.querySelector(`.dayBlock[dayId="${dayId}"]`);
         dayHeader.remove();
 };
 
 app.component.item.func.remove.hourHeader = (hourId)=>{
-    let hourHeader = document.querySelector(`.dayBlock > p.hourHeader[data_hour="${hourId}"]`);
+    let hourHeader = document.querySelector(`.dayBlock > p.hourHeader[hourId="${hourId}"]`);
         hourHeader.remove();
 };
 
@@ -865,8 +865,8 @@ app.component.item.func.remove.item_fromViewPage = ()=>{
         if (itemElementFromViewPage === null){ // need to avoid in case of removing an as yet to be created item(pre-submission)
             resolve();
         };
-        let dayId  = Number(itemElementFromViewPage.getAttribute("dayMS"));
-        let hourId = Number(itemElementFromViewPage.getAttribute("data_hour"));
+        let dayId  = Number(itemElementFromViewPage.getAttribute("dayId"));
+        let hourId = Number(itemElementFromViewPage.getAttribute("hourId"));
         itemElementFromViewPage.remove();
         if( app.component.item.func.is.itemsUnderViewPageHour() === false){
             app.component.item.func.remove.hourHeader(hourId);
@@ -1057,7 +1057,7 @@ app.component.item.func.transition.removeItem_fromViewPage = async()=>{
     app.component.dayDropper.func.makeAppend.dropperText(app.component.dayDropper.setting.day[0]);
     app.component.dayDropper.func.makeAppend.menuItems();
     /* give - dayInfoOnViewPage */
-    let dayId = Number(itemElement.getAttribute("dayMS"));
+    let dayId = Number(itemElement.getAttribute("dayId"));
     app.component.item.func.give.dayInfo_onViewPage_updatedInfo(dayId);
     /* state - selected OFF */
     app.component.item.state.selected = [false, false, null];

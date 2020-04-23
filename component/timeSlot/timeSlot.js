@@ -134,7 +134,7 @@ app.component.timeSlot.func.make.timeSlot = (hr, hr12, AMorPM)=>{
     let html = `
         <div class="slot">
             <div class="slotHeader" onclick="app.component.item.func.transition.createItem(this)">
-                <p class="time" data_hour="${hr}">
+                <p class="time" hourId="${hr}">
                     <span class="${spacingClass}">${hr12}</span>
                     <span>${AMorPM}</span>
                 </p>
