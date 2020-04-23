@@ -4,13 +4,13 @@ app.component.dayDropper.setting.day = null;
 app.component.dayDropper.state = {};
 app.component.dayDropper.state.open = [false, false, null];
 app.component.dayDropper.func = {};
-app.component.dayDropper.func.get          = {};
-app.component.dayDropper.func.give         = {};
-app.component.dayDropper.func.init         = {};
-app.component.dayDropper.func.makeAppend   = {};
-app.component.dayDropper.func.remove       = {};
-app.component.dayDropper.func.set          = {};
-app.component.dayDropper.func.transition   = {};
+app.component.dayDropper.func.get        = {};
+app.component.dayDropper.func.give       = {};
+app.component.dayDropper.func.init       = {};
+app.component.dayDropper.func.makeAppend = {};
+app.component.dayDropper.func.remove     = {};
+app.component.dayDropper.func.set        = {};
+app.component.dayDropper.func.transition = {};
 
 /* func hotkeys:
 GET
