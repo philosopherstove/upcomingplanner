@@ -417,24 +417,6 @@ app.component.item.func.is.objExist = (itemId)=>{
 /***
 MAKE
 ****/
-// app.component.item.func.make.dayHeader = async(itemObj)=>{
-//     let currentDayId              = app.component.dayDropper.func.get.day()[0];
-//     let dayId                     = itemObj.associated.day;
-//     let dayText                   = app.component.item.func.get.dayText_fromDayId(dayId);
-//     let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
-//     let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayId);
-//     let colorRed                  = "";
-//     if( currentDayId === dayId){
-//         colorRed = "colorRed";
-//     };
-//     let html = `
-//         <div class="dayHeader">
-//             <p class="dayText ${colorRed}">${dayText}</p>
-//             <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
-//         </div>
-//     `;
-//     return html;
-// };
 app.component.item.func.make.dayHeader = (itemObj)=>{
     return new Promise(async(resolve)=>{
         let currentDayId              = app.component.dayDropper.func.get.day()[0];
@@ -538,21 +520,15 @@ app.component.item.func.makeAppend.item_toAddPage = (itemObj)=>{
 };
 
 app.component.item.func.makeAppend.item_toViewPage = async()=>{
-    console.log('yup');
-    let createdId                 = Number(app.component.item.state.selected[2].getAttribute("createdId"));
-    let itemObj                   = await app.component.item.func.get.itemObj_fromCreatedId(createdId);
-
-    let dayId                     = itemObj.associated.day;
-    let hourId                    = itemObj.associated.timeSlot;
-
-    // try to find on view page with selector, if there, just changing the text
-    // otherwise, check day and hour, if there, add under hour
-    // if, day there but no hour, add under day with new hour
+    let createdId  = Number(app.component.item.state.selected[2].getAttribute("createdId"));
+    let itemObj    = await app.component.item.func.get.itemObj_fromCreatedId(createdId);
+    let dayId      = itemObj.associated.day;
+    let hourId     = itemObj.associated.timeSlot;
     let dayBlocks  = document.querySelectorAll('.dayBlock');
     let dayBlock   = document.querySelector(`.dayBlock[dayId="${dayId}"]`);
     let hourHeader = document.querySelector(`.hourHeader[dayId="${dayId}"][hourId="${hourId}"]`);
 
-    // case 1 - no dayblocks => order of append doesn't matter for 1st. This 1st case needs viewItemsWrapper
+    // Case 1 - no dayblocks => order of append doesn't matter for 1st. This 1st case needs viewItemsWrapper
     if(dayBlocks.length === 0){
         let html = `
             <div class="dayBlock" dayId="${dayId}">
@@ -573,7 +549,7 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
             viewItemsWrapper.innerHTML = html;
         };
     }
-    // case 2 - no matching dayblock => new dayBlock, append in correct spot
+    // Case 2 - no matching dayblock => new dayBlock, append in correct spot
     else
     if(dayBlock === null){
         let html = `
@@ -603,7 +579,7 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
             };
         };
     }
-    // case 3 - dayblock, no hourHeader => find dayBlock, createAppend hourHeader to approriate spot
+    // Case 3 - dayblock, no hourHeader => find dayBlock, createAppend hourHeader to approriate spot
     else
     if( dayBlock   !== null
     &&  hourHeader === null){
@@ -616,11 +592,11 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
             let hourHeader_1    = hourHeaders[i];
             let hourHeader_1_id = Number(hourHeader_1.getAttribute("hourId"));
             let hourHeader_2    = hourHeaders[i+1];
-            if( hourHeader_2 === undefined){ // IF only 1 || the last hourHeader => append right inside hourHeader_1
+            if( hourHeader_2 === undefined){ // If only 1 || the last hourHeader => append right inside hourHeader_1
                 let itemsForHourHeader_1 = document.querySelectorAll(`.viewPage .itemTile[dayId="${dayId}"][hourId="${hourHeader_1_id}"]`);
                 itemsForHourHeader_1[itemsForHourHeader_1.length-1].insertAdjacentHTML("afterend", html);
             }
-            else{ // get next hourHeader_2_id. IF item id falls between current header and next header => append before next header begins
+            else{ // get next hourHeader_2_id. If item id falls between current header and next header => append before next header begins
                 let hourHeader_2_id = Number(hourHeader_2.getAttribute("hourId"));
                 if( hourId > hourHeader_1_id
                 &&  hourId < hourHeader_2_id){
@@ -630,7 +606,7 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
             };
         };
     }
-    // case 4 - dayblock & hourHeader => find hourHeader, append hourHeader to appropriate spot
+    // Case 4 - dayblock & hourHeader => find hourHeader, append hourHeader to appropriate spot
     else
     if( dayBlock   !== null
     &&  hourHeader !== null){ // there is an hourHeader
