@@ -56,12 +56,14 @@ app.component.item.func.is.itemsUnderViewPageDay = ()=>{
 app.component.item.func.is.itemsUnderViewPageHour = ()=>{
 app.component.item.func.is.objExist = ()=>{
 MAKE
+app.component.item.func.make.dayHeader = (itemObj)=>{
+app.component.item.func.make.hourHeader = (itemObj)=>{
 app.component.item.func.make.item = (itemObj)=>{
 MAKEAPPEND
 app.component.item.func.makeAppend.blurTile_toAddPage = ()=>{
 app.component.item.func.makeAppend.blurTile_toViewPage = ()=>{
-app.component.item.func.makeAppend.filledItem = (obj)=>{
-app.component.item.func.makeAppend.item_toAddPage = (timeSlot)=>{
+app.component.item.func.makeAppend.itemEmpty_toAddPage = (timeSlot)=>{
+app.component.item.func.makeAppend.item_toAddPage = (itemObj)=>{
 app.component.item.func.makeAppend.item_toViewPage = async()=>{
 app.component.item.func.makeAppend.items_onAddPage_forDay = (dayId)=>{
 app.component.item.func.makeAppend.items_onViewPage = async()=>{
@@ -415,6 +417,68 @@ app.component.item.func.is.objExist = (itemId)=>{
 /***
 MAKE
 ****/
+// app.component.item.func.make.dayHeader = async(itemObj)=>{
+//     let currentDayId              = app.component.dayDropper.func.get.day()[0];
+//     let dayId                     = itemObj.associated.day;
+//     let dayText                   = app.component.item.func.get.dayText_fromDayId(dayId);
+//     let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
+//     let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayId);
+//     let colorRed                  = "";
+//     if( currentDayId === dayId){
+//         colorRed = "colorRed";
+//     };
+//     let html = `
+//         <div class="dayHeader">
+//             <p class="dayText ${colorRed}">${dayText}</p>
+//             <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
+//         </div>
+//     `;
+//     return html;
+// };
+app.component.item.func.make.dayHeader = (itemObj)=>{
+    return new Promise(async(resolve)=>{
+        let currentDayId              = app.component.dayDropper.func.get.day()[0];
+        let dayId                     = itemObj.associated.day;
+        let dayText                   = app.component.item.func.get.dayText_fromDayId(dayId);
+        let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
+        let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayId);
+        let colorRed                  = "";
+        if( currentDayId === dayId){
+            colorRed = "colorRed";
+        };
+        let html = `
+            <div class="dayHeader">
+                <p class="dayText ${colorRed}">${dayText}</p>
+                <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
+            </div>
+        `;
+        resolve(html);
+    });
+};
+
+app.component.item.func.make.hourHeader = (itemObj)=>{
+    let currentDayId = app.component.dayDropper.func.get.day()[0];
+    let dayId        = itemObj.associated.day;
+    let hourId       = itemObj.associated.timeSlot;
+    let AMorPM       = app.component.timeSlot.func.get.AMorPM(hourId);
+    let hr_12        = app.component.timeSlot.func.get.to12Hour(hourId);
+    let colorRed     = "";
+    if( currentDayId === dayId){
+        colorRed = "colorRed";
+    };
+    let spacingClass = "";
+    if( hr_12 < 10){
+        spacingClass = "spacing";
+    };
+    let html = `
+        <p class="hourHeader ${colorRed}" dayId="${dayId}" hourId="${hourId}">
+            <span class="${spacingClass}">${hr_12}</span>
+            <span>${AMorPM}</span>
+        </p>
+    `;
+    return html;
+};
+
 app.component.item.func.make.item = (itemObj)=>{
     let createdId = itemObj.associated.createdId;
     let dayId     = itemObj.associated.day;
@@ -447,25 +511,7 @@ app.component.item.func.makeAppend.blurTile_toViewPage = ()=>{
         viewPage.insertAdjacentHTML("afterbegin", html);
 };
 
-app.component.item.func.makeAppend.filledItem = (obj)=>{
-    let createdId = obj.associated.createdId;
-    let itemText  = obj.setting.text;
-    let dayId     = obj.associated.day;
-    let hourId    = obj.associated.timeSlot;
-    let html = `
-        <div class="itemTile hideItemTile" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem_onAddPage(this)">
-            <span class="dot"></span>
-            <input class="itemField background_main" spellcheck="false" onkeyup="app.component.item.func.post.item_fromAddPage_toDataStore()" value="${itemText}">
-            <div class="minValues displayNone"></div>
-            <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromAddPage();"></div>
-        </div>
-    `;
-    // let slotBody = document.querySelector(".timeSlots").children[0].children[hourId-1].children[0].nextElementSibling; // hourId used to locate correct slotBody to append to
-    let slotBody = document.querySelector(".timeSlots").children[0].children[hourId].children[0].nextElementSibling; // hourId used to locate correct slotBody to append to
-        slotBody.insertAdjacentHTML("beforeend", html);
-};
-
-app.component.item.func.makeAppend.item_toAddPage = (timeSlot)=>{
+app.component.item.func.makeAppend.itemEmpty_toAddPage = (timeSlot)=>{
     return new Promise((resolve)=>{
         let createdId = Date.now();
         let dayId     = app.component.dayDropper.setting.day[0];
@@ -484,16 +530,20 @@ app.component.item.func.makeAppend.item_toAddPage = (timeSlot)=>{
     });
 };
 
+app.component.item.func.makeAppend.item_toAddPage = (itemObj)=>{
+    let html     = app.component.item.func.make.item(itemObj);
+    let hourId   = itemObj.associated.timeSlot;
+    let slotBody = document.querySelector(".timeSlots").children[0].children[hourId].children[0].nextElementSibling; // hourId used to locate correct slotBody to append to
+        slotBody.insertAdjacentHTML("beforeend", html);
+};
+
 app.component.item.func.makeAppend.item_toViewPage = async()=>{
+    console.log('yup');
     let createdId                 = Number(app.component.item.state.selected[2].getAttribute("createdId"));
     let itemObj                   = await app.component.item.func.get.itemObj_fromCreatedId(createdId);
+
     let dayId                     = itemObj.associated.day;
     let hourId                    = itemObj.associated.timeSlot;
-    let dayText                   = app.component.item.func.get.dayText_fromDayId(dayId);
-    let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
-    let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayId);
-    let AMorPM                    = app.component.timeSlot.func.get.AMorPM(hourId);
-    let hr_12                     = app.component.timeSlot.func.get.to12Hour(hourId);
 
     // try to find on view page with selector, if there, just changing the text
     // otherwise, check day and hour, if there, add under hour
@@ -502,26 +552,12 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     let dayBlock   = document.querySelector(`.dayBlock[dayId="${dayId}"]`);
     let hourHeader = document.querySelector(`.hourHeader[dayId="${dayId}"][hourId="${hourId}"]`);
 
-    let currentDayId = app.component.dayDropper.func.get.day()[0];
-    let colorRed = "";
-    if( currentDayId === dayId){
-        colorRed = "colorRed";
-    };
-
     // case 1 - no dayblocks => order of append doesn't matter for 1st. This 1st case needs viewItemsWrapper
     if(dayBlocks.length === 0){
-        let spacingClass = "";
-        if(hr_12 < 10){spacingClass = "spacing";}
         let html = `
             <div class="dayBlock" dayId="${dayId}">
-                <div class="dayHeader">
-                    <p class="dayText ${colorRed}">${dayText}</p>
-                    <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
-                </div>
-                <p class="hourHeader ${colorRed}" dayId="${dayId}" hourId="${hourId}">
-                    <span class="${spacingClass}">${hr_12}</span>
-                    <span>${AMorPM}</span>
-                </p>
+                ${await app.component.item.func.make.dayHeader(itemObj)}
+                ${app.component.item.func.make.hourHeader(itemObj)}
                 ${app.component.item.func.make.item(itemObj)}
             </div>
         `;
@@ -540,18 +576,10 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     // case 2 - no matching dayblock => new dayBlock, append in correct spot
     else
     if(dayBlock === null){
-        let spacingClass = "";
-        if(hr_12 < 10){spacingClass = "spacing";}
         let html = `
             <div class="dayBlock" dayId="${dayId}">
-                <div class="dayHeader">
-                    <p class="dayText ${colorRed}">${dayText}</p>
-                    <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
-                </div>
-                <p class="hourHeader ${colorRed}" dayId="${dayId}" hourId="${hourId}">
-                    <span class="${spacingClass}">${hr_12}</span>
-                    <span>${AMorPM}</span>
-                </p>
+                ${await app.component.item.func.make.dayHeader(itemObj)}
+                ${app.component.item.func.make.hourHeader(itemObj)}
                 ${app.component.item.func.make.item(itemObj)}
             </div>
         `;
@@ -579,16 +607,11 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     else
     if( dayBlock   !== null
     &&  hourHeader === null){
-        let hourHeaders = document.querySelectorAll(`.hourHeader[dayId="${dayId}"]`);
-        let spacingClass = "";
-        if(hr_12 < 10){spacingClass = "spacing";}
         let html = `
-            <p class="hourHeader ${colorRed}" dayId="${dayId}" hourId="${hourId}">
-                <span class="${spacingClass}">${hr_12}</span>
-                <span>${AMorPM}</span>
-            </p>
+            ${app.component.item.func.make.hourHeader(itemObj)}
             ${app.component.item.func.make.item(itemObj)}
         `;
+        let hourHeaders = document.querySelectorAll(`.hourHeader[dayId="${dayId}"]`);
         for(let i = 0; i < hourHeaders.length; i++){
             let hourHeader_1    = hourHeaders[i];
             let hourHeader_1_id = Number(hourHeader_1.getAttribute("hourId"));
@@ -611,7 +634,7 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     else
     if( dayBlock   !== null
     &&  hourHeader !== null){ // there is an hourHeader
-        let html = `${app.component.item.func.make.item(itemObj)}`;
+        let html = app.component.item.func.make.item(itemObj);
         let itemTilesForMatchingHourHeader = document.querySelectorAll(`.viewPage .itemTile[dayId="${dayId}"][hourId="${hourId}"]`);
             itemTilesForMatchingHourHeader[0].insertAdjacentHTML("beforebegin", html);
     };
@@ -622,7 +645,7 @@ app.component.item.func.makeAppend.items_onAddPage_forDay = (dayId)=>{
         for(let i = app.component.item.objs.length-1; i > -1; i--){
             let obj = app.component.item.objs[i];
             if( obj.associated.day === dayId){
-                app.component.item.func.makeAppend.filledItem(obj);
+                app.component.item.func.makeAppend.item_toAddPage(obj);
             };
             if(i === 0){ // end of loop
                 resolve();
@@ -854,7 +877,6 @@ app.component.item.func.remove.dayHeader = (dayId)=>{
 
 app.component.item.func.remove.hourHeader = (dayId, hourId)=>{
     let hourHeader = document.querySelector(`.dayBlock[dayId="${dayId}"] p.hourHeader[hourId="${hourId}"]`);
-    console.log('remove hourHeader', hourHeader);
         hourHeader.remove();
 };
 
@@ -986,7 +1008,7 @@ app.component.item.func.transition.createItem = async(timeSlot)=>{
     if(app.component.item.state.selected[0] === true){
         return;
     };
-    await app.component.item.func.makeAppend.item_toAddPage(timeSlot);
+    await app.component.item.func.makeAppend.itemEmpty_toAddPage(timeSlot);
     app.component.item.func.makeAppend.blurTile_toAddPage();
     app.component.item.func.give.field_focus(timeSlot);
     app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withTimeSlot(timeSlot);
