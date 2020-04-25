@@ -174,17 +174,20 @@ app.component.item.func.delete.itemObj_fromLocalStorage = ()=>{
 app.component.item.func.delete.oldItemObjs_fromItemObjs = ()=>{
     return new Promise((resolve)=>{
         let startOfToday_ms = app.component.dayDropper.setting.day[0];
+        if( app.component.item.objs.length === 0){
+            resolve();
+            return;
+        };
         for(let i = 0; i < app.component.item.objs.length; i++){
             let obj = app.component.item.objs[i];
             if( obj.associated.day < startOfToday_ms){
                 app.component.item.objs.splice(i,1);
                 i--;
-            }
-            else // obj for today or later || end of loop => resolve
+            };
+            // If obj for today or later || end of loop => resolve
             if( obj.associated.day >= startOfToday_ms
             ||  i === app.component.item.objs.length-1){
                 resolve();
-                return;
             };
         };
     });
