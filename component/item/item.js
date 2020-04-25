@@ -529,27 +529,19 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     let dayBlocks  = document.querySelectorAll('.dayBlock');
     let dayBlock   = document.querySelector(`.dayBlock[dayId="${dayId}"]`);
     let hourHeader = document.querySelector(`.hourHeader[dayId="${dayId}"][hourId="${hourId}"]`);
-
-    // Case 1 - no dayblocks => order of append doesn't matter for 1st. This 1st case needs viewItemsWrapper
+    // Case 1 - no dayblocks. This 1st case needs viewItemsWrapper.
     if(dayBlocks.length === 0){
         let html = `
-            <div class="dayBlock" dayId="${dayId}">
-                ${await app.component.item.func.make.dayHeader(itemObj)}
-                ${app.component.item.func.make.hourHeader(itemObj)}
-                ${app.component.item.func.make.item(itemObj)}
+            <div class="viewItemsWrapper">
+                <div class="dayBlock" dayId="${dayId}">
+                    ${await app.component.item.func.make.dayHeader(itemObj)}
+                    ${app.component.item.func.make.hourHeader(itemObj)}
+                    ${app.component.item.func.make.item(itemObj)}
+                </div>
             </div>
         `;
-        let viewItemsWrapper = document.querySelector(".viewItemsWrapper");
-        if( viewItemsWrapper === null){
-            viewItemsWrapper           = document.createElement("div");
-            viewItemsWrapper.className = "viewItemsWrapper";
-            viewItemsWrapper.innerHTML = html;
-            let viewPage = document.querySelector(".viewPage");
-                viewPage.appendChild(viewItemsWrapper);
-        }
-        else{
-            viewItemsWrapper.innerHTML = html;
-        };
+        let viewPage = document.querySelector(".viewPage");
+            viewPage.innerHTML = html;
     }
     // Case 2 - no matching dayblock => new dayBlock, append in correct spot
     else
@@ -561,12 +553,7 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
                 ${app.component.item.func.make.item(itemObj)}
             </div>
         `;
-        /* How to determine where to append dayBlock:
-        --- querySelectorAll dayBlock
-        --- loop them
-        --- greater/less than compare dayId and dayBlockId
-        --- when dayId greater than given dayBlockId,
-        --- insert new dayBlock before this dayBlock */
+        /* Loop dayBlocks, when dayId less than given dayBlockId, append before that dayBlock */
         let dayBlocks = document.querySelectorAll(`.dayBlock`);
         for(let i = 0; i < dayBlocks.length; i++){
             let dayBlock   = dayBlocks[i];
@@ -611,7 +598,7 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     // Case 4 - dayblock & hourHeader => find hourHeader, append hourHeader to appropriate spot
     else
     if( dayBlock   !== null
-    &&  hourHeader !== null){ // there is an hourHeader
+    &&  hourHeader !== null){
         let html = app.component.item.func.make.item(itemObj);
         let itemTilesForMatchingHourHeader = document.querySelectorAll(`.viewPage .itemTile[dayId="${dayId}"][hourId="${hourId}"]`);
             itemTilesForMatchingHourHeader[0].insertAdjacentHTML("beforebegin", html);
