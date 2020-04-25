@@ -652,7 +652,9 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
         else
         if( setDay  === dayId    // same day
         &&  setHour === hourId){ // same hour
-            html += app.component.item.func.make.item(itemObj);
+            html += `
+                        ${app.component.item.func.make.item(itemObj)}
+            `;
         }
         else
         if( setDay  === dayId    // same day
