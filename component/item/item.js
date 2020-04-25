@@ -477,7 +477,6 @@ app.component.item.func.make.item = (itemObj)=>{
     return html;
 };
 
-
 /*********
 MAKEAPPEND
 **********/
@@ -631,138 +630,51 @@ app.component.item.func.makeAppend.items_onAddPage_forDay = (dayId)=>{
 };
 
 app.component.item.func.makeAppend.items_onViewPage = async()=>{
+    let setDay  = null;
+    let setHour = null;
     let html = `
         <div class="viewItemsWrapper">
     `;
-    let setDay       = null;
-    let setHour      = null;
-    let currentDayId = app.component.dayDropper.func.get.day()[0];
-
     for(let i in app.component.item.objs){
-
-        let obj      = app.component.item.objs[i];
-        let dayId    = obj.associated.day;
-        let timeSlot = Number(obj.associated.timeSlot);
-
-        let dateString                = `${new Date(dayId)}`;
-        let splits                    = dateString.split(" ");
-        let month                     = splits[1];
-        let dayName                   = splits[0];
-        let dayNum                    = splits[2];
-        let day_text                  = `${dayName} ${month} ${dayNum}`;
-
-        let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
-        let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayId);
-
-        let colorRed = "";
-        if( currentDayId === dayId){
-            colorRed = "colorRed";
-        };
-
-        if( setDay === null){  // first iteration
-            // console.log('1st');
-            setDay     = dayId;
-            setHour    = timeSlot;
-            let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
-            let hr_12  = app.component.timeSlot.func.get.to12Hour(timeSlot);
-            let spacingClass = "";
-            if(hr_12 < 10){
-                spacingClass = "spacing";
-            };
+        let itemObj = app.component.item.objs[i];
+        let dayId   = itemObj.associated.day;
+        let hourId  = Number(itemObj.associated.timeSlot);
+        if( setDay === null){ // first iteration
+            setDay  = dayId;
+            setHour = hourId;
             html += `
                     <div class="dayBlock" dayId="${setDay}">
-                        <div class="dayHeader" onclick="app.component.item.func.transition.hideItem_onViewPage(); app.component.item.func.remove.blurTile_fromViewPage()">
-                            <p class="dayText ${colorRed}">${day_text}</p>
-                            <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
-                        </div>
-                        <p class="hourHeader ${colorRed}" dayId="${setDay}" hourId="${timeSlot}">
-                            <span class="${spacingClass}">${hr_12}</span>
-                            <span>${AMorPM}</span>
-                        </p>
-                        <div class="itemTile hideItemTile" createdId="${obj.associated.createdId}" dayId="${setDay}" hourId="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
-                            <span class="dot"></span>
-                            <input class="itemField background_main" value="${obj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
-                            <div class="minValues displayNone"></div>
-                            <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
-                        </div>
+                        ${await app.component.item.func.make.dayHeader(itemObj)}
+                        ${app.component.item.func.make.hourHeader(itemObj)}
+                        ${app.component.item.func.make.item(itemObj)}
             `;
         }
         else
-        if( setDay  === dayId      // same day
-        &&  setHour === timeSlot){ // same hour
-            // console.log(`same day & hour
-            //     text=${obj.setting.text}
-            //     dayId=${dayId}, setDay=${setDay}
-            //     timeSlot=${timeSlot}, setHour=${setHour}
-            // `);
+        if( setDay  === dayId    // same day
+        &&  setHour === hourId){ // same hour
+            html += app.component.item.func.make.item(itemObj);
+        }
+        else
+        if( setDay  === dayId    // same day
+        &&  setHour !== hourId){ // diff hour
+            setHour = hourId;
             html += `
-                        <div class="itemTile hideItemTile" createdId="${obj.associated.createdId}" dayId="${setDay}" hourId="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
-                            <span class="dot"></span>
-                            <input class="itemField background_main" value="${obj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
-                            <div class="minValues displayNone"></div>
-                            <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
-                        </div>
+                        ${app.component.item.func.make.hourHeader(itemObj)}
+                        ${app.component.item.func.make.item(itemObj)}
             `;
         }
         else
-        if( setDay  === dayId      // same day
-        &&  setHour !== timeSlot){ // diff hour
-            // console.log(`same day, diff hour
-            //     text=${obj.setting.text}
-            //     dayId=${dayId}, setDay=${setDay}
-            //     timeSlot=${timeSlot}, setHour=${setHour}
-            // `);
-            setHour    = timeSlot;
-            let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
-            let hr_12  = app.component.timeSlot.func.get.to12Hour(timeSlot);
-            let spacingClass = "";
-            if(hr_12 < 10){spacingClass = "spacing";}
-            html += `
-                        <p class="hourHeader ${colorRed}" dayId="${setDay}" hourId="${timeSlot}">
-                            <span class="${spacingClass}">${hr_12}</span>
-                            <span>${AMorPM}</span>
-                        </p>
-                        <div class="itemTile hideItemTile" createdId="${obj.associated.createdId}" dayId="${setDay}" hourId="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
-                            <span class="dot"></span>
-                            <input class="itemField background_main" value="${obj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
-                            <div class="minValues displayNone"></div>
-                            <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
-                        </div>
-            `;
-        }
-        else
-        if(setDay !== dayId){ // diff day
-            // console.log(`diff day
-            //     text=${obj.setting.text}
-            //     dayId=${dayId}
-            //     timeSlot=${timeSlot}
-            // `);
-            setDay     = dayId;
-            setHour    = timeSlot;
-            let AMorPM = app.component.timeSlot.func.get.AMorPM(timeSlot);
-            let hr_12  = app.component.timeSlot.func.get.to12Hour(timeSlot);
-            let spacingClass = "";
-            if(hr_12 < 10){spacingClass = "spacing";}
+        if( setDay !== dayId){ // diff day
+            setDay  = dayId;
+            setHour = hourId;
             html += `
                     </div>
                     <div class="dayBlock" dayId="${setDay}">
-                        <div class="dayHeader" onclick="app.component.item.func.transition.hideItem_onViewPage(); app.component.item.func.remove.blurTile_fromViewPage()">
-                            <p class="dayText ${colorRed}">${day_text}</p>
-                            <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
-                        </div>
-                        <p class="hourHeader ${colorRed}" dayId="${setDay}" hourId="${timeSlot}">
-                            <span class="${spacingClass}">${hr_12}</span>
-                            <span>${AMorPM}</span>
-                        </p>
-                        <div class="itemTile hideItemTile" createdId="${obj.associated.createdId}" dayId="${setDay}" hourId="${timeSlot}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
-                            <span class="dot"></span>
-                            <input class="itemField background_main" value="${obj.setting.text}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
-                            <div class="minValues displayNone"></div>
-                            <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
-                        </div>
+                        ${await app.component.item.func.make.dayHeader(itemObj)}
+                        ${app.component.item.func.make.hourHeader(itemObj)}
+                        ${app.component.item.func.make.item(itemObj)}
             `;
         };
-
         if(Number(i) === app.component.item.objs.length-1){ // end of loop, closing tags & append
             html += `
                     </div>
