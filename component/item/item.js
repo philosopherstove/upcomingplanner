@@ -585,7 +585,7 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
             };
         };
     }
-    // Case 3 - dayblock, no hourHeader => find dayBlock, createAppend hourHeader to approriate spot
+    // Case 3 - dayblock, no hourHeader => find dayBlock, createAppend hourHeader to appropriate spot
     else
     if( dayBlock   !== null
     &&  hourHeader === null){
@@ -595,20 +595,15 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
         `;
         let hourHeaders = document.querySelectorAll(`.hourHeader[dayId="${dayId}"]`);
         for(let i = 0; i < hourHeaders.length; i++){
-            let hourHeader_1    = hourHeaders[i];
-            let hourHeader_1_id = Number(hourHeader_1.getAttribute("hourId"));
-            let hourHeader_2    = hourHeaders[i+1];
-            if( hourHeader_2 === undefined){ // If only 1 || the last hourHeader => append right inside hourHeader_1
-                let itemsForHourHeader_1 = document.querySelectorAll(`.viewPage .itemTile[dayId="${dayId}"][hourId="${hourHeader_1_id}"]`);
-                itemsForHourHeader_1[itemsForHourHeader_1.length-1].insertAdjacentHTML("afterend", html);
-            }
-            else{ // get next hourHeader_2_id. If item id falls between current header and next header => append before next header begins
-                let hourHeader_2_id = Number(hourHeader_2.getAttribute("hourId"));
-                if( hourId > hourHeader_1_id
-                &&  hourId < hourHeader_2_id){
-                    hourHeader_2.insertAdjacentHTML("beforebegin", html);
-                    break;
-                };
+            let hourHeader    = hourHeaders[i];
+            let hourHeaderId = Number(hourHeader.getAttribute("hourId"));
+            if( hourId < hourHeaderId){
+                hourHeader.insertAdjacentHTML("beforebegin", html);
+                break;
+            };
+            if(i === hourHeaders.length-1){
+                let itemsForHourHeader = document.querySelectorAll(`.viewPage .itemTile[dayId="${dayId}"][hourId="${hourHeaderId}"]`);
+                    itemsForHourHeader[itemsForHourHeader.length-1].insertAdjacentHTML("afterend", html);
             };
         };
     }
