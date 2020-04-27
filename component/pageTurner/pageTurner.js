@@ -27,12 +27,6 @@ INIT
 app.component.pageTurner.func.init.component = ()=>{
 */
 
-
-// let left = app.component.pageTurner.element.pagesSlide.style.left;
-// console.log('left', left[app.component.pageTurner.element.pagesSlide.style.left.length-1]);
-// console.log(app.component.pageTurner.element.pagesSlide.style.left[app.component.pageTurner.element.pagesSlide.style.left.length-1]);
-
-
 /**
 GET
 ***/
@@ -79,6 +73,7 @@ app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
         appElement.addEventListener("mousemove", ()=>{
             event.stopPropagation();
             if( app.component.pageTurner.state.active[0] === true){
+                console.log("MOVE");
                 app.component.pageTurner.setting.currentXPx = event.clientX;
                 let pxDifference = app.component.pageTurner.setting.currentXPx - app.component.pageTurner.setting.startXPx;
                 let newLeft = app.component.pageTurner.setting.startLeftPx + pxDifference;
