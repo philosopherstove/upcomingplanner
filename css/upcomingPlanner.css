@@ -72,6 +72,8 @@ body {
     height: 100vh;
 	margin: 0 auto;
 	overflow: hidden;
+
+    border: 1px solid black;
 }
 
 .pagesSlide {

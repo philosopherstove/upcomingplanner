@@ -470,11 +470,11 @@ app.component.item.func.make.item = (itemObj)=>{
     let hourId    = itemObj.associated.timeSlot;
     let itemText  = itemObj.setting.text;
     let html = `
-        <div class="itemTile hideItemTile" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+        <div class="itemTile hideItemTile" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem_onAddPage(this)">
             <span class="dot"></span>
-            <input class="itemField background_main" value="${itemText}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
+            <input class="itemField background_main" value="${itemText}" onkeyup="app.component.item.func.post.item_fromAddPage_toDataStore()" spellcheck="false" readonly>
             <div class="minValues displayNone"></div>
-            <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage();"></div>
+            <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromAddPage();"></div>
         </div>
     `;
     return html;
@@ -772,6 +772,10 @@ app.component.item.func.remove.item_fromViewPage = ()=>{
     return new Promise((resolve)=>{
         let createdId               = Number(app.component.item.state.selected[2].getAttribute("createdId"));
         let itemElementFromViewPage = document.querySelector(`.viewPage .itemTile[createdId="${createdId}"]`);
+        if( itemElementFromViewPage === null){
+            resolve();
+            return;
+        };
         let dayId                   = Number(itemElementFromViewPage.getAttribute("dayId"));
         let hourId                  = Number(itemElementFromViewPage.getAttribute("hourId"));
         if (itemElementFromViewPage === null){ // need to avoid in case of removing an as yet to be created item(pre-submission)
