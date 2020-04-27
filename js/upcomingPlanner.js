@@ -27,16 +27,16 @@ app.func.init.refreshDaily = ()=>{
     },nextRefresh_ms);
 };
 
-app.func.is.point_withinElement = (pointArray, element)=>{
-    if(element === null){
+app.func.is.point_withinElement = (pointArray, elem)=>{
+    if(elem === null){
         return;
     };
 	let x           = pointArray[0];
 	let y           = pointArray[1];
-	let leftBound   = element.getBoundingClientRect().left;
-	let rightBound  = element.getBoundingClientRect().right;
-	let topBound    = element.getBoundingClientRect().top;
-	let bottomBound = element.getBoundingClientRect().bottom;
+	let leftBound   = elem.getBoundingClientRect().left;
+	let rightBound  = elem.getBoundingClientRect().right;
+	let topBound    = elem.getBoundingClientRect().top;
+	let bottomBound = elem.getBoundingClientRect().bottom;
 	if(x > leftBound
 	&& x < rightBound
 	&& y > topBound
