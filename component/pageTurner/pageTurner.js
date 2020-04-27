@@ -64,8 +64,11 @@ app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
     let appElement = document.querySelector(".app");
         appElement.addEventListener("mousedown", ()=>{
             event.stopPropagation();
-            app.component.pageTurner.state.active[0]     = true;
+            if( app.func.is.point_withinElement([event.clientX, event.clientY], document.querySelector(".footer")) === true ){
+                return; /* if user down within footer */
+            };
             app.component.pageTurner.setting.startXPx    = event.clientX;
+            app.component.pageTurner.state.active[0]     = true;
             app.component.pageTurner.setting.startLeftPx = app.component.pageTurner.func.get.appLeftPx();
             app.component.pageTurner.element.pagesSlide.style.left = `${app.component.pageTurner.setting.startLeftPx}px`;
             app.component.pageTurner.setting.startWidth  = appElement.getBoundingClientRect().width;
