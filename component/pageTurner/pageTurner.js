@@ -113,9 +113,8 @@ app.component.pageTurner.func.event.userDown = ()=>{
         app.component.pageTurner.setting.startLeftPx = app.component.pageTurner.func.get.appLeftPx(); // ui set-up with %. This converts to px.
         app.component.pageTurner.setting.startWidth  = appElement.getBoundingClientRect().width;
         app.component.pageTurner.setting.startXPx    = event.clientX;
-        if(app.component.pageTurner.setting.startXPx == undefined){ // event.clientX undefined on touch devices. So then use event.touches[0].clientX
+        if(event.clientX == undefined){ // event.clientX undefined on touch devices. So then use event.touches[0].clientX
             app.component.pageTurner.setting.startXPx = event.touches[0].clientX;
-            console.log('better', app.component.pageTurner.setting.startXPx);
         };
         let slider = document.querySelector(".slider");
             slider.style.left = `${app.component.pageTurner.setting.startLeftPx}px`; // sets initial left to converted px.
@@ -136,6 +135,9 @@ app.component.pageTurner.func.event.userMove = ()=>{
         // console.log("MOVE");
         app.component.pageTurner.state.preventClick = true;
         app.component.pageTurner.setting.currentXPx = event.clientX;
+        if(event.clientX == undefined){
+            app.component.pageTurner.setting.currentXPx = event.touches[0].clientX;
+        };
         let pxDifference      = app.component.pageTurner.setting.currentXPx - app.component.pageTurner.setting.startXPx;
         let newLeft           = app.component.pageTurner.setting.startLeftPx + pxDifference;
 
