@@ -223,7 +223,7 @@ app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
         //     };
         // });
         appElement.addEventListener("mousedown", app.component.pageTurner.func.event.userDown);
-        appElement.addEventListener("touchdown", app.component.pageTurner.func.event.userDown);
+        appElement.addEventListener("touchstart", app.component.pageTurner.func.event.userDown);
 
         // appElement.addEventListener("mousemove", ()=>{
         //     event.stopPropagation();
@@ -261,7 +261,7 @@ app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
         //     };
         // });
         appElement.addEventListener("mouseup", app.component.pageTurner.func.event.userUp);
-        appElement.addEventListener("touchup", app.component.pageTurner.func.event.userUp);
+        appElement.addEventListener("touchend", app.component.pageTurner.func.event.userUp);
 };
 
 app.component.pageTurner.func.give.viewPageButton_offPageAttributes = ()=>{
