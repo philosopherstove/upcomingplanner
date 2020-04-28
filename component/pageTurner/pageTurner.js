@@ -97,7 +97,7 @@ app.component.pageTurner.state.active[1] = false;
 EVENT
 *****/
 app.component.pageTurner.func.event.userDown = ()=>{
-    event.stopPropagation();
+    // event.stopPropagation();
     // event.preventDefault();
     let appElement = document.querySelector(".app");
     if( app.component.pageTurner.state.active[0] === false){
