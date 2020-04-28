@@ -901,16 +901,16 @@ app.component.item.func.sort.itemObjs_byTime = ()=>{
 TRANSITION
 **********/
 app.component.item.func.transition.createItem = async(timeSlot)=>{
-    if(app.component.item.state.selected[0] === true){
-        return;
+    if( app.component.item.state.selected[0] === false
+    &&  app.component.pageTurner.state.preventClick === false){ // pageTurner can't be preventing click
+        await app.component.item.func.makeAppend.itemEmpty_toAddPage(timeSlot);
+        app.component.item.func.makeAppend.blurTile_toAddPage();
+        app.component.item.func.give.field_focus(timeSlot);
+        app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withTimeSlot(timeSlot);
+        /* state - selected ON */
+        let item = timeSlot.nextElementSibling.children[0];
+        app.component.item.state.selected = [true, false, item];
     };
-    await app.component.item.func.makeAppend.itemEmpty_toAddPage(timeSlot);
-    app.component.item.func.makeAppend.blurTile_toAddPage();
-    app.component.item.func.give.field_focus(timeSlot);
-    app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withTimeSlot(timeSlot);
-    /* state - selected ON */
-    let item = timeSlot.nextElementSibling.children[0];
-    app.component.item.state.selected = [true, false, item];
 };
 
 app.component.item.func.transition.hideItem_onAddPage = ()=>{
@@ -991,7 +991,8 @@ app.component.item.func.transition.removeItem_fromViewPage = async()=>{
 
 app.component.item.func.transition.showItem_onAddPage = async(itemElement)=>{
     event.stopPropagation();
-    if( app.component.item.state.selected[0] === false){
+    if( app.component.item.state.selected[0] === false
+    &&  app.component.pageTurner.state.preventClick === false){ // pageTurner can't be preventing click
         /* state - selected ON */
         app.component.item.state.selected = [true, false, itemElement];
         /* give - showingAttribiutes field, hourHeader, tile, trash */
@@ -1006,7 +1007,8 @@ app.component.item.func.transition.showItem_onAddPage = async(itemElement)=>{
 
 app.component.item.func.transition.showItem_onViewPage = (itemElement)=>{
     event.stopPropagation();
-    if( app.component.item.state.selected[0] === false){
+    if( app.component.item.state.selected[0] === false
+    &&  app.component.pageTurner.state.preventClick === false){ // pageTurner can't be preventing click
         /* state - selected ON */
         app.component.item.state.selected = [true, false, itemElement];
         /* give - showingAttributes dayHeader, field, hourHeader, tile, trash */

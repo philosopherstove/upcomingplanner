@@ -338,7 +338,8 @@ app.component.dayDropper.func.transition.closeDropdown = async()=>{
 
 app.component.dayDropper.func.transition.openDropdown = ()=>{
     if( app.component.dayDropper.state.open[0] === false
-    &&  app.component.dayDropper.state.open[1] === false){
+    &&  app.component.dayDropper.state.open[1] === false
+    &&  app.component.pageTurner.state.preventClick === false){ // pageTurner can't be preventing click
         event.stopPropagation();
         app.component.dayDropper.state.open[1] = true; // turn transitioning bool ON
         app.component.dayDropper.func.makeAppend.blurTile();
