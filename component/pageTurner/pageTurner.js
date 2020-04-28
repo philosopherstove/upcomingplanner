@@ -226,7 +226,7 @@ app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
         //     };
         // });
         appElement.addEventListener("mousedown", app.component.pageTurner.func.event.userDown);
-        appElement.addEventListener("touchstart", app.component.pageTurner.func.event.userDown);
+        // appElement.addEventListener("touchstart", app.component.pageTurner.func.event.userDown);
 
         // appElement.addEventListener("mousemove", ()=>{
         //     event.stopPropagation();
