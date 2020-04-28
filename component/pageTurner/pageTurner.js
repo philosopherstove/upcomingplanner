@@ -98,6 +98,7 @@ EVENT
 *****/
 app.component.pageTurner.func.event.userDown = ()=>{
     event.stopPropagation();
+    event.preventDefault();
     let appElement = document.querySelector(".app");
     if( app.component.pageTurner.state.active[0] === false){
         if( app.func.is.point_withinElement([event.clientX, event.clientY], document.querySelector(".footer")) === true ){
@@ -126,6 +127,7 @@ app.component.pageTurner.func.event.userDown = ()=>{
 
 app.component.pageTurner.func.event.userMove = ()=>{
     event.stopPropagation();
+    event.preventDefault();
     if( app.component.pageTurner.state.active[0] === true){
         // console.log("MOVE");
         app.component.pageTurner.state.preventClick = true;
@@ -142,6 +144,7 @@ app.component.pageTurner.func.event.userMove = ()=>{
 
 app.component.pageTurner.func.event.userUp = ()=>{
     event.stopPropagation();
+    event.preventDefault();
     if( app.component.pageTurner.state.active[0] === true){
         // console.log("UP");
         app.component.pageTurner.state.active[0] = false;
