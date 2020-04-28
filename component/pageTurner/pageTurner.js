@@ -226,7 +226,7 @@ app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
         //     };
         // });
         appElement.addEventListener("mousedown", app.component.pageTurner.func.event.userDown);
-        // appElement.addEventListener("touchstart", app.component.pageTurner.func.event.userDown);
+        appElement.addEventListener("touchstart", app.component.pageTurner.func.event.userDown);
 
         // appElement.addEventListener("mousemove", ()=>{
         //     event.stopPropagation();
@@ -244,7 +244,7 @@ app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
         //     };
         // });
         appElement.addEventListener("mousemove", app.component.pageTurner.func.event.userMove);
-        // appElement.addEventListener("touchmove", app.component.pageTurner.func.event.userMove);
+        appElement.addEventListener("touchmove", app.component.pageTurner.func.event.userMove);
 
         // appElement.addEventListener("mouseup", ()=>{
         //     event.stopPropagation();
@@ -264,7 +264,7 @@ app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
         //     };
         // });
         appElement.addEventListener("mouseup", app.component.pageTurner.func.event.userUp);
-        // appElement.addEventListener("touchend", app.component.pageTurner.func.event.userUp);
+        appElement.addEventListener("touchend", app.component.pageTurner.func.event.userUp);
 };
 
 app.component.pageTurner.func.give.viewPageButton_offPageAttributes = ()=>{
@@ -281,19 +281,18 @@ app.component.pageTurner.func.give.viewPageButton_onPageAttributes = ()=>{
 
 app.component.pageTurner.func.give.footerButtons_pageTurnerClickListeners = ()=>{
     let addPageButton = document.querySelector(".addPageButton");
-        addPageButton.addEventListener(
-            "click",
-            app.component.pageTurner.func.give.slider_addPageAttributes,
-            app.component.pageTurner.func.give.addPageButton_onPageAttributes,
-            app.component.pageTurner.func.give.viewPageButton_offPageAttributes
-        );
+        addPageButton.addEventListener("click", ()=>{
+            app.component.pageTurner.func.give.slider_addPageAttributes();
+            app.component.pageTurner.func.give.addPageButton_onPageAttributes();
+            app.component.pageTurner.func.give.viewPageButton_offPageAttributes();
+        });
+
     let viewPageButton = document.querySelector(".viewPageButton");
-        viewPageButton.addEventListener(
-            "click",
-            app.component.pageTurner.func.give.slider_viewPageAttributes,
-            app.component.pageTurner.func.give.addPageButton_offPageAttributes,
-            app.component.pageTurner.func.give.viewPageButton_onPageAttributes
-        );
+        viewPageButton.addEventListener("click", ()=>{
+            app.component.pageTurner.func.give.slider_viewPageAttributes();
+            app.component.pageTurner.func.give.addPageButton_offPageAttributes();
+            app.component.pageTurner.func.give.viewPageButton_onPageAttributes();
+        });
 };
 
 app.component.pageTurner.func.give.slider_addPageAttributes = ()=>{
