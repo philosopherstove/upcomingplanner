@@ -113,6 +113,7 @@ app.component.pageTurner.func.event.userDown = ()=>{
         app.component.pageTurner.setting.startLeftPx = app.component.pageTurner.func.get.appLeftPx(); // ui set-up with %. This converts to px.
         app.component.pageTurner.setting.startWidth  = appElement.getBoundingClientRect().width;
         app.component.pageTurner.setting.startXPx    = event.clientX;
+alert(app.component.pageTurner.setting.startXPx);
         let slider = document.querySelector(".slider");
             slider.style.left = `${app.component.pageTurner.setting.startLeftPx}px`; // sets initial left to converted px.
             slider.classList.remove("sliderTrans");
@@ -226,7 +227,7 @@ app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
         //     };
         // });
         appElement.addEventListener("mousedown", app.component.pageTurner.func.event.userDown);
-        // appElement.addEventListener("touchstart", app.component.pageTurner.func.event.userDown);
+        appElement.addEventListener("touchstart", app.component.pageTurner.func.event.userDown);
 
         // appElement.addEventListener("mousemove", ()=>{
         //     event.stopPropagation();
