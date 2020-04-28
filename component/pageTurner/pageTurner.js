@@ -1,6 +1,6 @@
 app.component.pageTurner = {};
-app.component.pageTurner.elem = {};
-app.component.pageTurner.elem.pagesSlide = document.querySelector(".pagesSlide");
+// app.component.pageTurner.elem = {};
+// app.component.pageTurner.elem.slider = document.querySelector(".slider");
 app.component.pageTurner.setting = {};
 app.component.pageTurner.setting.pvtr        = app.func.calc.b([.3,.8,.5,.9]);
 app.component.pageTurner.setting.startXPx    = null;
@@ -17,14 +17,19 @@ app.component.pageTurner.func.init = {};
 
 /*
 func hotkeys:
+ANIM
+app.component.pageTurner.func.anim.slider_toPosition = (tTotal, elem, sPos, fPos)=>{
+GET
+app.component.pageTurner.func.get.appLeftPx = ()=>{
 GIVE
 app.component.pageTurner.func.give.addPageButton_offPageAttributes = ()=>{
 app.component.pageTurner.func.give.addPageButton_onPageAttributes = ()=>{
+app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
 app.component.pageTurner.func.give.viewPageButton_offPageAttributes = ()=>{
 app.component.pageTurner.func.give.viewPageButton_onPageAttributes = ()=>{
 app.component.pageTurner.func.give.footerButtons_pageTurnerClickListeners = ()=>{
-app.component.pageTurner.func.give.pagesSlide_addPageAttributes = ()=>{
-app.component.pageTurner.func.give.pagesSlide_viewPageAttributes = ()=>{
+app.component.pageTurner.func.give.slider_addPageAttributes = ()=>{
+app.component.pageTurner.func.give.slider_viewPageAttributes = ()=>{
 INIT
 app.component.pageTurner.func.init.component = ()=>{
 */
@@ -32,7 +37,7 @@ app.component.pageTurner.func.init.component = ()=>{
 /***
 ANIM
 ****/
-app.component.pageTurner.func.anim.pagesSlide_toPosition = (tTotal, elem, sPos, fPos)=>{
+app.component.pageTurner.func.anim.slider_toPosition = (tTotal, elem, sPos, fPos)=>{
     let dCurr;
     let dRatio;
     let dTotal = fPos - sPos;
@@ -71,15 +76,16 @@ GET
 ***/
 app.component.pageTurner.func.get.appLeftPx = ()=>{
     let appElement = document.querySelector(".app");
-    let pxWidth    = appElement.getBoundingClientRect().width;
-    if(app.component.pageTurner.elem.pagesSlide.style.left[app.component.pageTurner.elem.pagesSlide.style.left.length-1] === "%"){
-        let leftPercent = Number(app.component.pageTurner.elem.pagesSlide.style.left.split("%")[0]);
+    let appPxWidth = appElement.getBoundingClientRect().width;
+    let slider     = document.querySelector(".slider");
+    if(slider.style.left[slider.style.left.length-1] === "%"){ // app starts with % units for left. First conditional checks for this and converts to px.
+        let leftPercent = Number(slider.style.left.split("%")[0]);
         let leftRatio   = leftPercent / 100;
-        let leftPx      = pxWidth * leftRatio;
+        let leftPx      = appPxWidth * leftRatio;
         return leftPx;
     }
     else{
-        let leftPx = Number(app.component.pageTurner.elem.pagesSlide.style.left.split("p")[0]);
+        let leftPx = Number(slider.style.left.split("p")[0]);
         return leftPx;
     };
 };
@@ -108,11 +114,13 @@ app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
             if( app.func.is.point_withinElement([event.clientX, event.clientY], document.querySelector(".footer")) === true ){
                 return; /* if user down within footer */
             };
-            app.component.pageTurner.setting.startXPx    = event.clientX;
             app.component.pageTurner.state.active[0]     = true;
-            app.component.pageTurner.setting.startLeftPx = app.component.pageTurner.func.get.appLeftPx();
-            app.component.pageTurner.elem.pagesSlide.style.left = `${app.component.pageTurner.setting.startLeftPx}px`;
+            app.component.pageTurner.setting.startLeftPx = app.component.pageTurner.func.get.appLeftPx(); // ui set-up with %. This converts to px.
             app.component.pageTurner.setting.startWidth  = appElement.getBoundingClientRect().width;
+            app.component.pageTurner.setting.startXPx    = event.clientX;
+            let slider = document.querySelector(".slider");
+                slider.style.left = `${app.component.pageTurner.setting.startLeftPx}px`; // sets initial left to converted px.
+                slider.classList.remove("sliderTrans");
         });
 
         appElement.addEventListener("mousemove", ()=>{
@@ -120,9 +128,10 @@ app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
             if( app.component.pageTurner.state.active[0] === true){
                 console.log("MOVE");
                 app.component.pageTurner.setting.currentXPx = event.clientX;
-                let pxDifference = app.component.pageTurner.setting.currentXPx - app.component.pageTurner.setting.startXPx;
-                let newLeft = app.component.pageTurner.setting.startLeftPx + pxDifference;
-                app.component.pageTurner.elem.pagesSlide.style.left = `${newLeft}px`;
+                let pxDifference      = app.component.pageTurner.setting.currentXPx - app.component.pageTurner.setting.startXPx;
+                let newLeft           = app.component.pageTurner.setting.startLeftPx + pxDifference;
+                let slider            = document.querySelector(".slider");
+                    slider.style.left = `${newLeft}px`;
             };
         });
 
@@ -131,10 +140,13 @@ app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
             if( app.component.pageTurner.state.active[0] === true){
                 app.component.pageTurner.state.active[0] = false;
                 let tTotal = 320;
-                let elem   = app.component.pageTurner.elem.pagesSlide;
-                let sPos   = Number(app.component.pageTurner.elem.pagesSlide.style.left.split("p")[0]);
+                let slider = document.querySelector(".slider");
+                let sPos   = Number(slider.style.left.split("p")[0]);
                 let fPos   = app.component.pageTurner.setting.startLeftPx; // put back to start -414px
-                app.component.pageTurner.func.anim.pagesSlide_toPosition(tTotal, elem, sPos, fPos);
+                app.component.pageTurner.func.anim.slider_toPosition(tTotal, slider, sPos, fPos);
+                let addSliderTransitionClass = setTimeout(()=>{
+                    slider.classList.add("sliderTrans");
+                },tTotal);
             };
         });
 };
@@ -155,27 +167,27 @@ app.component.pageTurner.func.give.footerButtons_pageTurnerClickListeners = ()=>
     let addPageButton = document.querySelector(".addPageButton");
         addPageButton.addEventListener(
             "click",
-            app.component.pageTurner.func.give.pagesSlide_addPageAttributes,
+            app.component.pageTurner.func.give.slider_addPageAttributes,
             app.component.pageTurner.func.give.addPageButton_onPageAttributes,
             app.component.pageTurner.func.give.viewPageButton_offPageAttributes
         );
     let viewPageButton = document.querySelector(".viewPageButton");
         viewPageButton.addEventListener(
             "click",
-            app.component.pageTurner.func.give.pagesSlide_viewPageAttributes,
+            app.component.pageTurner.func.give.slider_viewPageAttributes,
             app.component.pageTurner.func.give.addPageButton_offPageAttributes,
             app.component.pageTurner.func.give.viewPageButton_onPageAttributes
         );
 };
 
-app.component.pageTurner.func.give.pagesSlide_addPageAttributes = ()=>{
-    let pagesSlide = document.querySelector(".pagesSlide");
-        pagesSlide.style.left = "0%";
+app.component.pageTurner.func.give.slider_addPageAttributes = ()=>{
+    let slider = document.querySelector(".slider");
+        slider.style.left = "0%";
 };
 
-app.component.pageTurner.func.give.pagesSlide_viewPageAttributes = ()=>{
-    let pagesSlide = document.querySelector(".pagesSlide");
-        pagesSlide.style.left = "-100%";
+app.component.pageTurner.func.give.slider_viewPageAttributes = ()=>{
+    let slider = document.querySelector(".slider");
+        slider.style.left = "-100%";
 };
 
 /***

@@ -45,7 +45,7 @@
     color: var(--blue_1);
 }
 
-/* .slideTrans {
+.sliderTrans {
     transition-duration: 0.4s;
     transition-property: left;
-} */
+}
