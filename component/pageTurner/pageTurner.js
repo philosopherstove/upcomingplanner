@@ -126,7 +126,7 @@ app.component.pageTurner.func.event.userDown = ()=>{
 };
 
 app.component.pageTurner.func.event.userMove = ()=>{
-    event.stopPropagation();
+    // event.stopPropagation();
     // event.preventDefault();
     if( app.component.pageTurner.state.active[0] === true){
         // console.log("MOVE");
@@ -143,7 +143,7 @@ app.component.pageTurner.func.event.userMove = ()=>{
 };
 
 app.component.pageTurner.func.event.userUp = ()=>{
-    event.stopPropagation();
+    // event.stopPropagation();
     // event.preventDefault();
     if( app.component.pageTurner.state.active[0] === true){
         // console.log("UP");
@@ -226,7 +226,7 @@ app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
         //     };
         // });
         appElement.addEventListener("mousedown", app.component.pageTurner.func.event.userDown);
-        appElement.addEventListener("touchstart", app.component.pageTurner.func.event.userDown);
+        // appElement.addEventListener("touchstart", app.component.pageTurner.func.event.userDown);
 
         // appElement.addEventListener("mousemove", ()=>{
         //     event.stopPropagation();
@@ -244,7 +244,7 @@ app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
         //     };
         // });
         appElement.addEventListener("mousemove", app.component.pageTurner.func.event.userMove);
-        appElement.addEventListener("touchmove", app.component.pageTurner.func.event.userMove);
+        // appElement.addEventListener("touchmove", app.component.pageTurner.func.event.userMove);
 
         // appElement.addEventListener("mouseup", ()=>{
         //     event.stopPropagation();
@@ -264,7 +264,7 @@ app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
         //     };
         // });
         appElement.addEventListener("mouseup", app.component.pageTurner.func.event.userUp);
-        appElement.addEventListener("touchend", app.component.pageTurner.func.event.userUp);
+        // appElement.addEventListener("touchend", app.component.pageTurner.func.event.userUp);
 };
 
 app.component.pageTurner.func.give.viewPageButton_offPageAttributes = ()=>{
