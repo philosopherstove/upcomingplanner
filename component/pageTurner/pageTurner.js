@@ -1,11 +1,11 @@
 app.component.pageTurner = {};
 app.component.pageTurner.setting = {};
+app.component.pageTurner.setting.page                   = [null, null];
 app.component.pageTurner.setting.pvtr                   = app.func.calc.b([.3,.8,.5,.9]);
 app.component.pageTurner.setting.startXPx               = null;
 app.component.pageTurner.setting.currentXPx             = null;
 app.component.pageTurner.setting.startLeftPx            = null;
 app.component.pageTurner.setting.timeout_sliderTransEnd = null;
-// app.component.pageTurner.setting.startWidth  = null;
 app.component.pageTurner.state = {};
 app.component.pageTurner.state.active = [false, false, null];
 app.component.pageTurner.state.preventClick = false;
@@ -15,11 +15,16 @@ app.component.pageTurner.func.event = {};
 app.component.pageTurner.func.get   = {};
 app.component.pageTurner.func.give  = {};
 app.component.pageTurner.func.init  = {};
+app.component.pageTurner.func.set   = {};
 
 /*
 func hotkeys:
 ANIM
 app.component.pageTurner.func.anim.slider_toPosition = (tTotal, elem, sPos, fPos)=>{
+EVENT
+app.component.pageTurner.func.event.userDown = ()=>{
+app.component.pageTurner.func.event.userMove = ()=>{
+app.component.pageTurner.func.event.userUp = ()=>{
 GET
 app.component.pageTurner.func.get.appLeftPx = ()=>{
 GIVE
@@ -33,6 +38,9 @@ app.component.pageTurner.func.give.slider_addPageAttributes = ()=>{
 app.component.pageTurner.func.give.slider_viewPageAttributes = ()=>{
 INIT
 app.component.pageTurner.func.init.component = ()=>{
+SET
+app.component.pageTurner.func.set.page = ()=>{
+app.component.pageTurner.func.set.startPage = ()=>{
 */
 
 /***
@@ -131,7 +139,8 @@ app.component.pageTurner.func.event.userUp = ()=>{
         let tTotal = 320;
         let slider = document.querySelector(".slider");
         let sPos   = Number(slider.style.left.split("p")[0]);
-        let fPos   = app.component.pageTurner.setting.startLeftPx; // put back to start. Later need px for add or view page.
+        app.component.pageTurner.func.set.page();
+        let fPos = app.component.pageTurner.setting.page[1]; // depends on set.page()
         app.component.pageTurner.func.anim.slider_toPosition(tTotal, slider, sPos, fPos);
         app.component.pageTurner.setting.timeout_sliderTransEnd = setTimeout(()=>{
             slider.classList.add("sliderTrans");
@@ -228,4 +237,38 @@ INIT
 app.component.pageTurner.func.init.component = ()=>{
     app.component.pageTurner.func.give.app_pageTurnerGestureListeners();
     app.component.pageTurner.func.give.footerButtons_pageTurnerClickListeners();
+    app.component.pageTurner.func.set.startPage();
+};
+
+/**
+SET
+***/
+app.component.pageTurner.func.set.page = ()=>{
+    let appWidth    = document.querySelector(".app").getBoundingClientRect().width;
+    let currentLeft = Number(document.querySelector(".slider").style.left.split("p")[0]);
+    if( app.component.pageTurner.setting.page[0] === "add"){
+        if( currentLeft < (-1 * appWidth * 0.2) ){ // currentLeft is greater than what slider would be if start on addPage and dragged 20% negative(pulling viewPage into view)
+            let sliderLeft = -1 * appWidth;
+            app.component.pageTurner.setting.page = ["view", sliderLeft];
+        };
+    }
+    else
+    if( app.component.pageTurner.setting.page[0] === "view"){
+        if( currentLeft > (-1 * appWidth * 0.8) ){
+            let sliderLeft = 0;
+            app.component.pageTurner.setting.page = ["add", sliderLeft];
+        };
+    };
+};
+
+app.component.pageTurner.func.set.startPage = ()=>{
+    let appWidth = document.querySelector(".app").getBoundingClientRect().width;
+    if( app.component.item.objs.length > 0){ // there are items, so start on viewPage
+        let sliderLeft = -1 * appWidth;
+        app.component.pageTurner.setting.page = ["view", sliderLeft];
+    }
+    else{ // no items, start on add page
+        let sliderLeft = 0;
+        app.component.pageTurner.setting.page = ["add", sliderLeft];
+    };
 };

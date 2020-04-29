@@ -553,7 +553,7 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
                 <div class="dayBlock" dayId="${dayId}">
                     ${await app.component.item.func.make.dayHeader(itemObj)}
                     ${app.component.item.func.make.hourHeader(itemObj)}
-                    ${app.component.item.func.make.item(itemObj)}
+                    ${app.component.item.func.make.item_forViewPage(itemObj)}
                 </div>
             </div>
         `;
