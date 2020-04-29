@@ -7,7 +7,7 @@ app.component.pageTurner.setting.currentXPx             = null;
 app.component.pageTurner.setting.startLeftPx            = null;
 app.component.pageTurner.setting.timeout_sliderTransEnd = null;
 app.component.pageTurner.state = {};
-app.component.pageTurner.state.active = [false, false, null];
+app.component.pageTurner.state.active       = [false, false, null];
 app.component.pageTurner.state.preventClick = false;
 app.component.pageTurner.func = {};
 app.component.pageTurner.func.anim  = {};
@@ -15,6 +15,7 @@ app.component.pageTurner.func.event = {};
 app.component.pageTurner.func.get   = {};
 app.component.pageTurner.func.give  = {};
 app.component.pageTurner.func.init  = {};
+app.component.pageTurner.func.is    = {};
 app.component.pageTurner.func.set   = {};
 
 /*
@@ -82,7 +83,7 @@ app.component.pageTurner.func.anim.slider_toPosition = (tTotal, elem, sPos, fPos
     animate();
 
     let check_newUserDown = setInterval(()=>{
-        if(app.component.pageTurner.state.active[1] === false){
+        if( app.component.pageTurner.state.active[1] === false){
             let currLeft = app.component.pageTurner.func.get.appLeftPx();
             let slider = document.querySelector(".slider");
                 slider.style.left = `${currLeft}px`;
@@ -102,12 +103,12 @@ EVENT
 app.component.pageTurner.func.event.userDown = ()=>{
     let appElement = document.querySelector(".app");
     if( app.component.pageTurner.state.active[0] === false){
-        if( app.func.is.point_withinElement([event.clientX, event.clientY], document.querySelector(".footer")) === true ){
-            return; /* if user down within footer */
+        if( app.component.pageTurner.func.is.eventWithinFooter(event) === true){
+            return; /* if down within footer */
         };
         app.component.pageTurner.setting.startLeftPx = app.component.pageTurner.func.get.appLeftPx(); // ui set-up with %. This converts to px.
         app.component.pageTurner.setting.startXPx    = event.clientX;
-        if(event.clientX == undefined){ // event.clientX undefined on touch devices. So then use event.touches[0].clientX
+        if( event.clientX == undefined){ // event.clientX undefined on touch devices. So then use event.touches[0].clientX
             app.component.pageTurner.setting.startXPx = event.touches[0].clientX;
         };
         let slider = document.querySelector(".slider");
@@ -122,7 +123,7 @@ app.component.pageTurner.func.event.userMove = ()=>{
     if( app.component.pageTurner.state.active[0] === true){
         app.component.pageTurner.state.preventClick = true;
         app.component.pageTurner.setting.currentXPx = event.clientX;
-        if(event.clientX == undefined){
+        if( event.clientX == undefined){
             app.component.pageTurner.setting.currentXPx = event.touches[0].clientX;
         };
         let pxDifference      = app.component.pageTurner.setting.currentXPx - app.component.pageTurner.setting.startXPx;
@@ -156,7 +157,7 @@ app.component.pageTurner.func.get.appLeftPx = ()=>{
     let appElement = document.querySelector(".app");
     let appPxWidth = appElement.getBoundingClientRect().width;
     let slider     = document.querySelector(".slider");
-    if(slider.style.left[slider.style.left.length-1] === "%"){ // app starts with % units for left. First conditional checks for this and converts to px.
+    if( slider.style.left[slider.style.left.length-1] === "%"){ // app starts with % units for left. First conditional checks for this and converts to px.
         let leftPercent = Number(slider.style.left.split("%")[0]);
         let leftRatio   = leftPercent / 100;
         let leftPx      = appPxWidth * leftRatio;
@@ -238,6 +239,20 @@ app.component.pageTurner.func.init.component = ()=>{
     app.component.pageTurner.func.give.app_pageTurnerGestureListeners();
     app.component.pageTurner.func.give.footerButtons_pageTurnerClickListeners();
     app.component.pageTurner.func.set.startPage();
+};
+
+/*
+IS
+**/
+app.component.pageTurner.func.is.eventWithinFooter = (e)=>{
+    if( app.func.is.point_withinElement([e.clientX, e.clientY], document.querySelector(".footer")) === true
+    || (event.touches !== undefined &&
+        app.func.is.point_withinElement([e.touches[0].clientX, e.touches[0].clientY], document.querySelector(".footer")) === true) ){
+        return true;
+    }
+    else{
+        return false
+    };
 };
 
 /**
