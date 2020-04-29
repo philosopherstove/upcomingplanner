@@ -103,8 +103,10 @@ EVENT
 app.component.pageTurner.func.event.userDown = ()=>{
     let appElement = document.querySelector(".app");
     if( app.component.pageTurner.state.active[0] === false){
-        if( app.component.pageTurner.func.is.eventWithinFooter(event) === true){
-            return; /* if down within footer */
+        if( app.component.pageTurner.func.is.eventWithinFooter(event) === true
+        ||  app.component.dayDropper.state.open[0] === true
+        ||  app.component.item.state.selected[0] === true){
+            return;
         };
         app.component.pageTurner.setting.startLeftPx = app.component.pageTurner.func.get.appLeftPx(); // ui set-up with %. This converts to px.
         app.component.pageTurner.setting.startXPx    = event.clientX;
