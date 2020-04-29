@@ -1,7 +1,7 @@
 app.component.pageTurner = {};
 app.component.pageTurner.setting = {};
 app.component.pageTurner.setting.page                   = [null, null];
-app.component.pageTurner.setting.pvtr                   = app.func.calc.b([.3,.8,.5,.9]);
+app.component.pageTurner.setting.pvtr                   = app.func.calc.b([0,1,0.5,1]);
 app.component.pageTurner.setting.startXPx               = null;
 app.component.pageTurner.setting.currentXPx             = null;
 app.component.pageTurner.setting.startLeftPx            = null;
@@ -136,7 +136,7 @@ app.component.pageTurner.func.event.userUp = ()=>{
     if( app.component.pageTurner.state.active[0] === true){
         app.component.pageTurner.state.active[0] = false;
         app.component.pageTurner.state.active[1] = true;
-        let tTotal = 320;
+        let tTotal = 300;
         let slider = document.querySelector(".slider");
         let sPos   = Number(slider.style.left.split("p")[0]);
         app.component.pageTurner.func.set.page();
