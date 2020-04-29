@@ -250,6 +250,8 @@ app.component.pageTurner.func.set.page = ()=>{
         if( currentLeft < (-1 * appWidth * 0.2) ){ // currentLeft is greater than what slider would be if start on addPage and dragged 20% negative(pulling viewPage into view)
             let sliderLeft = -1 * appWidth;
             app.component.pageTurner.setting.page = ["view", sliderLeft];
+            app.component.pageTurner.func.give.addPageButton_offPageAttributes();
+            app.component.pageTurner.func.give.viewPageButton_onPageAttributes();
         };
     }
     else
@@ -257,6 +259,8 @@ app.component.pageTurner.func.set.page = ()=>{
         if( currentLeft > (-1 * appWidth * 0.8) ){
             let sliderLeft = 0;
             app.component.pageTurner.setting.page = ["add", sliderLeft];
+            app.component.pageTurner.func.give.addPageButton_onPageAttributes();
+            app.component.pageTurner.func.give.viewPageButton_offPageAttributes();
         };
     };
 };
