@@ -264,7 +264,7 @@ app.component.pageTurner.func.set.page = ()=>{
     let appWidth    = document.querySelector(".app").getBoundingClientRect().width;
     let currentLeft = Number(document.querySelector(".slider").style.left.split("p")[0]);
     if( app.component.pageTurner.setting.page[0] === "add"){
-        if( currentLeft < (-1 * appWidth * 0.2) ){ // currentLeft is greater than what slider would be if start on addPage and dragged 20% negative(pulling viewPage into view)
+        if( currentLeft < (-1 * appWidth * 0.25) ){ // currentLeft is greater than what slider would be if start on addPage and dragged 20% negative(pulling viewPage into view)
             let sliderLeft = -1 * appWidth;
             app.component.pageTurner.setting.page = ["view", sliderLeft];
             app.component.pageTurner.func.give.addPageButton_offPageAttributes();
@@ -273,7 +273,7 @@ app.component.pageTurner.func.set.page = ()=>{
     }
     else
     if( app.component.pageTurner.setting.page[0] === "view"){
-        if( currentLeft > (-1 * appWidth * 0.8) ){
+        if( currentLeft > (-1 * appWidth * 0.75) ){
             let sliderLeft = 0;
             app.component.pageTurner.setting.page = ["add", sliderLeft];
             app.component.pageTurner.func.give.addPageButton_onPageAttributes();
