@@ -32,11 +32,13 @@ GIVE
 app.component.pageTurner.func.give.addPageButton_offPageAttributes = ()=>{
 app.component.pageTurner.func.give.addPageButton_onPageAttributes = ()=>{
 app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
-app.component.pageTurner.func.give.viewPageButton_offPageAttributes = ()=>{
-app.component.pageTurner.func.give.viewPageButton_onPageAttributes = ()=>{
 app.component.pageTurner.func.give.footerButtons_pageTurnerClickListeners = ()=>{
 app.component.pageTurner.func.give.slider_addPageAttributes = ()=>{
+app.component.pageTurner.func.give.slider_swipeLock = ()=>{
 app.component.pageTurner.func.give.slider_viewPageAttributes = ()=>{
+app.component.pageTurner.func.give.timeSlots_scrollListener = ()=>{
+app.component.pageTurner.func.give.viewPageButton_offPageAttributes = ()=>{
+app.component.pageTurner.func.give.viewPageButton_onPageAttributes = ()=>{
 INIT
 app.component.pageTurner.func.init.component = ()=>{
 IS
@@ -100,14 +102,6 @@ app.component.pageTurner.func.anim.slider_toPosition = (tTotal, elem, sPos, fPos
 
 };
 
-document.querySelector(".timeSlots").addEventListener("scroll", ()=>{
-    app.component.pageTurner.state.active[0] = false;
-    app.component.pageTurner.state.active[1] = false;
-    app.component.pageTurner.func.set.page();
-    let slider = document.querySelector(".slider");
-        slider.style.left = `${app.component.pageTurner.setting.page[1]}px`;
-});
-
 /****
 EVENT
 *****/
@@ -138,15 +132,11 @@ app.component.pageTurner.func.event.userMove = ()=>{
         if( event.clientX == undefined){
             app.component.pageTurner.setting.currentXPx = event.touches[0].clientX;
         };
-        let pxDifference      = app.component.pageTurner.setting.currentXPx - app.component.pageTurner.setting.startXPx;
-
-        /* Need to exceed 10px threshold to continue executing slower swipe.
-         * This as well as state shutoffs and forceful position set in scrollListeners
-         * smoothly prevent vertical scrolling and horizontal swiping from happening at the same time. */
+        let pxDifference = app.component.pageTurner.setting.currentXPx - app.component.pageTurner.setting.startXPx;
         if( app.component.pageTurner.func.is.swipeExceed10pxThreshold(pxDifference) === false){
+            /* Need to exceed 10px threshold to continue executing slower swipe. This as well as state shutoffs and forceful position set in scrollListeners smoothly prevents vertical scrolling and horizontal swiping from happening at the same time. */
             return;
         };
-
         let newLeft           = app.component.pageTurner.setting.startLeftPx + pxDifference;
         let slider            = document.querySelector(".slider");
             slider.style.left = `${newLeft}px`;
@@ -215,18 +205,6 @@ app.component.pageTurner.func.give.app_pageTurnerGestureListeners = ()=>{
         appElement.addEventListener("touchend", app.component.pageTurner.func.event.userUp);
 };
 
-app.component.pageTurner.func.give.viewPageButton_offPageAttributes = ()=>{
-    let viewPageButton = document.querySelector(".viewPageButton");
-        viewPageButton.classList.add("pageButton_off");
-        viewPageButton.classList.remove("pageButton_on");
-};
-
-app.component.pageTurner.func.give.viewPageButton_onPageAttributes = ()=>{
-    let viewPageButton = document.querySelector(".viewPageButton");
-        viewPageButton.classList.add("pageButton_on");
-        viewPageButton.classList.remove("pageButton_off");
-};
-
 app.component.pageTurner.func.give.footerButtons_pageTurnerClickListeners = ()=>{
     let addPageButton = document.querySelector(".addPageButton");
         addPageButton.addEventListener("click", ()=>{
@@ -234,7 +212,6 @@ app.component.pageTurner.func.give.footerButtons_pageTurnerClickListeners = ()=>
             app.component.pageTurner.func.give.addPageButton_onPageAttributes();
             app.component.pageTurner.func.give.viewPageButton_offPageAttributes();
         });
-
     let viewPageButton = document.querySelector(".viewPageButton");
         viewPageButton.addEventListener("click", ()=>{
             app.component.pageTurner.func.give.slider_viewPageAttributes();
@@ -248,9 +225,36 @@ app.component.pageTurner.func.give.slider_addPageAttributes = ()=>{
         slider.style.left = "0%";
 };
 
+app.component.pageTurner.func.give.slider_swipeLock = ()=>{
+    app.component.pageTurner.state.active[0] = false;
+    app.component.pageTurner.state.active[1] = false;
+    app.component.pageTurner.func.set.page();
+    let slider = document.querySelector(".slider");
+        slider.style.left = `${app.component.pageTurner.setting.page[1]}px`;
+};
+// given to timeSlots on pageTurner init
+// given to viewItemsWrapper in 2 cases where viewItemsWrapper is formed in item.js(append of view items on init or creation of a first item)
+
 app.component.pageTurner.func.give.slider_viewPageAttributes = ()=>{
     let slider = document.querySelector(".slider");
         slider.style.left = "-100%";
+};
+
+app.component.pageTurner.func.give.timeSlots_scrollListener = ()=>{
+    let timeSlots = document.querySelector(".timeSlots");
+        timeSlots.addEventListener("scroll", app.component.pageTurner.func.give.slider_swipeLock);
+};
+
+app.component.pageTurner.func.give.viewPageButton_offPageAttributes = ()=>{
+    let viewPageButton = document.querySelector(".viewPageButton");
+        viewPageButton.classList.add("pageButton_off");
+        viewPageButton.classList.remove("pageButton_on");
+};
+
+app.component.pageTurner.func.give.viewPageButton_onPageAttributes = ()=>{
+    let viewPageButton = document.querySelector(".viewPageButton");
+        viewPageButton.classList.add("pageButton_on");
+        viewPageButton.classList.remove("pageButton_off");
 };
 
 /***
@@ -259,6 +263,7 @@ INIT
 app.component.pageTurner.func.init.component = ()=>{
     app.component.pageTurner.func.give.app_pageTurnerGestureListeners();
     app.component.pageTurner.func.give.footerButtons_pageTurnerClickListeners();
+    app.component.pageTurner.func.give.timeSlots_scrollListener();
     app.component.pageTurner.func.set.startPage();
 };
 
@@ -277,34 +282,15 @@ app.component.pageTurner.func.is.eventWithinFooter = (e)=>{
 };
 
 app.component.pageTurner.func.is.swipeExceed10pxThreshold = (pxDifference)=>{
-    if( app.component.pageTurner.setting.page[0] === "add"){
-        if( pxDifference < 0
-        &&  pxDifference > -10){
-            return false;
-        }
-        if( pxDifference > 0
-        &&  pxDifference < 10){
-            return false;
-        }
-        else{
-            return true;
-        };
+    let setLeft = app.component.pageTurner.setting.page[1];
+    if((setLeft + pxDifference < setLeft &&
+        setLeft + pxDifference > setLeft - 10)
+    || (setLeft + pxDifference > setLeft &&
+        setLeft + pxDifference < setLeft + 10)){
+        return false;
     }
-    else
-    if( app.component.pageTurner.setting.page[0] === "view"){
-        let threshold = app.component.pageTurner.setting.page[1];
-        if( pxDifference < threshold
-        &&  pxDifference > threshold - 10){
-            return false;
-        }
-        else
-        if( pxDifference > threshold
-        &&  pxDifference < threshold + 10){
-            return false;
-        }
-        else{
-            return true;
-        };
+    else{
+        return true;
     };
 };
 

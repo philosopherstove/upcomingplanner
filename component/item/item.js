@@ -549,7 +549,7 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     // Case 1 - no dayblocks. This 1st case needs viewItemsWrapper.
     if(dayBlocks.length === 0){
         let html = `
-            <div class="viewItemsWrapper">
+            <div class="viewItemsWrapper" onscroll="app.component.pageTurner.func.give.slider_swipeLock()">
                 <div class="dayBlock" dayId="${dayId}">
                     ${await app.component.item.func.make.dayHeader(itemObj)}
                     ${app.component.item.func.make.hourHeader(itemObj)}
@@ -635,7 +635,7 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
     let setDay  = null;
     let setHour = null;
     let html = `
-        <div class="viewItemsWrapper">
+        <div class="viewItemsWrapper" onscroll="app.component.pageTurner.func.give.slider_swipeLock()">
     `;
     for(let i in app.component.item.objs){
         let itemObj = app.component.item.objs[i];
