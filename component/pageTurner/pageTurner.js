@@ -39,6 +39,9 @@ app.component.pageTurner.func.give.slider_addPageAttributes = ()=>{
 app.component.pageTurner.func.give.slider_viewPageAttributes = ()=>{
 INIT
 app.component.pageTurner.func.init.component = ()=>{
+IS
+app.component.pageTurner.func.is.eventWithinFooter = (e)=>{
+app.component.pageTurner.func.is.swipeExceed10pxThreshold = (pxDifference)=>{
 SET
 app.component.pageTurner.func.set.page = ()=>{
 app.component.pageTurner.func.set.startPage = ()=>{
@@ -137,15 +140,10 @@ app.component.pageTurner.func.event.userMove = ()=>{
         };
         let pxDifference      = app.component.pageTurner.setting.currentXPx - app.component.pageTurner.setting.startXPx;
 
-        /* 10px buffer to continue executing slower swipe.
+        /* Need to exceed 10px threshold to continue executing slower swipe.
          * This as well as state shutoffs and forceful position set in scrollListeners
          * smoothly prevent vertical scrolling and horizontal swiping from happening at the same time. */
-        if( pxDifference < 0
-        &&  pxDifference > -10){
-            return;
-        }
-        if( pxDifference >= 0
-        &&  pxDIfference < 10){
+        if( app.component.pageTurner.func.is.swipeExceed10pxThreshold(pxDifference) === false){
             return;
         };
 
@@ -275,6 +273,39 @@ app.component.pageTurner.func.is.eventWithinFooter = (e)=>{
     }
     else{
         return false
+    };
+};
+
+app.component.pageTurner.func.is.swipeExceed10pxThreshold = (pxDifference)=>{
+    app.component.pageTurner.func.set.page();
+    if( app.component.pageTurner.setting.page[0] === "add"){
+        if( pxDifference < 0
+        &&  pxDifference > -10){
+            return false;
+        }
+        if( pxDifference > 0
+        &&  pxDifference < 10){
+            return false;
+        }
+        else{
+            return true;
+        };
+    }
+    else
+    if( app.component.pageTurner.setting.page[0] === "view"){
+        let threshold = app.component.pageTurner.setting.page[1];
+        if( pxDifference < threshold
+        &&  pxDifference > threshold - 10){
+            return false;
+        }
+        else
+        if( pxDifference > threshold
+        &&  pxDifference < threshold + 10){
+            return false;
+        }
+        else{
+            return true;
+        };
     };
 };
 
