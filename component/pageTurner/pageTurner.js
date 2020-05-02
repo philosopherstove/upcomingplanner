@@ -144,6 +144,7 @@ app.component.pageTurner.func.event.userMove = ()=>{
          * This as well as state shutoffs and forceful position set in scrollListeners
          * smoothly prevent vertical scrolling and horizontal swiping from happening at the same time. */
         if( app.component.pageTurner.func.is.swipeExceed10pxThreshold(pxDifference) === false){
+            app.component.pageTurner.state.active[1] = true;
             return;
         };
 
