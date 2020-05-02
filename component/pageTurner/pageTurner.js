@@ -140,10 +140,12 @@ app.component.pageTurner.func.event.userMove = ()=>{
         /* 10px buffer to continue executing slower swipe.
          * This as well as state shutoffs and forceful position set in scrollListeners
          * smoothly prevent vertical scrolling and horizontal swiping from happening at the same time. */
-        if(pxDifference < 0){
-            pxDifference = -1 * pxDifference;
+        if( pxDifference < 0
+        &&  pxDifference > -10){
+            return;
         }
-        if(pxDifference < 10){
+        if( pxDifference >= 0
+        &&  pxDIfference < 10){
             return;
         };
 
