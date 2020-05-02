@@ -97,6 +97,14 @@ app.component.pageTurner.func.anim.slider_toPosition = (tTotal, elem, sPos, fPos
 
 };
 
+document.querySelector(".timeSlots").addEventListener("scroll", ()=>{
+    app.component.pageTurner.state.active[0] = false;
+    app.component.pageTurner.state.active[1] = false;
+    app.component.pageTurner.func.set.page();
+    let slider = document.querySelector(".slider");
+        slider.style.left = `${app.component.pageTurner.setting.page[1]}px`;
+});
+
 /****
 EVENT
 *****/
@@ -123,15 +131,26 @@ app.component.pageTurner.func.event.userDown = ()=>{
 
 app.component.pageTurner.func.event.userMove = ()=>{
     if( app.component.pageTurner.state.active[0] === true){
-        app.component.pageTurner.state.preventClick = true;
         app.component.pageTurner.setting.currentXPx = event.clientX;
         if( event.clientX == undefined){
             app.component.pageTurner.setting.currentXPx = event.touches[0].clientX;
         };
         let pxDifference      = app.component.pageTurner.setting.currentXPx - app.component.pageTurner.setting.startXPx;
+
+        /* 10px buffer to continue executing slower swipe.
+         * This as well as state shutoffs and forceful position set in scrollListeners
+         * smoothly prevent vertical scrolling and horizontal swiping from happening at the same time. */
+        if(pxDifference < 0){
+            pxDifference = -1 * pxDifference;
+        }
+        if(pxDifference < 10){
+            return;
+        };
+
         let newLeft           = app.component.pageTurner.setting.startLeftPx + pxDifference;
         let slider            = document.querySelector(".slider");
             slider.style.left = `${newLeft}px`;
+        app.component.pageTurner.state.preventClick = true;
     };
 };
 
