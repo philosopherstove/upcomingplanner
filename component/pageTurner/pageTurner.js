@@ -27,7 +27,7 @@ app.component.pageTurner.func.event.userDown = ()=>{
 app.component.pageTurner.func.event.userMove = ()=>{
 app.component.pageTurner.func.event.userUp = ()=>{
 GET
-app.component.pageTurner.func.get.appLeftPx = ()=>{
+app.component.pageTurner.func.get.sliderLeftPx = ()=>{
 GIVE
 app.component.pageTurner.func.give.addPageButton_offPageAttributes = ()=>{
 app.component.pageTurner.func.give.addPageButton_onPageAttributes = ()=>{
@@ -89,7 +89,7 @@ app.component.pageTurner.func.anim.slider_toPosition = (tTotal, elem, sPos, fPos
 
     let check_newUserDown = setInterval(()=>{
         if( app.component.pageTurner.state.active[1] === false){
-            let currLeft = app.component.pageTurner.func.get.appLeftPx();
+            let currLeft = app.component.pageTurner.func.get.sliderLeftPx();
             let slider = document.querySelector(".slider");
                 slider.style.left = `${currLeft}px`;
                 slider.classList.remove("sliderTrans");
@@ -113,7 +113,7 @@ app.component.pageTurner.func.event.userDown = ()=>{
         ||  app.component.item.state.selected[0] === true){
             return;
         };
-        app.component.pageTurner.setting.startLeftPx = app.component.pageTurner.func.get.appLeftPx(); // ui set-up with %. This converts to px.
+        app.component.pageTurner.setting.startLeftPx = app.component.pageTurner.func.get.sliderLeftPx(); // ui set-up with %. This converts to px.
         app.component.pageTurner.setting.startXPx    = event.clientX;
         if( event.clientX == undefined){ // event.clientX undefined on touch devices. So then use event.touches[0].clientX
             app.component.pageTurner.setting.startXPx = event.touches[0].clientX;
@@ -134,8 +134,7 @@ app.component.pageTurner.func.event.userMove = ()=>{
         };
         let pxDifference = app.component.pageTurner.setting.currentXPx - app.component.pageTurner.setting.startXPx;
         if( app.component.pageTurner.func.is.swipeExceed10pxThreshold(pxDifference) === false){
-            /* Need to exceed 10px threshold to continue executing slower swipe. This as well as state shutoffs and forceful position set in scrollListeners smoothly prevents vertical scrolling and horizontal swiping from happening at the same time. */
-            return;
+            return; /* Need to exceed 10px threshold to continue executing slower swipe. This as well as state shutoffs and forceful position set in scrollListeners smoothly prevents vertical scrolling and horizontal swiping from happening at the same time. */
         };
         let newLeft           = app.component.pageTurner.setting.startLeftPx + pxDifference;
         let slider            = document.querySelector(".slider");
@@ -164,7 +163,7 @@ app.component.pageTurner.func.event.userUp = ()=>{
 /**
 GET
 ***/
-app.component.pageTurner.func.get.appLeftPx = ()=>{
+app.component.pageTurner.func.get.sliderLeftPx = ()=>{
     let appElement = document.querySelector(".app");
     let appPxWidth = appElement.getBoundingClientRect().width;
     let slider     = document.querySelector(".slider");
@@ -309,7 +308,7 @@ SET
 ***/
 app.component.pageTurner.func.set.page = ()=>{
     let appWidth    = document.querySelector(".app").getBoundingClientRect().width;
-    let currentLeft = app.component.pageTurner.func.get.appLeftPx();
+    let currentLeft = app.component.pageTurner.func.get.sliderLeftPx();
     if( app.component.pageTurner.setting.page[0] === "add"){
         if( currentLeft < (-1 * appWidth * 0.25) ){ // currentLeft is greater than what slider would be if start on addPage and dragged 20% negative(pulling viewPage into view)
             let sliderLeft = -1 * appWidth;
