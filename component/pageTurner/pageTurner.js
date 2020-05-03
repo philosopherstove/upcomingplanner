@@ -211,12 +211,21 @@ app.component.pageTurner.func.give.footerButtons_pageTurnerClickListeners = ()=>
             app.component.pageTurner.func.give.slider_addPageAttributes();
             app.component.pageTurner.func.give.addPageButton_onPageAttributes();
             app.component.pageTurner.func.give.viewPageButton_offPageAttributes();
+            let wait_sliderTrans = setTimeout(()=>{
+                console.log('set to add')
+                app.component.pageTurner.func.set.page();
+            },300);
+
         });
     let viewPageButton = document.querySelector(".viewPageButton");
         viewPageButton.addEventListener("click", ()=>{
             app.component.pageTurner.func.give.slider_viewPageAttributes();
             app.component.pageTurner.func.give.addPageButton_offPageAttributes();
             app.component.pageTurner.func.give.viewPageButton_onPageAttributes();
+            let wait_sliderTrans = setTimeout(()=>{
+                console.log('set to view')
+                app.component.pageTurner.func.set.page();
+            },300);
         });
 };
 
@@ -243,6 +252,7 @@ app.component.pageTurner.func.give.slider_viewPageAttributes = ()=>{
 app.component.pageTurner.func.give.timeSlots_scrollListener = ()=>{
     let timeSlots = document.querySelector(".timeSlots");
         timeSlots.addEventListener("scroll", app.component.pageTurner.func.give.slider_swipeLock);
+    console.log('swipeLock fires on load because timeSlots scrollTop is set');
 };
 
 app.component.pageTurner.func.give.viewPageButton_offPageAttributes = ()=>{
@@ -299,7 +309,7 @@ SET
 ***/
 app.component.pageTurner.func.set.page = ()=>{
     let appWidth    = document.querySelector(".app").getBoundingClientRect().width;
-    let currentLeft = Number(document.querySelector(".slider").style.left.split("p")[0]);
+    let currentLeft = app.component.pageTurner.func.get.appLeftPx();
     if( app.component.pageTurner.setting.page[0] === "add"){
         if( currentLeft < (-1 * appWidth * 0.25) ){ // currentLeft is greater than what slider would be if start on addPage and dragged 20% negative(pulling viewPage into view)
             let sliderLeft = -1 * appWidth;
