@@ -211,7 +211,6 @@ app.component.pageTurner.func.give.footerButtons_pageTurnerClickListeners = ()=>
             app.component.pageTurner.func.give.addPageButton_onPageAttributes();
             app.component.pageTurner.func.give.viewPageButton_offPageAttributes();
             let wait_sliderTrans = setTimeout(()=>{
-                console.log('set to add')
                 app.component.pageTurner.func.set.page();
             },300);
 
@@ -222,7 +221,6 @@ app.component.pageTurner.func.give.footerButtons_pageTurnerClickListeners = ()=>
             app.component.pageTurner.func.give.addPageButton_offPageAttributes();
             app.component.pageTurner.func.give.viewPageButton_onPageAttributes();
             let wait_sliderTrans = setTimeout(()=>{
-                console.log('set to view')
                 app.component.pageTurner.func.set.page();
             },300);
         });
@@ -251,8 +249,8 @@ app.component.pageTurner.func.give.slider_viewPageAttributes = ()=>{
 app.component.pageTurner.func.give.timeSlots_scrollListener = ()=>{
     let timeSlots = document.querySelector(".timeSlots");
         timeSlots.addEventListener("scroll", app.component.pageTurner.func.give.slider_swipeLock);
-    console.log('swipeLock fires on load because timeSlots scrollTop is set');
 };
+// fires on load via timeSlots scroll. timeSlots scroll is set to a particular position on init.
 
 app.component.pageTurner.func.give.viewPageButton_offPageAttributes = ()=>{
     let viewPageButton = document.querySelector(".viewPageButton");

@@ -433,7 +433,7 @@ app.component.item.func.make.dayHeader = (itemObj)=>{
             colorRed = "colorRed";
         };
         let html = `
-            <div class="dayHeader">
+            <div class="dayHeader" onclick="app.component.item.func.post.item_fromViewPage_toDataStore();">
                 <p class="dayText ${colorRed}">${dayText}</p>
                 <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
             </div>
@@ -732,8 +732,11 @@ app.component.item.func.post.item_fromViewPage_toDataStore = async()=>{
     event.stopPropagation();
     let fieldValue = app.component.item.state.selected[2].children[1].value;
     if( fieldValue.trim().length > 0 // field NOT empty && (either hit enter || clicked off(clicked blurTile))
-    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){
-        let createdId = app.component.item.state.selected[2].getAttribute("createdId");
+    &&( event.key === "Enter" ||
+        event.target.classList.contains("blurTile") ||
+        event.target.classList.contains("dayText") ||
+        event.target.classList.contains("dayInfo") )
+    ){  let createdId = app.component.item.state.selected[2].getAttribute("createdId");
         let itemObj   = await app.component.item.func.get.itemObj_fromCreatedId(createdId);
         await app.component.item.func.set.itemObj_inItemObjs(itemObj, fieldValue);
         await app.component.item.func.set.itemObj_inLocalStorage(itemObj, fieldValue);
