@@ -730,25 +730,27 @@ app.component.item.func.post.item_fromAddPage_toDataStore = async()=>{
 
 app.component.item.func.post.item_fromViewPage_toDataStore = async()=>{
     event.stopPropagation();
-    let fieldValue = app.component.item.state.selected[2].children[1].value;
-    if( fieldValue.trim().length > 0 // field NOT empty && (either hit enter || clicked off(clicked blurTile))
-    &&( event.key === "Enter" ||
-        event.target.classList.contains("blurTile") ||
-        event.target.classList.contains("dayText") ||
-        event.target.classList.contains("dayInfo") )
-    ){  let createdId = app.component.item.state.selected[2].getAttribute("createdId");
-        let itemObj   = await app.component.item.func.get.itemObj_fromCreatedId(createdId);
-        await app.component.item.func.set.itemObj_inItemObjs(itemObj, fieldValue);
-        await app.component.item.func.set.itemObj_inLocalStorage(itemObj, fieldValue);
-        app.component.item.func.give.item_onAddPage_value();
-        app.component.item.func.give.item_onViewPage_value();
-        app.component.item.func.transition.hideItem_onViewPage();
-        app.component.item.func.remove.blurTile_fromViewPage();
-    }
-    else
-    if( fieldValue.trim().length === 0 // field empty && (either hit enter || clicked off(clicked blurTile))
-    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){
-        app.component.item.func.transition.removeItem_fromViewPage();
+    if( app.component.item.state.selected[0] === true){
+        let fieldValue = app.component.item.state.selected[2].children[1].value;
+        if( fieldValue.trim().length > 0 // field NOT empty && (either hit enter || clicked off(clicked blurTile))
+        &&( event.key === "Enter" ||
+            event.target.classList.contains("blurTile") ||
+            event.target.classList.contains("dayText") ||
+            event.target.classList.contains("dayInfo") )
+        ){  let createdId = app.component.item.state.selected[2].getAttribute("createdId");
+            let itemObj   = await app.component.item.func.get.itemObj_fromCreatedId(createdId);
+            await app.component.item.func.set.itemObj_inItemObjs(itemObj, fieldValue);
+            await app.component.item.func.set.itemObj_inLocalStorage(itemObj, fieldValue);
+            app.component.item.func.give.item_onAddPage_value();
+            app.component.item.func.give.item_onViewPage_value();
+            app.component.item.func.transition.hideItem_onViewPage();
+            app.component.item.func.remove.blurTile_fromViewPage();
+        }
+        else
+        if( fieldValue.trim().length === 0 // field empty && (either hit enter || clicked off(clicked blurTile))
+        &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){
+            app.component.item.func.transition.removeItem_fromViewPage();
+        };
     };
 };
 
