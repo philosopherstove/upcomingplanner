@@ -139,7 +139,7 @@ app.component.pageTurner.func.event.userMove = ()=>{
         let pxDifference = app.component.pageTurner.setting.currentXPx - app.component.pageTurner.setting.startXPx;
 
 
-        if( app.component.pageTurner.func.is.flickThresholdMet(pxDifference, 25) === true){
+        if( app.component.pageTurner.func.is.flickThresholdMet(pxDifference, 20) === true){
             app.component.pageTurner.state.active[0] = false;
             app.component.pageTurner.state.active[1] = true;
             app.component.pageTurner.func.set.page_asReverse();
