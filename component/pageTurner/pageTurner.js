@@ -178,7 +178,7 @@ app.component.pageTurner.func.event.userUp = ()=>{
         // console.log('pxDifference', pxDifference);
 
         if( app.component.pageTurner.func.is.flickThresholdMet(pxDifference, 10) === true){
-            console.log('flick boy');
+            console.log('flick!');
             app.component.pageTurner.state.active[0] = false;
             app.component.pageTurner.state.active[1] = true;
             app.component.pageTurner.func.set.page_asReverse();
@@ -192,22 +192,21 @@ app.component.pageTurner.func.event.userUp = ()=>{
                 app.component.pageTurner.state.preventClick = false;
             },tTotal);
             return;
+        }
+        else{
+            app.component.pageTurner.state.active[0] = false;
+            app.component.pageTurner.state.active[1] = true;
+            let tTotal = 300;
+            let slider = document.querySelector(".slider");
+            let sPos   = Number(slider.style.left.split("p")[0]);
+            app.component.pageTurner.func.set.page();
+            let fPos = app.component.pageTurner.setting.page[1]; // depends on set.page()
+            app.component.pageTurner.func.anim.slider_toPosition(tTotal, slider, sPos, fPos);
+            app.component.pageTurner.setting.timeout_sliderTransEnd = setTimeout(()=>{
+                slider.classList.add("sliderTrans");
+                app.component.pageTurner.state.preventClick = false;
+            },tTotal);
         };
-
-// console.log('no');
-
-        app.component.pageTurner.state.active[0] = false;
-        app.component.pageTurner.state.active[1] = true;
-        let tTotal = 300;
-        let slider = document.querySelector(".slider");
-        let sPos   = Number(slider.style.left.split("p")[0]);
-        app.component.pageTurner.func.set.page();
-        let fPos = app.component.pageTurner.setting.page[1]; // depends on set.page()
-        app.component.pageTurner.func.anim.slider_toPosition(tTotal, slider, sPos, fPos);
-        app.component.pageTurner.setting.timeout_sliderTransEnd = setTimeout(()=>{
-            slider.classList.add("sliderTrans");
-            app.component.pageTurner.state.preventClick = false;
-        },tTotal);
     };
 };
 
