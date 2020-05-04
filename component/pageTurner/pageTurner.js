@@ -137,25 +137,6 @@ app.component.pageTurner.func.event.userMove = ()=>{
             app.component.pageTurner.setting.currentXPx = event.touches[0].clientX;
         };
         let pxDifference = app.component.pageTurner.setting.currentXPx - app.component.pageTurner.setting.startXPx;
-
-
-        // if( app.component.pageTurner.func.is.flickThresholdMet(pxDifference, 20) === true){
-        //     app.component.pageTurner.state.active[0] = false;
-        //     app.component.pageTurner.state.active[1] = true;
-        //     app.component.pageTurner.func.set.page_asReverse();
-        //     let tTotal = 300;
-        //     let slider = document.querySelector(".slider");
-        //     let sPos   = Number(slider.style.left.split("p")[0]);
-        //     let fPos   = app.component.pageTurner.setting.page[1];
-        //     app.component.pageTurner.func.anim.slider_toPosition(tTotal, slider, sPos, fPos);
-        //     app.component.pageTurner.setting.timeout_sliderTransEnd = setTimeout(()=>{
-        //         slider.classList.add("sliderTrans");
-        //         app.component.pageTurner.state.preventClick = false;
-        //     },tTotal);
-        //     return;
-        // };
-
-
         if( app.component.pageTurner.func.is.swipeDistanceThresholdMet(pxDifference, 10) === false){
             return; /* Need to exceed 10px threshold to continue executing slower swipe. This as well as state shutoffs and forceful position set in scrollListeners smoothly prevents vertical scrolling and horizontal swiping from happening at the same time. */
         };
@@ -168,44 +149,31 @@ app.component.pageTurner.func.event.userMove = ()=>{
 
 app.component.pageTurner.func.event.userUp = ()=>{
     if( app.component.pageTurner.state.active[0] === true){
-
-
+        app.component.pageTurner.state.active[0] = false;
+        app.component.pageTurner.state.active[1] = true;
         app.component.pageTurner.setting.currentXPx = event.clientX;
         if( event.clientX == undefined){
             app.component.pageTurner.setting.currentXPx = event.changedTouches[0].clientX;
         };
         let pxDifference = app.component.pageTurner.setting.currentXPx - app.component.pageTurner.setting.startXPx;
-
+        let fPos = null;
         if( app.component.pageTurner.func.is.flickThresholdMet(pxDifference, 10) === true){
-            console.log('flick!');
-            app.component.pageTurner.state.active[0] = false;
-            app.component.pageTurner.state.active[1] = true;
-            app.component.pageTurner.func.set.page_asReverse();
-            let tTotal = 300;
-            let slider = document.querySelector(".slider");
-            let sPos   = Number(slider.style.left.split("p")[0]);
-            let fPos   = app.component.pageTurner.setting.page[1];
-            app.component.pageTurner.func.anim.slider_toPosition(tTotal, slider, sPos, fPos);
-            app.component.pageTurner.setting.timeout_sliderTransEnd = setTimeout(()=>{
-                slider.classList.add("sliderTrans");
-                app.component.pageTurner.state.preventClick = false;
-            },tTotal);
-            return;
+            app.component.pageTurner.func.set.page_asReverse(); // set page first
+            fPos = app.component.pageTurner.setting.page[1];
+
         }
         else{
-            app.component.pageTurner.state.active[0] = false;
-            app.component.pageTurner.state.active[1] = true;
-            let tTotal = 300;
-            let slider = document.querySelector(".slider");
-            let sPos   = Number(slider.style.left.split("p")[0]);
             app.component.pageTurner.func.set.page();
-            let fPos = app.component.pageTurner.setting.page[1]; // depends on set.page()
-            app.component.pageTurner.func.anim.slider_toPosition(tTotal, slider, sPos, fPos);
-            app.component.pageTurner.setting.timeout_sliderTransEnd = setTimeout(()=>{
-                slider.classList.add("sliderTrans");
-                app.component.pageTurner.state.preventClick = false;
-            },tTotal);
+            fPos = app.component.pageTurner.setting.page[1]; // set page first
         };
+        let tTotal = 300;
+        let slider = document.querySelector(".slider");
+        let sPos   = Number(slider.style.left.split("p")[0]);
+        app.component.pageTurner.func.anim.slider_toPosition(tTotal, slider, sPos, fPos);
+        app.component.pageTurner.setting.timeout_sliderTransEnd = setTimeout(()=>{
+            slider.classList.add("sliderTrans");
+            app.component.pageTurner.state.preventClick = false;
+        },tTotal);
     };
 };
 
