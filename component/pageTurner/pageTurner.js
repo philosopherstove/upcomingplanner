@@ -344,7 +344,7 @@ app.component.pageTurner.func.is.flickThresholdMet = (pxDifference, distanceThre
         ||  app.component.pageTurner.setting.page[0] === "view" &&
             pxDifference > 0 // negative = swipe to go left
         ){
-            let timeThreshold     = 150;
+            let timeThreshold     = 200;
             let timeNow           = Date.now();
             let timeDifference    = timeNow - app.component.pageTurner.setting.swipeStartTime;
             if( pxDifference < 0){
