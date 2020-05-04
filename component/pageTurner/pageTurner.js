@@ -172,10 +172,9 @@ app.component.pageTurner.func.event.userUp = ()=>{
 
         app.component.pageTurner.setting.currentXPx = event.clientX;
         if( event.clientX == undefined){
-            app.component.pageTurner.setting.currentXPx = event.touches[0].clientX;
+            app.component.pageTurner.setting.currentXPx = event.changedTouches[0].clientX;
         };
         let pxDifference = app.component.pageTurner.setting.currentXPx - app.component.pageTurner.setting.startXPx;
-        // console.log('pxDifference', pxDifference);
 
         if( app.component.pageTurner.func.is.flickThresholdMet(pxDifference, 10) === true){
             console.log('flick!');
