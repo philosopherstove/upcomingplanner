@@ -139,7 +139,7 @@ app.component.pageTurner.func.event.userMove = ()=>{
         let pxDifference = app.component.pageTurner.setting.currentXPx - app.component.pageTurner.setting.startXPx;
 
 
-        if( app.component.pageTurner.func.is.flickThresholdMet(pxDifference, 30) === true){
+        if( app.component.pageTurner.func.is.flickThresholdMet(pxDifference, 25) === true){
             app.component.pageTurner.state.active[0] = false;
             app.component.pageTurner.state.active[1] = true;
             app.component.pageTurner.func.set.page_asReverse();
@@ -318,8 +318,7 @@ app.component.pageTurner.func.is.flickThresholdMet = (pxDifference, distanceThre
         ||  app.component.pageTurner.setting.page[0] === "view" &&
             pxDifference > 0 // negative = swipe to go left
         ){
-            let distanceThreshold = 30;
-            let timeThreshold     = 100;
+            let timeThreshold     = 150;
             let timeNow           = Date.now();
             let timeDifference    = timeNow - app.component.pageTurner.setting.swipeStartTime;
             if( pxDifference < 0){
