@@ -16,7 +16,7 @@ app.component.timeSlot.func.init.component = async()=>{
 MAKE
 app.component.timeSlot.func.make.AMorPMString = (hr)=>{
 app.component.timeSlot.func.make.minItems = ()=>{
-app.component.timeSlot.func.make.timeSlot = (hr, hr12, AMorPM)=>{
+app.component.timeSlot.func.make.timeSlotHTML = (hr, hr12, AMorPM)=>{
 MAKEAPPEND
 app.component.timeSlot.func.makeAppend.timeSlots = ()=>{
 REMOVE
@@ -123,7 +123,7 @@ app.component.timeSlot.func.make.minItems = ()=>{
     });
 };
 
-app.component.timeSlot.func.make.timeSlot = (hr, hr12, AMorPM)=>{
+app.component.timeSlot.func.make.timeSlotHTML = (hr, hr12, AMorPM)=>{
     let spacingClass = "";
     if( hr12 < 10){spacingClass = "spacing";}
     let html = `
@@ -153,7 +153,7 @@ app.component.timeSlot.func.makeAppend.timeSlots = ()=>{
             let hr = i;
             let AMorPM        = app.component.timeSlot.func.make.AMorPMString(hr);
             let hr_12         = app.component.timeSlot.func.make.hour12Number(hr);
-            let html_timeSlot = app.component.timeSlot.func.make.timeSlot(hr, hr_12, AMorPM);
+            let html_timeSlot = app.component.timeSlot.func.make.timeSlotHTML(hr, hr_12, AMorPM);
             if( hr === 24){
                 wrapper.insertAdjacentHTML("afterBegin", html_timeSlot);
             }

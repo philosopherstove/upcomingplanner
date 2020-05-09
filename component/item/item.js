@@ -5,7 +5,6 @@ app.component.item.state.selected = [false, false, null];
 app.component.item.func = {};
 app.component.item.func.createSet  = {};
 app.component.item.func.delete     = {};
-app.component.item.func.get        = {};
 app.component.item.func.give       = {};
 app.component.item.func.init       = {};
 app.component.item.func.is         = {};
@@ -27,9 +26,6 @@ app.component.item.func.delete.itemObj = ()=>{
 app.component.item.func.delete.itemObj_fromItemObjs = ()=>{
 app.component.item.func.delete.itemObj_fromLocalStorage = ()=>{
 app.component.item.func.delete.oldItemObjs_fromItemObjs = ()=>{
-GET
-app.component.item.func.get.dayText_fromDayId = (dayId)=>{
-app.component.item.func.get.itemObj_fromCreatedId = (createdId)=>{
 GIVE
 app.component.item.func.give.dayHeader_onViewPage_hidingAttributes = (itemElement)=>{
 app.component.item.func.give.dayHeader_onViewPage_showingAttributes = (itemElement)=>{
@@ -57,6 +53,7 @@ app.component.item.func.is.itemsUnderViewPageHour = ()=>{
 app.component.item.func.is.objExist = ()=>{
 MAKE
 app.component.item.func.make.dayHeader = (itemObj)=>{
+app.component.item.func.make.dayTextString_fromDayId = (dayId)=>{
 app.component.item.func.make.hourHeader = (itemObj)=>{
 app.component.item.func.make.item_forAddPage = (itemObj)=>{
 app.component.item.func.make.item_forViewPage = (itemObj)=>{
@@ -79,6 +76,7 @@ app.component.item.func.remove.hourHeader = (hourId)=>{
 app.component.item.func.remove.item_fromAddPage = ()=>{
 app.component.item.func.remove.item_fromViewPage = ()=>{
 RETRIEVE
+app.component.item.func.retrieve.itemObj_withCreatedId = (createdId)=>{
 app.component.item.func.retrieve.itemObjs = ()=>{
 SET
 app.component.item.func.set.itemObj_inItemObjs = (selectedObj, fieldValue)=>{
@@ -189,31 +187,6 @@ app.component.item.func.delete.oldItemObjs_fromItemObjs = ()=>{
             if( obj.associated.day >= startOfToday_ms
             ||  i === app.component.item.objs.length-1){
                 resolve();
-            };
-        };
-    });
-};
-
-/**
-GET
-***/
-app.component.item.func.get.dayText_fromDayId = (dayId)=>{
-    let dateString = `${new Date(dayId)}`;
-    let splits     = dateString.split(" ");
-    let month      = splits[1];
-    let dayName    = splits[0];
-    let dayNum     = splits[2];
-    let dayText    = `${dayName} ${month} ${dayNum}`;
-    return dayText;
-};
-
-app.component.item.func.get.itemObj_fromCreatedId = (createdId)=>{
-    return new Promise((resolve)=>{
-        for(i in app.component.item.objs){
-            let obj = app.component.item.objs[i];
-            if( Number(obj.associated.createdId) === Number(createdId)){
-                resolve(obj);
-                return;
             };
         };
     });
@@ -425,7 +398,7 @@ app.component.item.func.make.dayHeader = (itemObj)=>{
     return new Promise(async(resolve)=>{
         let currentDayId              = app.component.dayDropper.func.get.day()[0];
         let dayId                     = itemObj.associated.day;
-        let dayText                   = app.component.item.func.get.dayText_fromDayId(dayId);
+        let dayText                   = app.component.item.func.make.dayTextString_fromDayId(dayId);
         let numberOfItemsForDayString = await app.component.dayDropper.func.make.numberOfItemsForDayString(dayId);
         let daysUntilString           = app.component.dayDropper.func.make.daysUntilString(dayId);
         let colorRed                  = "";
@@ -440,6 +413,16 @@ app.component.item.func.make.dayHeader = (itemObj)=>{
         `;
         resolve(html);
     });
+};
+
+app.component.item.func.make.dayTextString_fromDayId = (dayId)=>{
+    let dateString = `${new Date(dayId)}`;
+    let splits     = dateString.split(" ");
+    let month      = splits[1];
+    let dayName    = splits[0];
+    let dayNum     = splits[2];
+    let dayText    = `${dayName} ${month} ${dayNum}`;
+    return dayText;
 };
 
 app.component.item.func.make.hourHeader = (itemObj)=>{
@@ -540,7 +523,7 @@ app.component.item.func.makeAppend.item_toAddPage = (itemObj)=>{
 
 app.component.item.func.makeAppend.item_toViewPage = async()=>{
     let createdId  = Number(app.component.item.state.selected[2].getAttribute("createdId"));
-    let itemObj    = await app.component.item.func.get.itemObj_fromCreatedId(createdId);
+    let itemObj    = await app.component.item.func.retrieve.itemObj_withCreatedId(createdId);
     let dayId      = itemObj.associated.day;
     let hourId     = itemObj.associated.timeSlot;
     let dayBlocks  = document.querySelectorAll('.dayBlock');
@@ -738,7 +721,7 @@ app.component.item.func.post.item_fromViewPage_toDataStore = async()=>{
             event.target.classList.contains("dayText") ||
             event.target.classList.contains("dayInfo") )
         ){  let createdId = app.component.item.state.selected[2].getAttribute("createdId");
-            let itemObj   = await app.component.item.func.get.itemObj_fromCreatedId(createdId);
+            let itemObj   = await app.component.item.func.retrieve.itemObj_withCreatedId(createdId);
             await app.component.item.func.set.itemObj_inItemObjs(itemObj, fieldValue);
             await app.component.item.func.set.itemObj_inLocalStorage(itemObj, fieldValue);
             app.component.item.func.give.item_onAddPage_value();
@@ -814,6 +797,18 @@ app.component.item.func.remove.item_fromViewPage = ()=>{
 /*******
 RETRIEVE
 ********/
+app.component.item.func.retrieve.itemObj_withCreatedId = (createdId)=>{
+    return new Promise((resolve)=>{
+        for(i in app.component.item.objs){
+            let obj = app.component.item.objs[i];
+            if( Number(obj.associated.createdId) === Number(createdId)){
+                resolve(obj);
+                return;
+            };
+        };
+    });
+};
+
 app.component.item.func.retrieve.itemObjs = ()=>{
     return new Promise((resolve)=>{
         let localStorageObj = JSON.parse(localStorage.upcomingPlanner);
