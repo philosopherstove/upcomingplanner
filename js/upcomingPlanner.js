@@ -3,6 +3,8 @@ App Object
 **********/
 const app = {};
 app.component = {};
+app.setting = {};
+app.setting.timeout_refreshDaily = null;
 app.func = {};
 app.func.calc = {};
 app.func.init = {};
@@ -22,7 +24,8 @@ app.func.init.refreshDaily = ()=>{
     let startOfToday_string = new Date(now_string.getFullYear(), now_string.getMonth(), now_string.getDate());
     let startOfToday_ms     = Date.parse(startOfToday_string);
     let nextRefresh_ms      = startOfToday_ms + msInADay+1000 - now_ms; // +1000 for 1 second into new day
-    let refreshWhenNextDay  = setTimeout(()=>{
+    // let refreshWhenNextDay  = setTimeout(()=>{
+    app.setting.timeout_refreshDaily = setTimeout(()=>{
         location.reload();
     },nextRefresh_ms);
 };

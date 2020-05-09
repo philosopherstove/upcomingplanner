@@ -236,7 +236,7 @@ app.component.item.func.give.dayHeader_onViewPage_showingAttributes = (itemEleme
 
 app.component.item.func.give.dayInfo_onViewPage_updatedInfo = async(dayId)=>{
     let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
-    let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayId);
+    let daysUntilString           = app.component.dayDropper.func.make.daysUntilString(dayId);
     let dayInfoElement            = document.querySelector(`.viewPage .dayBlock[dayId="${dayId}"] .dayInfo`);
     if( dayInfoElement === null){return};
         dayInfoElement.innerHTML  = `(${numberOfItemsForDayString}${daysUntilString})`;
@@ -427,7 +427,7 @@ app.component.item.func.make.dayHeader = (itemObj)=>{
         let dayId                     = itemObj.associated.day;
         let dayText                   = app.component.item.func.get.dayText_fromDayId(dayId);
         let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
-        let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(dayId);
+        let daysUntilString           = app.component.dayDropper.func.make.daysUntilString(dayId);
         let colorRed                  = "";
         if( currentDayId === dayId){
             colorRed = "colorRed";

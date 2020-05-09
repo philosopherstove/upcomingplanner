@@ -7,6 +7,7 @@ app.component.dayDropper.func = {};
 app.component.dayDropper.func.get        = {};
 app.component.dayDropper.func.give       = {};
 app.component.dayDropper.func.init       = {};
+app.component.dayDropper.func.make       = {};
 app.component.dayDropper.func.makeAppend = {};
 app.component.dayDropper.func.remove     = {};
 app.component.dayDropper.func.set        = {};
@@ -15,7 +16,6 @@ app.component.dayDropper.func.transition = {};
 /* func hotkeys:
 GET
 app.component.dayDropper.func.get.day = (ms)=>{
-app.component.dayDropper.func.get.daysUntilString = (ms)=>{
 app.component.dayDropper.func.get.dropdownHighlightClass = (numberOfItemsForDayString)=>{
 app.component.dayDropper.func.get.numberOfItemsForDayString = (ms)=>{
 GIVE
@@ -31,6 +31,8 @@ app.component.dayDropper.func.give.scrollBar_closedAttributes = ()=>{
 app.component.dayDropper.func.give.scrollBar_openAttributes = ()=>{
 INIT
 app.component.dayDropper.func.init.component = ()=>{
+MAKE
+app.component.dayDropper.func.make.daysUntilString = (ms)=>{
 MAKEAPPEND
 app.component.dayDropper.func.makeAppend.blurTile = ()=>{
 app.component.dayDropper.func.makeAppend.dropperText = (ms)=>{
@@ -70,24 +72,6 @@ app.component.dayDropper.func.get.day = (ms)=>{
     let dayNum          = splits[2];
     let day_text        = `${dayName} ${month} ${dayNum}`;
     return [startOfDay_ms, day_text];
-};
-
-app.component.dayDropper.func.get.daysUntilString = (ms)=>{
-    let msInADay  = 86400000;
-    let todayMS   = app.component.dayDropper.func.get.day()[0];
-    let daysUntil = Math.round( (ms-todayMS)/msInADay );
-    let daysUntilString;
-    if( daysUntil === 0){
-        daysUntilString = `today`;
-    }
-    else
-    if( daysUntil === 1){
-        daysUntilString = `in 1 day`;
-    }
-    else{
-        daysUntilString = `in ${daysUntil} days`;
-    };
-    return daysUntilString;
 };
 
 app.component.dayDropper.func.get.dropdownHighlightClass = (numberOfItemsForDayString)=>{
@@ -228,6 +212,27 @@ app.component.dayDropper.func.init.component = ()=>{
     app.component.dayDropper.setting.day = app.component.dayDropper.func.get.day();
 };
 
+/***
+MAKE
+****/
+app.component.dayDropper.func.make.daysUntilString = (ms)=>{
+    let msInADay  = 86400000;
+    let todayMS   = app.component.dayDropper.func.get.day()[0];
+    let daysUntil = Math.round( (ms-todayMS)/msInADay );
+    let daysUntilString;
+    if( daysUntil === 0){
+        daysUntilString = `today`;
+    }
+    else
+    if( daysUntil === 1){
+        daysUntilString = `in 1 day`;
+    }
+    else{
+        daysUntilString = `in ${daysUntil} days`;
+    };
+    return daysUntilString;
+};
+
 /*********
 MAKEAPPEND
 **********/
@@ -252,7 +257,7 @@ app.component.dayDropper.func.makeAppend.dropperText_day = (dayText)=>{
 
 app.component.dayDropper.func.makeAppend.dropperText_info = async(dayId)=>{
     let numberOfItemsForDayString     = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
-    let daysUntilString               = app.component.dayDropper.func.get.daysUntilString(dayId);
+    let daysUntilString               = app.component.dayDropper.func.make.daysUntilString(dayId);
     let items_daysCountdown           = document.querySelector(".items_daysCountdown");
         items_daysCountdown.innerHTML = `${numberOfItemsForDayString}${daysUntilString}`;
 };
@@ -272,7 +277,7 @@ app.component.dayDropper.func.makeAppend.menuItems = async()=>{
         let day_text                  = `${dayName} ${month} ${dayNum}`;
         let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(incr_ms);
         let dropdownHighlightClass    = app.component.dayDropper.func.get.dropdownHighlightClass(numberOfItemsForDayString);
-        let daysUntilString           = app.component.dayDropper.func.get.daysUntilString(incr_ms);
+        let daysUntilString           = app.component.dayDropper.func.make.daysUntilString(incr_ms);
         let html_piece = `
             <p dayId="${incr_ms}" day_text="${day_text}" class="${dropdownHighlightClass}" onclick="app.component.dayDropper.func.set.day(this)">
                 <span class="dd_date">
