@@ -16,7 +16,6 @@ app.component.dayDropper.func.transition = {};
 /* func hotkeys:
 GET
 app.component.dayDropper.func.get.day = (ms)=>{
-app.component.dayDropper.func.get.dropdownHighlightClass = (numberOfItemsForDayString)=>{
 app.component.dayDropper.func.get.numberOfItemsForDayString = (ms)=>{
 GIVE
 app.component.dayDropper.func.give.body_closingDropdownListener = ()=>{
@@ -33,6 +32,7 @@ INIT
 app.component.dayDropper.func.init.component = ()=>{
 MAKE
 app.component.dayDropper.func.make.daysUntilString = (ms)=>{
+app.component.dayDropper.func.make.dropdownHighlightClass = (numberOfItemsForDayString)=>{
 MAKEAPPEND
 app.component.dayDropper.func.makeAppend.blurTile = ()=>{
 app.component.dayDropper.func.makeAppend.dropperText = (ms)=>{
@@ -72,14 +72,6 @@ app.component.dayDropper.func.get.day = (ms)=>{
     let dayNum          = splits[2];
     let day_text        = `${dayName} ${month} ${dayNum}`;
     return [startOfDay_ms, day_text];
-};
-
-app.component.dayDropper.func.get.dropdownHighlightClass = (numberOfItemsForDayString)=>{
-    let dropdownHighlightClass = "";
-    if( numberOfItemsForDayString.length > 0){
-        dropdownHighlightClass = "dropdownItemHighlight";
-    };
-    return dropdownHighlightClass;
 };
 
 app.component.dayDropper.func.get.numberOfItemsForDayString = (ms)=>{
@@ -233,6 +225,14 @@ app.component.dayDropper.func.make.daysUntilString = (ms)=>{
     return daysUntilString;
 };
 
+app.component.dayDropper.func.make.dropdownHighlightClass = (numberOfItemsForDayString)=>{
+    let dropdownHighlightClass = "";
+    if( numberOfItemsForDayString.length > 0){
+        dropdownHighlightClass = "dropdownItemHighlight";
+    };
+    return dropdownHighlightClass;
+};
+
 /*********
 MAKEAPPEND
 **********/
@@ -276,7 +276,7 @@ app.component.dayDropper.func.makeAppend.menuItems = async()=>{
         let dayNum                    = splits[2];
         let day_text                  = `${dayName} ${month} ${dayNum}`;
         let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(incr_ms);
-        let dropdownHighlightClass    = app.component.dayDropper.func.get.dropdownHighlightClass(numberOfItemsForDayString);
+        let dropdownHighlightClass    = app.component.dayDropper.func.make.dropdownHighlightClass(numberOfItemsForDayString);
         let daysUntilString           = app.component.dayDropper.func.make.daysUntilString(incr_ms);
         let html_piece = `
             <p dayId="${incr_ms}" day_text="${day_text}" class="${dropdownHighlightClass}" onclick="app.component.dayDropper.func.set.day(this)">
