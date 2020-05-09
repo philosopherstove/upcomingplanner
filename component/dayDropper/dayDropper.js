@@ -16,7 +16,6 @@ app.component.dayDropper.func.transition = {};
 /* func hotkeys:
 GET
 app.component.dayDropper.func.get.day = (ms)=>{
-app.component.dayDropper.func.get.numberOfItemsForDayString = (ms)=>{
 GIVE
 app.component.dayDropper.func.give.body_closingDropdownListener = ()=>{
 app.component.dayDropper.func.give.dropper_closedAttributes = ()=>{
@@ -33,6 +32,7 @@ app.component.dayDropper.func.init.component = ()=>{
 MAKE
 app.component.dayDropper.func.make.daysUntilString = (ms)=>{
 app.component.dayDropper.func.make.dropdownHighlightClass = (numberOfItemsForDayString)=>{
+app.component.dayDropper.func.make.numberOfItemsForDayString = (ms)=>{
 MAKEAPPEND
 app.component.dayDropper.func.makeAppend.blurTile = ()=>{
 app.component.dayDropper.func.makeAppend.dropperText = (ms)=>{
@@ -72,38 +72,6 @@ app.component.dayDropper.func.get.day = (ms)=>{
     let dayNum          = splits[2];
     let day_text        = `${dayName} ${month} ${dayNum}`;
     return [startOfDay_ms, day_text];
-};
-
-app.component.dayDropper.func.get.numberOfItemsForDayString = (ms)=>{
-    return new Promise((resolve)=>{
-        if( app.component.item.objs.length === 0){
-            let numberOfItemsForDayString = "";
-            resolve(numberOfItemsForDayString);
-        }
-        else{
-            let numberOfItems = 0;
-            for(i in app.component.item.objs){
-                let obj = app.component.item.objs[i];
-                if( obj.associated.day === ms){
-                    numberOfItems++;
-                };
-                if( Number(i) === app.component.item.objs.length -1){ // end of loop
-                    let numberOfItemsForDayString;
-                    if( numberOfItems === 0){
-                        numberOfItemsForDayString = "";
-                    }
-                    else
-                    if( numberOfItems === 1){ // 1 item grammar
-                        numberOfItemsForDayString = `${numberOfItems} item - `;
-                    }
-                    else{
-                        numberOfItemsForDayString = `${numberOfItems} items - `;
-                    };
-                    resolve(numberOfItemsForDayString);
-                };
-            };
-        };
-    });
 };
 
 /***
@@ -233,6 +201,38 @@ app.component.dayDropper.func.make.dropdownHighlightClass = (numberOfItemsForDay
     return dropdownHighlightClass;
 };
 
+app.component.dayDropper.func.make.numberOfItemsForDayString = (ms)=>{
+    return new Promise((resolve)=>{
+        if( app.component.item.objs.length === 0){
+            let numberOfItemsForDayString = "";
+            resolve(numberOfItemsForDayString);
+        }
+        else{
+            let numberOfItems = 0;
+            for(i in app.component.item.objs){
+                let obj = app.component.item.objs[i];
+                if( obj.associated.day === ms){
+                    numberOfItems++;
+                };
+                if( Number(i) === app.component.item.objs.length -1){ // end of loop
+                    let numberOfItemsForDayString;
+                    if( numberOfItems === 0){
+                        numberOfItemsForDayString = "";
+                    }
+                    else
+                    if( numberOfItems === 1){ // 1 item grammar
+                        numberOfItemsForDayString = `${numberOfItems} item - `;
+                    }
+                    else{
+                        numberOfItemsForDayString = `${numberOfItems} items - `;
+                    };
+                    resolve(numberOfItemsForDayString);
+                };
+            };
+        };
+    });
+};
+
 /*********
 MAKEAPPEND
 **********/
@@ -256,7 +256,7 @@ app.component.dayDropper.func.makeAppend.dropperText_day = (dayText)=>{
 };
 
 app.component.dayDropper.func.makeAppend.dropperText_info = async(dayId)=>{
-    let numberOfItemsForDayString     = await app.component.dayDropper.func.get.numberOfItemsForDayString(dayId);
+    let numberOfItemsForDayString     = await app.component.dayDropper.func.make.numberOfItemsForDayString(dayId);
     let daysUntilString               = app.component.dayDropper.func.make.daysUntilString(dayId);
     let items_daysCountdown           = document.querySelector(".items_daysCountdown");
         items_daysCountdown.innerHTML = `${numberOfItemsForDayString}${daysUntilString}`;
@@ -275,7 +275,7 @@ app.component.dayDropper.func.makeAppend.menuItems = async()=>{
         let dayName                   = splits[0];
         let dayNum                    = splits[2];
         let day_text                  = `${dayName} ${month} ${dayNum}`;
-        let numberOfItemsForDayString = await app.component.dayDropper.func.get.numberOfItemsForDayString(incr_ms);
+        let numberOfItemsForDayString = await app.component.dayDropper.func.make.numberOfItemsForDayString(incr_ms);
         let dropdownHighlightClass    = app.component.dayDropper.func.make.dropdownHighlightClass(numberOfItemsForDayString);
         let daysUntilString           = app.component.dayDropper.func.make.daysUntilString(incr_ms);
         let html_piece = `
