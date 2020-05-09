@@ -1,6 +1,5 @@
 app.component.timeSlot = {};
 app.component.timeSlot.func = {};
-app.component.timeSlot.func.get        = {};
 app.component.timeSlot.func.give       = {};
 app.component.timeSlot.func.init       = {};
 app.component.timeSlot.func.make       = {};
@@ -8,9 +7,6 @@ app.component.timeSlot.func.makeAppend = {};
 app.component.timeSlot.func.remove     = {};
 
 /* func hotkeys:
-GET
-app.component.timeSlot.func.get.AMorPM = (hr)=>{
-app.component.timeSlot.func.get.to12Hour = (hr)=>{
 GIVE
 app.component.timeSlot.func.give.scrollBall_heightAttributes = ()=>{
 app.component.timeSlot.func.give.timeSlots_scrollListener = ()=>{
@@ -18,6 +14,7 @@ app.component.timeSlot.func.give.timeSlots_scrollTopDefault = ()=>{
 INIT
 app.component.timeSlot.func.init.component = async()=>{
 MAKE
+app.component.timeSlot.func.make.AMorPMString = (hr)=>{
 app.component.timeSlot.func.make.minItems = ()=>{
 app.component.timeSlot.func.make.timeSlot = (hr, hr12, AMorPM)=>{
 MAKEAPPEND
@@ -25,32 +22,6 @@ app.component.timeSlot.func.makeAppend.timeSlots = ()=>{
 REMOVE
 app.component.timeSlot.func.remove.timeSlotsWrap = ()=>{
 */
-
-/**
-GET
-***/
-app.component.timeSlot.func.get.AMorPM = (hr)=>{
-    if(hr < 12){
-        return 'AM';
-    }
-    else{
-        return 'PM';
-    };
-};
-
-app.component.timeSlot.func.get.to12Hour = (hr)=>{
-    hr = Number(hr);
-    if(hr === 0){
-        return 12;
-    }
-    else
-    if(hr > 12){
-        return (hr - 12);
-    }
-    else{
-        return hr;
-    };
-};
 
 /***
 GIVE
@@ -115,6 +86,29 @@ app.component.timeSlot.func.init.component = async()=>{
 /***
 MAKE
 ****/
+app.component.timeSlot.func.make.AMorPMString = (hr)=>{
+    if(hr < 12){
+        return 'AM';
+    }
+    else{
+        return 'PM';
+    };
+};
+
+app.component.timeSlot.func.make.hour12Number = (hr)=>{
+    hr = Number(hr);
+    if(hr === 0){
+        return 12;
+    }
+    else
+    if(hr > 12){
+        return (hr - 12);
+    }
+    else{
+        return hr;
+    };
+};
+
 app.component.timeSlot.func.make.minItems = ()=>{
     return new Promise((resolve)=>{
         let html = "";
@@ -157,8 +151,8 @@ app.component.timeSlot.func.makeAppend.timeSlots = ()=>{
         for(let i = 0; i < hours; i++){
             // let hr            = i + 1;
             let hr = i;
-            let AMorPM        = app.component.timeSlot.func.get.AMorPM(hr);
-            let hr_12         = app.component.timeSlot.func.get.to12Hour(hr);
+            let AMorPM        = app.component.timeSlot.func.make.AMorPMString(hr);
+            let hr_12         = app.component.timeSlot.func.make.hour12Number(hr);
             let html_timeSlot = app.component.timeSlot.func.make.timeSlot(hr, hr_12, AMorPM);
             if( hr === 24){
                 wrapper.insertAdjacentHTML("afterBegin", html_timeSlot);

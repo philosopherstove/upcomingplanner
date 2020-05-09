@@ -446,8 +446,8 @@ app.component.item.func.make.hourHeader = (itemObj)=>{
     let currentDayId = app.component.dayDropper.func.get.day()[0];
     let dayId        = itemObj.associated.day;
     let hourId       = itemObj.associated.timeSlot;
-    let AMorPM       = app.component.timeSlot.func.get.AMorPM(hourId);
-    let hr_12        = app.component.timeSlot.func.get.to12Hour(hourId);
+    let AMorPM       = app.component.timeSlot.func.make.AMorPMString(hourId);
+    let hr_12        = app.component.timeSlot.func.make.hour12Number(hourId);
     let colorRed     = "";
     if( currentDayId === dayId){
         colorRed = "colorRed";
