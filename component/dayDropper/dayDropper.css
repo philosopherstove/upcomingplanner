@@ -229,7 +229,7 @@ p {
     height: 100px;
     background-color: var(--blue_1);
     border-radius: 100px;
-    font-family: "Bookman Old Style";
+    font-family: "Bookman Old Style", "Georgia";
     font-size: 34px;
     font-weight: bold;
     color: white;
