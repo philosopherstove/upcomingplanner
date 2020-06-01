@@ -319,9 +319,10 @@ app.component.item.func.init.component = async()=>{
     await app.component.item.func.delete.oldItemObjs_fromItemObjs();
     app.component.item.func.update.itemObjs_inLocalStorage();
     /* make view */
-    app.component.dayDropper.func.makeAppend.dropperText();    // fires here instead of in dayDropper init, because needs # of items for day to fill out dayDropperText
-    await app.component.dayDropper.func.makeAppend.menuItems();      // fires here instead of in dayDropper init, because needs # of items for day to fill out dayDropperText
-    app.component.dayDropper.func.makeAppend.monthScrollbar(); // fires here instead of in dayDropper init, because needs # of items for day to fill out dayDropperText
+    app.component.dayDropper.func.makeAppend.dropperText();     // fires here instead of in dayDropper init, because needs # of items for day to fill out dayDropperText
+    await app.component.dayDropper.func.makeAppend.menuItems(); // fires here instead of in dayDropper init, because needs # of items for day to fill out dayDropperText
+    app.component.dayDropper.func.makeAppend.monthScrollbar();
+    app.component.dayDropper.func.set.scrollPositions_forDropdownMenu();
     app.component.item.func.makeAppend.items_onAddPage_forDay(app.component.dayDropper.setting.day[0]);
     app.component.item.func.makeAppend.items_onViewPage();
 };

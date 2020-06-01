@@ -1,7 +1,8 @@
 app.component.dayDropper = {};
 app.component.dayDropper.setting = {};
 app.component.dayDropper.setting.day = null;
-app.component.dayDropper.setting.scrollMonth = null;
+app.component.dayDropper.setting.menu_lastScrollPosition = [null, null];
+app.component.dayDropper.setting.menu_scrollPositions =[];
 app.component.dayDropper.state = {};
 app.component.dayDropper.state.open = [false, false, null];
 app.component.dayDropper.func = {};
@@ -27,6 +28,7 @@ app.component.dayDropper.func.give.menu_closedAttributes = ()=>{
 app.component.dayDropper.func.give.menu_openAttributes = ()=>{
 app.component.dayDropper.func.give.menu_scrollListener = ()=>{
 app.component.dayDropper.func.give.menu_scrollTopDefault = ()=>{
+app.component.dayDropper.func.give.monthQuickBar_colorAttributes = ()=>{
 app.component.dayDropper.func.give.scrollBall_heightAttributes = ()=>{
 app.component.dayDropper.func.give.scrollBar_closedAttributes = ()=>{
 app.component.dayDropper.func.give.scrollBar_openAttributes = ()=>{
@@ -48,6 +50,7 @@ REMOVE
 app.component.dayDropper.func.remove.blurTile = ()=>{
 SET
 app.component.dayDropper.func.set.day = async(dayDropperDayElement)=>{
+app.component.dayDropper.func.set.scrollPositions_forDropdownMenu = ()=>{
 TRANSITION
 app.component.dayDropper.func.transition.closeDropdown = async()=>{
 app.component.dayDropper.func.transition.openDropdown = ()=>{
@@ -161,28 +164,38 @@ app.component.dayDropper.func.give.menu_scrollListener = ()=>{
 
 app.component.dayDropper.func.give.monthQuickBar_colorAttributes = ()=>{
     let currScrollPosition = document.querySelector(".dropdownMenu_day").scrollTop;
-    let monthItems         = document.querySelectorAll(".dropdownMenu_day .monthScrollbar p");
-    let scrollPositions    = [];
-    for(x of monthItems){
-        scrollPositions.push(x.getAttribute("scrolltop"));
-    };
-    let month = null;
-    for(let i = 0; i < scrollPositions.length; i++){
-        let scrollPosition     = scrollPositions[i];
-        let nextScrollPosition = scrollPositions[i+1];
-        if(
-            (currScrollPosition >= scrollPosition &&
-             currScrollPosition < nextScrollPosition)
-            ||
-            (i === scrollPositions.length - 1 &&
-             currScrollPosition >= scrollPosition)
-        ){
-            monthItems[i].classList.add('blue_1_color');
-        }
-        else{
-            monthItems[i].classList.remove('blue_1_color');
+    // if not within the range of the lastScrollPosition
+    if(
+        app.component.dayDropper.setting.menu_lastScrollPosition[0] === null
+        ||
+        (currScrollPosition <  app.component.dayDropper.setting.menu_lastScrollPosition[0]
+        || currScrollPosition >= app.component.dayDropper.setting.menu_lastScrollPosition[1])
+     ){
+        let monthItems = document.querySelectorAll(".dropdownMenu_day .monthScrollbar p");
+        let newScrollPosition = [];
+        // loop the scrollPositions
+        for(let i = 0; i < app.component.dayDropper.setting.menu_scrollPositions.length; i++){
+            let scrollPosition     = app.component.dayDropper.setting.menu_scrollPositions[i];
+            let nextScrollPosition = app.component.dayDropper.setting.menu_scrollPositions[i+1];
+            if(
+                (currScrollPosition >= scrollPosition &&
+                 currScrollPosition < nextScrollPosition)
+                ||
+                (i === app.component.dayDropper.setting.menu_scrollPositions.length - 1 &&
+                 currScrollPosition >= scrollPosition)
+            ){
+                monthItems[i].classList.add('blue_1_color');
+                newScrollPosition = [scrollPosition, nextScrollPosition];
+            }
+            else{
+                monthItems[i].classList.remove('blue_1_color');
+            };
+            // end of loop
+            if( i === app.component.dayDropper.setting.menu_scrollPositions.length-1){
+                app.component.dayDropper.setting.menu_lastScrollPosition = newScrollPosition;
+            };
         };
-    };
+    }
 };
 
 app.component.dayDropper.func.give.menu_scrollTopDefault = ()=>{
@@ -434,6 +447,13 @@ app.component.dayDropper.func.set.day = async(dayDropperDayElement)=>{
     await app.component.timeSlot.func.makeAppend.timeSlots();                // makeAppend - new timeSlots
     await app.component.item.func.makeAppend.items_onAddPage_forDay(day_ms); // must happen after makeAppen.timeSlots()
     app.component.timeSlot.func.give.scrollBall_heightAttributes();          // must happen after makeAppend.items_onAddPage_forDay(). timeSlots with items have a larger height than timeSlots without, thus need to calculate different scrollBall height based on number of number of items for the given day
+};
+
+app.component.dayDropper.func.set.scrollPositions_forDropdownMenu = ()=>{
+    let monthItems = document.querySelectorAll(".dropdownMenu_day .monthScrollbar p");
+    for(x of monthItems){
+        app.component.dayDropper.setting.menu_scrollPositions.push(Number(x.getAttribute("scrolltop")));
+    };
 };
 
 /*********
