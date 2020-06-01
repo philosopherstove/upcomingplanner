@@ -143,15 +143,15 @@
     font-weight: bold;
     font-size: 12px;
     letter-spacing: -1px;
+    transition: height 0.2s ease-out;
+    overflow: hidden;
 }
 .dropdownMenu_day
-.monthScrollbar
-.closedHeight {
+.monthScrollbar.closedHeight {
     height: 0;
 }
 .dropdownMenu_day
-.monthScrollbar
-.openHeight {
+.monthScrollbar.openHeight {
     height: 380px;
 }
 .dropdownMenu_day

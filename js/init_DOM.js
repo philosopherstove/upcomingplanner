@@ -42,7 +42,7 @@ async function init_DOM(){
                             <span class="flashSign"></span>
                         </span>
                         <span class="scrollWrapper">
-                            <span class="monthScrollbar openHeight"></span>
+                            <span class="monthScrollbar closedHeight"></span>
                             <span class="scrollBar closedHeight">
                                 <span class="scrollBall"></span>
                             </span>

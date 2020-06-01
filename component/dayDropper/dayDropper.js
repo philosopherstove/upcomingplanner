@@ -190,31 +190,36 @@ app.component.dayDropper.func.give.menu_scrollTopDefault = ()=>{
         dropdownMenu.scrollTop = 0;
 };
 
+app.component.dayDropper.func.give.monthBar_closedAttributes = ()=>{
+    let monthBar = document.querySelector(".dropdownMenu_day .monthScrollbar");
+        monthBar.classList.add("closedHeight");
+        monthBar.classList.remove("openHeight");
+};
+
+app.component.dayDropper.func.give.monthBar_openAttributes = ()=>{
+    let monthBar = document.querySelector(".dropdownMenu_day .monthScrollbar");
+        monthBar.classList.add("openHeight");
+        monthBar.classList.remove("closedHeight");
+};
+
 app.component.dayDropper.func.give.scrollBall_heightAttributes = ()=>{
     let numOfStartingMonth = new Date().getDate();
     if( numOfStartingMonth === 1){
         numOfStartingMonth = 0;
     };
-
-    let ratioThroughYear = numOfStartingMonth/365;
-
-    let height_noOverflow   = 390;
-    let height_withOverflow = 17155;
-    let barHeight           = 380;
-
-    let scrollBarPaddingTop = ratioThroughYear * barHeight;
-
+    let ratioThroughYear           = numOfStartingMonth/365;
+    let height_noOverflow          = 390;
+    let height_withOverflow        = 17155;
+    let barHeight                  = 380;
+    let scrollBarPaddingTop        = ratioThroughYear * barHeight;
     let scrollBar                  = document.querySelector(".dropdownMenu_day .scrollBar");
         scrollBar.style.paddingTop = `${scrollBarPaddingTop}px`;
-
-    let heightRatio = (height_noOverflow / height_withOverflow) * (barHeight / height_noOverflow);
-        heightRatio = heightRatio - (heightRatio * ratioThroughYear);
-
-    let ballHeight = Math.ceil( (barHeight * heightRatio) * (barHeight / height_noOverflow) );
-        ballHeight = Math.ceil(ballHeight - (ballHeight * ratioThroughYear));
-
-    let ball              = document.querySelector(".dropdownMenu_day .scrollBall");
-        ball.style.height = `${ballHeight}px`;
+    let heightRatio                = (height_noOverflow / height_withOverflow) * (barHeight / height_noOverflow);
+        heightRatio                = heightRatio - (heightRatio * ratioThroughYear);
+    let ballHeight                 = Math.ceil( (barHeight * heightRatio) * (barHeight / height_noOverflow) );
+        ballHeight                 = Math.ceil(ballHeight - (ballHeight * ratioThroughYear));
+    let ball                       = document.querySelector(".dropdownMenu_day .scrollBall");
+        ball.style.height          = `${ballHeight}px`;
         ball.setAttribute('heightRatio', heightRatio);
 };
 
@@ -441,6 +446,7 @@ app.component.dayDropper.func.transition.closeDropdown = async()=>{
         app.component.dayDropper.state.open[1] = true; // turn transitioning bool ON
         app.component.dayDropper.func.give.dropper_closedAttributes();
         app.component.dayDropper.func.give.scrollBar_closedAttributes();
+        app.component.dayDropper.func.give.monthBar_closedAttributes();
         app.component.dayDropper.func.give.menu_closedAttributes()
         .then(()=>{
             app.component.dayDropper.state.open[0] = false; // turn open state OFF
@@ -465,5 +471,6 @@ app.component.dayDropper.func.transition.openDropdown = ()=>{
         });
         app.component.dayDropper.func.give.menu_scrollTopDefault();
         app.component.dayDropper.func.give.scrollBar_openAttributes();
+        app.component.dayDropper.func.give.monthBar_openAttributes();
     };
 };
