@@ -1,6 +1,7 @@
 app.component.dayDropper = {};
 app.component.dayDropper.setting = {};
 app.component.dayDropper.setting.day = null;
+app.component.dayDropper.setting.scrollMonth = null;
 app.component.dayDropper.state = {};
 app.component.dayDropper.state.open = [false, false, null];
 app.component.dayDropper.func = {};
@@ -139,6 +140,7 @@ app.component.dayDropper.func.give.menu_openAttributes = ()=>{
         dropdownMenu.classList.remove("closedBorder");
         dropdownMenu.classList.add("openHeight");
         dropdownMenu.classList.remove("closedHeight");
+    app.component.dayDropper.func.give.monthQuickBar_colorAttributes();
     return new Promise((resolve)=>{
         let waitForTransitionToFinish = setTimeout(()=>{
             resolve();
@@ -153,7 +155,34 @@ app.component.dayDropper.func.give.menu_scrollListener = ()=>{
             let ball                 = document.querySelector(".dropdownMenu_day .scrollBall");
                 ballHeightRatio      = ball.getAttribute("heightRatio");
                 ball.style.marginTop = `${scrollTop * ballHeightRatio}px`;
+            app.component.dayDropper.func.give.monthQuickBar_colorAttributes();
         });
+};
+
+app.component.dayDropper.func.give.monthQuickBar_colorAttributes = ()=>{
+    let currScrollPosition = document.querySelector(".dropdownMenu_day").scrollTop;
+    let monthItems         = document.querySelectorAll(".dropdownMenu_day .monthScrollbar p");
+    let scrollPositions    = [];
+    for(x of monthItems){
+        scrollPositions.push(x.getAttribute("scrolltop"));
+    };
+    let month = null;
+    for(let i = 0; i < scrollPositions.length; i++){
+        let scrollPosition     = scrollPositions[i];
+        let nextScrollPosition = scrollPositions[i+1];
+        if(
+            (currScrollPosition >= scrollPosition &&
+             currScrollPosition < nextScrollPosition)
+            ||
+            (i === scrollPositions.length - 1 &&
+             currScrollPosition >= scrollPosition)
+        ){
+            monthItems[i].classList.add('blue_1_color');
+        }
+        else{
+            monthItems[i].classList.remove('blue_1_color');
+        };
+    };
 };
 
 app.component.dayDropper.func.give.menu_scrollTopDefault = ()=>{
@@ -163,13 +192,17 @@ app.component.dayDropper.func.give.menu_scrollTopDefault = ()=>{
 
 app.component.dayDropper.func.give.scrollBall_heightAttributes = ()=>{
     let numOfStartingMonth = new Date().getDate();
-    let ratioThroughYear   = numOfStartingMonth/365;
+    if( numOfStartingMonth === 1){
+        numOfStartingMonth = 0;
+    };
+
+    let ratioThroughYear = numOfStartingMonth/365;
 
     let height_noOverflow   = 390;
     let height_withOverflow = 17155;
     let barHeight           = 380;
 
-    let scrollBarPaddingTop        = ratioThroughYear * barHeight;
+    let scrollBarPaddingTop = ratioThroughYear * barHeight;
 
     let scrollBar                  = document.querySelector(".dropdownMenu_day .scrollBar");
         scrollBar.style.paddingTop = `${scrollBarPaddingTop}px`;
@@ -180,8 +213,8 @@ app.component.dayDropper.func.give.scrollBall_heightAttributes = ()=>{
     let ballHeight = Math.ceil( (barHeight * heightRatio) * (barHeight / height_noOverflow) );
         ballHeight = Math.ceil(ballHeight - (ballHeight * ratioThroughYear));
 
-    let ball                = document.querySelector(".dropdownMenu_day .scrollBall");
-        ball.style.height   = `${ballHeight}px`;
+    let ball              = document.querySelector(".dropdownMenu_day .scrollBall");
+        ball.style.height = `${ballHeight}px`;
         ball.setAttribute('heightRatio', heightRatio);
 };
 

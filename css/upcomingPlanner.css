@@ -58,6 +58,10 @@ General Add/Remove
 	margin-left: 8px;
 }
 
+.blue_1_color {
+    color: var(--blue_1);
+}
+
 /****************
 APP GENERAL PARTS
 *****************/
