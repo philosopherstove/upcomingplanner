@@ -139,7 +139,7 @@
     margin-left: -28px;
     padding-top: 15px;
     z-index: 2;
-    font-family: "Bookman Old Style";
+    font-family: "Bookman Old Style", "Georgia";
     font-weight: bold;
     font-size: 12px;
     color: var(--blue_1);
