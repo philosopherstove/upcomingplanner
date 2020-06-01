@@ -184,11 +184,11 @@ app.component.dayDropper.func.give.monthQuickBar_colorAttributes = ()=>{
                 (i === app.component.dayDropper.setting.menu_scrollPositions.length - 1 &&
                  currScrollPosition >= scrollPosition)
             ){
-                monthItems[i].classList.add('blue_1_color');
+                monthItems[i].classList.add('monthBarHighlight');
                 newScrollPosition = [scrollPosition, nextScrollPosition];
             }
             else{
-                monthItems[i].classList.remove('blue_1_color');
+                monthItems[i].classList.remove('monthBarHighlight');
             };
             // end of loop
             if( i === app.component.dayDropper.setting.menu_scrollPositions.length-1){
