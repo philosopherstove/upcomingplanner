@@ -129,6 +129,52 @@
     background-color: rgb(93,165,202);
 }
 
+
+
+.dropdownMenu_day
+.monthScrollbar {
+    position: fixed;
+    width: 36px;
+    margin-top: -5px;
+    margin-left: -28px;
+    padding-top: 15px;
+    z-index: 2;
+    font-family: "Bookman Old Style";
+    font-weight: bold;
+    font-size: 12px;
+    letter-spacing: -1px;
+}
+.dropdownMenu_day
+.monthScrollbar
+.closedHeight {
+    height: 0;
+}
+.dropdownMenu_day
+.monthScrollbar
+.openHeight {
+    height: 380px;
+}
+.dropdownMenu_day
+.monthScrollbar
+p {
+    margin-bottom: 15px;
+}
+
+
+/* .dropdownMenu_day .monthQuickBar {
+    position: fixed;
+    right: 10%;
+    z-index: 2;
+}
+.dropdownMenu_day .monthQuickBar.closedHeight {
+    height: 0;
+}
+.dropdownMenu_day .monthQuickBar.closedHeight{
+    height: 380px;
+} */
+
+
+
 .dd_date {
 	display: block;
 	position: relative;
@@ -158,4 +204,47 @@
 	font-family: var(--font_main);
 	font-size: 10px;
 	font-style: italic;
+}
+
+
+.flashSignWrapper {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin-top: -50px;
+}
+
+.flashSign {
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    background-color: var(--blue_1);
+    border-radius: 100px;
+    font-family: "Bookman Old Style";
+    font-size: 34px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    line-height: 100px;
+    letter-spacing: -2.8px;
+    z-index: 1;
+    opacity: 0;
+    pointer-events: none;
+}
+.flashSign_fade {
+    animation: flashSign_fade 0.8s ease-out;
+}
+@keyframes flashSign_fade {
+    0%{
+        opacity: 0.9;
+    }
+    50%{
+        opacity: 0.9;
+    }
+    100%{
+        opacity: 0;
+    }
 }
