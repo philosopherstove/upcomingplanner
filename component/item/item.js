@@ -66,8 +66,7 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
 app.component.item.func.makeAppend.items_onAddPage_forDay = (dayId)=>{
 app.component.item.func.makeAppend.items_onViewPage = async()=>{
 POST
-app.component.item.func.post.item_fromAddPage_toDataStore = async()=>{
-app.component.item.func.post.item_fromViewPage_toDataStore = async()=>{
+app.component.item.func.post.item_toDataStore = async()=>{
 REMOVE
 app.component.item.func.remove.blurTile = ()=>{
 app.component.item.func.remove.blurTile_fromViewPage = ()=>{
@@ -407,7 +406,7 @@ app.component.item.func.make.dayHeaderHTML = (itemObj)=>{
             colorRed = "colorRed";
         };
         let html = `
-            <div class="dayHeader" onclick="app.component.item.func.post.item_fromViewPage_toDataStore();">
+            <div class="dayHeader" onclick="app.component.item.func.post.item_toDataStore();">
                 <p class="dayText ${colorRed}">${dayText}</p>
                 <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
             </div>
@@ -457,7 +456,7 @@ app.component.item.func.make.itemHTML_forAddPage = (itemObj)=>{
     let html = `
         <div class="itemTile hideItemTile" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem(this)">
             <span class="dot"></span>
-            <input class="itemField background_main" value="${itemText}" onkeyup="app.component.item.func.post.item_fromAddPage_toDataStore()" spellcheck="false" readonly>
+            <input class="itemField background_main" value="${itemText}" onkeyup="app.component.item.func.post.item_toDataStore()" spellcheck="false" readonly>
             <div class="minValues displayNone"></div>
             <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromAddPage()"></div>
         </div>
@@ -473,7 +472,7 @@ app.component.item.func.make.itemHTML_forViewPage = (itemObj)=>{
     let html = `
         <div class="itemTile hideItemTile" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem(this)">
             <span class="dot"></span>
-            <input class="itemField background_main" value="${itemText}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
+            <input class="itemField background_main" value="${itemText}" onkeyup="app.component.item.func.post.item_toDataStore()" spellcheck="false" readonly>
             <div class="minValues displayNone"></div>
             <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem_fromViewPage()"></div>
         </div>
@@ -485,13 +484,13 @@ app.component.item.func.make.itemHTML_forViewPage = (itemObj)=>{
 MAKEAPPEND
 **********/
 app.component.item.func.makeAppend.blurTile_toAddPage = ()=>{
-    let html = `<div class="blurTile" onclick="app.component.item.func.post.item_fromAddPage_toDataStore();"></div>`;
+    let html = `<div class="blurTile" onclick="app.component.item.func.post.item_toDataStore()"></div>`;
     let addPage = document.querySelector(".addPage");
         addPage.insertAdjacentHTML("afterbegin", html);
 };
 
 app.component.item.func.makeAppend.blurTile_toViewPage = ()=>{
-    let html = `<div class="blurTile" onclick="app.component.item.func.post.item_fromViewPage_toDataStore();"></div>`;
+    let html = `<div class="blurTile" onclick="app.component.item.func.post.item_toDataStore()"></div>`;
     let viewPage = document.querySelector(".viewPage");
         viewPage.insertAdjacentHTML("afterbegin", html);
 };
@@ -504,7 +503,7 @@ app.component.item.func.makeAppend.itemEmpty_toAddPage = (timeSlot)=>{
         let html = `
             <div class="itemTile zIndex2" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem(this)">
                 <span class="dot"></span>
-                <input class="itemField background_white" spellcheck="false" onkeyup="app.component.item.func.post.item_fromAddPage_toDataStore();">
+                <input class="itemField background_white" spellcheck="false" onkeyup="app.component.item.func.post.item_toDataStore()">
                 <div class="minValues displayNone"></div>
                 <div class="trashIcon" onclick="app.component.item.func.transition.removeItem_fromAddPage();"></div>
             </div>
@@ -677,63 +676,71 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
 /***
 POST
 ****/
-app.component.item.func.post.item_fromAddPage_toDataStore = async()=>{
-    event.stopPropagation();
-    let fieldValue = app.component.item.state.selected[2].children[1].value;
-    if( fieldValue.trim().length > 0 // field NOT empty
-    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){ // AND either hit enter OR clicked off(clicked blurTile)
-        let itemId = app.component.item.state.selected[2].getAttribute("createdId");
-        let isObjExist = await app.component.item.func.is.objExist(itemId);
-        if( isObjExist[0] === true){ // update old componentObj
-            let itemObj = isObjExist[1];
-            await app.component.item.func.set.itemObj_inItemObjs(itemObj, fieldValue);
-            await app.component.item.func.set.itemObj_inLocalStorage(itemObj, fieldValue);
-            app.component.item.func.give.item_onAddPage_value();
-            app.component.item.func.give.item_onViewPage_value();
-        }
-        else{
-            app.component.item.func.createSet.itemObj(app.component.item.state.selected[2]); // add to objs array and data store
-            app.component.dayDropper.func.makeAppend.dropperText(app.component.dayDropper.setting.day[0]);
-            app.component.dayDropper.func.makeAppend.menuItems();
-            app.component.item.func.makeAppend.item_toViewPage();
-            let dayId = Number(app.component.item.state.selected[2].getAttribute("dayId"));
-            app.component.item.func.give.dayInfo_onViewPage_updatedInfo(dayId);
-        };
-        app.component.item.func.transition.hideItem_onAddPage(); // needs to fire after createSet.itemObj, because the transition turns state off
-        app.component.item.func.remove.blurTile();
-        let delay_forKeyboardExitOnMobile = setTimeout(()=>{
-            app.component.timeSlot.func.give.scrollBall_heightAttributes();
-        },300);
-    }
-    else // field empty && (either hit enter || clicked off(clicked blurTile))
-    if( fieldValue.trim().length === 0
-    &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){
-        app.component.item.func.transition.removeItem_fromAddPage();
-    };
-};
-
-app.component.item.func.post.item_fromViewPage_toDataStore = async()=>{
+app.component.item.func.post.item_toDataStore = async()=>{
     event.stopPropagation();
     if( app.component.item.state.selected[0] === true){
-        let fieldValue = app.component.item.state.selected[2].children[1].value;
-        if( fieldValue.trim().length > 0 // field NOT empty && (either hit enter || clicked off(clicked blurTile))
+        let itemElement = app.component.item.state.selected[2];
+        let fieldValue  = itemElement.children[1].value;
+        if( fieldValue.trim().length > 0
         &&( event.key === "Enter" ||
             event.target.classList.contains("blurTile") ||
             event.target.classList.contains("dayText") ||
             event.target.classList.contains("dayInfo") )
-        ){  let createdId = app.component.item.state.selected[2].getAttribute("createdId");
-            let itemObj   = await app.component.item.func.retrieve.itemObj_withCreatedId(createdId);
-            await app.component.item.func.set.itemObj_inItemObjs(itemObj, fieldValue);
-            await app.component.item.func.set.itemObj_inLocalStorage(itemObj, fieldValue);
-            app.component.item.func.give.item_onAddPage_value();
-            app.component.item.func.give.item_onViewPage_value();
-            app.component.item.func.transition.hideItem_onViewPage();
-            app.component.item.func.remove.blurTile_fromViewPage();
+        ){
+            let isObjExist = await app.component.item.func.is.objExist(itemElement.getAttribute("createdId"));
+            /* Create New Item */
+            if( isObjExist[0] === false){
+                app.component.item.func.createSet.itemObj(itemElement); // add to objs array and data store
+                app.component.dayDropper.func.makeAppend.dropperText(app.component.dayDropper.setting.day[0]);
+                app.component.dayDropper.func.makeAppend.menuItems();
+                app.component.item.func.makeAppend.item_toViewPage();
+                app.component.item.func.give.dayInfo_onViewPage_updatedInfo(Number(itemElement.getAttribute("dayId")));
+                /* Following also fired in other conditional for updating on addPage */
+                app.component.item.func.transition.hideItem_onAddPage(); // needs to fire after createSet.itemObj, because the transition turns state off
+                app.component.item.func.remove.blurTile();
+                let delay_forKeyboardExitOnMobile = setTimeout(()=>{
+                    app.component.timeSlot.func.give.scrollBall_heightAttributes(); // DIFF
+                },300);
+            }
+            /* Update Old Item */
+            else{
+                let itemObj = isObjExist[1];
+                await app.component.item.func.set.itemObj_inItemObjs(itemObj, fieldValue);
+                await app.component.item.func.set.itemObj_inLocalStorage(itemObj, fieldValue);
+                app.component.item.func.give.item_onAddPage_value();
+                app.component.item.func.give.item_onViewPage_value();
+                /* Page dependent func */
+                let addPage  = document.querySelector(".addPage");
+                let viewPage = document.querySelector(".viewPage");
+                if( addPage.contains(itemElement)){
+                    app.component.item.func.transition.hideItem_onAddPage(); // needs to fire after createSet.itemObj, because the transition turns state off
+                    app.component.item.func.remove.blurTile();
+                    let delay_forKeyboardExitOnMobile = setTimeout(()=>{
+                        app.component.timeSlot.func.give.scrollBall_heightAttributes(); // DIFF
+                    },300);
+                }
+                else
+                if( viewPage.contains(itemElement)){
+                    app.component.item.func.transition.hideItem_onViewPage();
+                    app.component.item.func.remove.blurTile_fromViewPage();
+                };
+            }
         }
         else
-        if( fieldValue.trim().length === 0 // field empty && (either hit enter || clicked off(clicked blurTile))
-        &&( event.key === "Enter" || event.target.classList.contains("blurTile")) ){
-            app.component.item.func.transition.removeItem_fromViewPage();
+        if( fieldValue.trim().length === 0
+        &&( event.key === "Enter" ||
+            event.target.classList.contains("blurTile"))
+        ){
+            /* Page dependent func */
+            let addPage  = document.querySelector(".addPage");
+            let viewPage = document.querySelector(".viewPage");
+            if( addPage.contains(itemElement)){
+                app.component.item.func.transition.removeItem_fromAddPage();
+            }
+            else
+            if( viewPage.contains(itemElement)){
+                app.component.item.func.transition.removeItem_fromViewPage();
+            };
         };
     };
 };
@@ -996,7 +1003,7 @@ app.component.item.func.transition.showItem = (itemElement)=>{
     &&  app.component.pageTurner.state.preventClick === false){ // pageTurner can't be preventing click
         /* state - selected ON */
         app.component.item.state.selected = [true, false, itemElement];
-        app.component.item.func.give.field_showingAttributes(itemElement); // SAME
+        app.component.item.func.give.field_showingAttributes(itemElement);
         app.component.item.func.give.tile_showingAttributes(itemElement);
         app.component.item.func.give.trash_showingAttributes(itemElement);
         /* Page dependent func */
