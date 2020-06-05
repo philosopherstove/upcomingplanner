@@ -131,7 +131,7 @@ app.component.timeSlot.func.make.monthsHTML = ()=>{
         now_dateString = now_dateString.toString();
     let splits         = now_dateString.split(" ");
     let month          = splits[1];
-    
+
 
 };
 app.component.timeSlot.func.make.monthsHTML();

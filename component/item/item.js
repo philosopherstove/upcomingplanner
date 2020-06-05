@@ -90,8 +90,7 @@ app.component.item.func.transition.hideItem_onAddPage = ()=>{
 app.component.item.func.transition.hideItem_onViewPage = ()=>{
 app.component.item.func.transition.removeItem_fromAddPage = async()=>{
 app.component.item.func.transition.removeItem_fromViewPage = async()=>{
-app.component.item.func.transition.showItem_onAddPage = async(itemElement)=>{
-app.component.item.func.transition.showItem_onViewPage = (itemElement)=>{
+app.component.item.func.transition.showItem = (itemElement)=>{
 UPDATE
 app.component.item.func.update.itemObjs_inLocalStorage = ()=>{
 */
@@ -456,7 +455,7 @@ app.component.item.func.make.itemHTML_forAddPage = (itemObj)=>{
     let hourId    = itemObj.associated.timeSlot;
     let itemText  = itemObj.setting.text;
     let html = `
-        <div class="itemTile hideItemTile" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem_onAddPage(this)">
+        <div class="itemTile hideItemTile" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem(this)">
             <span class="dot"></span>
             <input class="itemField background_main" value="${itemText}" onkeyup="app.component.item.func.post.item_fromAddPage_toDataStore()" spellcheck="false" readonly>
             <div class="minValues displayNone"></div>
@@ -472,7 +471,7 @@ app.component.item.func.make.itemHTML_forViewPage = (itemObj)=>{
     let hourId    = itemObj.associated.timeSlot;
     let itemText  = itemObj.setting.text;
     let html = `
-        <div class="itemTile hideItemTile" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem_onViewPage(this)">
+        <div class="itemTile hideItemTile" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem(this)">
             <span class="dot"></span>
             <input class="itemField background_main" value="${itemText}" onkeyup="app.component.item.func.post.item_fromViewPage_toDataStore()" spellcheck="false" readonly>
             <div class="minValues displayNone"></div>
@@ -503,7 +502,7 @@ app.component.item.func.makeAppend.itemEmpty_toAddPage = (timeSlot)=>{
         let dayId     = app.component.dayDropper.setting.day[0];
         let hourId    = Number(timeSlot.children[0].getAttribute("hourId"));
         let html = `
-            <div class="itemTile zIndex2" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem_onAddPage(this)">
+            <div class="itemTile zIndex2" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem(this)">
                 <span class="dot"></span>
                 <input class="itemField background_white" spellcheck="false" onkeyup="app.component.item.func.post.item_fromAddPage_toDataStore();">
                 <div class="minValues displayNone"></div>
@@ -991,36 +990,28 @@ app.component.item.func.transition.removeItem_fromViewPage = async()=>{
     app.component.item.state.selected = [false, false, null];
 };
 
-app.component.item.func.transition.showItem_onAddPage = async(itemElement)=>{
+app.component.item.func.transition.showItem = (itemElement)=>{
     event.stopPropagation();
     if( app.component.item.state.selected[0] === false
     &&  app.component.pageTurner.state.preventClick === false){ // pageTurner can't be preventing click
         /* state - selected ON */
         app.component.item.state.selected = [true, false, itemElement];
-        /* give - showingAttribiutes field, hourHeader, tile, trash */
-        app.component.item.func.give.field_showingAttributes(itemElement);
-        app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withItem(itemElement);
+        app.component.item.func.give.field_showingAttributes(itemElement); // SAME
         app.component.item.func.give.tile_showingAttributes(itemElement);
         app.component.item.func.give.trash_showingAttributes(itemElement);
-        /* makeAppend - blurTile */
-        app.component.item.func.makeAppend.blurTile_toAddPage();
-    };
-};
-
-app.component.item.func.transition.showItem_onViewPage = (itemElement)=>{
-    event.stopPropagation();
-    if( app.component.item.state.selected[0] === false
-    &&  app.component.pageTurner.state.preventClick === false){ // pageTurner can't be preventing click
-        /* state - selected ON */
-        app.component.item.state.selected = [true, false, itemElement];
-        /* give - showingAttributes dayHeader, field, hourHeader, tile, trash */
-        app.component.item.func.give.dayHeader_onViewPage_showingAttributes(itemElement); // DIFF
-        app.component.item.func.give.field_showingAttributes(itemElement); // SAME
-        app.component.item.func.give.hourHeader_onViewPage_showingAttributes(itemElement); // DIFF
-        app.component.item.func.give.tile_showingAttributes(itemElement); // SAME
-        app.component.item.func.give.trash_showingAttributes(itemElement); // SAME
-        /* makeAppend - blurTile */
-        app.component.item.func.makeAppend.blurTile_toViewPage();
+        /* Page dependent func */
+        let addPage  = document.querySelector(".addPage");
+        let viewPage = document.querySelector(".viewPage");
+        if( addPage.contains(itemElement)){
+            app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withItem(itemElement);
+            app.component.item.func.makeAppend.blurTile_toAddPage();
+        }
+        else
+        if( viewPage.contains(itemElement)){
+            app.component.item.func.give.dayHeader_onViewPage_showingAttributes(itemElement);
+            app.component.item.func.give.hourHeader_onViewPage_showingAttributes(itemElement);
+            app.component.item.func.makeAppend.blurTile_toViewPage();
+        };
     };
 };
 

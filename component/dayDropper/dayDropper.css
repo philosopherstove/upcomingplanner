@@ -163,6 +163,7 @@ p {
 
 .monthBarHighlight {
     color: black;
+    /* color: var(--red); */
     text-decoration: underline;
 }
 
