@@ -912,9 +912,6 @@ app.component.item.func.transition.removeItem = async()=>{
     let dayId       = Number(itemElement.getAttribute("dayId"));
     let addPage     = document.querySelector(".addPage");
     let viewPage    = document.querySelector(".viewPage");
-    /* remove - items from both pages */
-    app.component.item.func.remove.item_fromAddPage();
-    app.component.item.func.remove.item_fromViewPage();
     /* Page dependend func - give header attributes & remove blurTile */
     if( addPage.contains(itemElement)){
         app.component.item.func.give.hourHeader_onAddPage_hidingAttributes(itemElement);
@@ -926,6 +923,9 @@ app.component.item.func.transition.removeItem = async()=>{
         app.component.item.func.give.hourHeader_onViewPage_hidingAttributes(itemElement);
         app.component.item.func.remove.blurTile_fromViewPage();
     };
+    /* remove - items from both pages - must happen after conditional tests for attributes */
+    app.component.item.func.remove.item_fromAddPage();
+    app.component.item.func.remove.item_fromViewPage();
     /* delete - itemObj */
     await app.component.item.func.delete.itemObj();
     /* give - dayInfoOnViewPage & scrollBall - must happen after item removal */
