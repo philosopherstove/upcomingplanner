@@ -33,10 +33,9 @@ app.component.item.func.give.dayInfo_onViewPage_updatedInfo = async(dayId)=>{
 app.component.item.func.give.field_focus = (timeSlot)=>{
 app.component.item.func.give.field_hidingAttributes = (itemElement)=>{
 app.component.item.func.give.field_showingAttributes = (itemElement)=>{
-app.component.item.func.give.hourHeader_onAddPage_hidingAttributes = (itemElement)=>{
+app.component.item.func.give.hourHeader_hidingAttributes = (itemElement)=>{
 app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withItem = (itemElement)=>{
 app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withTimeSlot = (timeSlot)=>{
-app.component.item.func.give.hourHeader_onViewPage_hidingAttributes = (itemElement)=>{
 app.component.item.func.give.hourHeader_onViewPage_showingAttributes = (itemElement)=>{
 app.component.item.func.give.itemField_value = ()=>{
 app.component.item.func.give.tile_hidingAttributes = (itemElement)=>{
@@ -228,9 +227,20 @@ app.component.item.func.give.field_showingAttributes = (itemElement)=>{
         field.blur();
 };
 
-app.component.item.func.give.hourHeader_onAddPage_hidingAttributes = (itemElement)=>{
-    let timeHeader = itemElement.parentNode.previousElementSibling.children[0];
-        timeHeader.classList.remove("zIndex2");
+app.component.item.func.give.hourHeader_hidingAttributes = (itemElement)=>{
+    let addPage  = document.querySelector(".addPage");
+    let viewPage = document.querySelector(".viewPage");
+    if( addPage.contains(itemElement)){
+        let timeHeader = itemElement.parentNode.previousElementSibling.children[0];
+            timeHeader.classList.remove("zIndex2");
+    }
+    else
+    if( viewPage.contains(itemElement)){
+        let dayId        = itemElement.getAttribute("dayId");
+        let hourId       = itemElement.getAttribute("hourId");
+        let headerOfItem = document.querySelector(`.viewPage .hourHeader[dayId="${dayId}"][hourId="${hourId}"]`);
+            headerOfItem.classList.remove("zIndex2");
+    };
 };
 
 app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withItem = (itemElement)=>{
@@ -241,13 +251,6 @@ app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withItem = (
 app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withTimeSlot = (timeSlot)=>{
     let headerTime = timeSlot.children[0];
         headerTime.classList.add("zIndex2");
-};
-
-app.component.item.func.give.hourHeader_onViewPage_hidingAttributes = (itemElement)=>{
-    let dayId        = itemElement.getAttribute("dayId");
-    let hourId       = itemElement.getAttribute("hourId");
-    let headerOfItem = document.querySelector(`.viewPage .hourHeader[dayId="${dayId}"][hourId="${hourId}"]`);
-        headerOfItem.classList.remove("zIndex2");
 };
 
 app.component.item.func.give.hourHeader_onViewPage_showingAttributes = (itemElement)=>{
@@ -875,21 +878,14 @@ app.component.item.func.transition.createItem = async(timeSlot)=>{
 
 app.component.item.func.transition.hideItem = ()=>{
     let itemElement = app.component.item.state.selected[2];
-    let addPage     = document.querySelector(".addPage");
     let viewPage    = document.querySelector(".viewPage");
-    /* give - field, tile, trash attributes */
-    app.component.item.func.give.field_hidingAttributes(itemElement);
-    app.component.item.func.give.tile_hidingAttributes(itemElement);
-    app.component.item.func.give.trash_hidingAttributes(itemElement);
-    /* Page dependend func - give header attributes */
-    if( addPage.contains(itemElement)){
-        app.component.item.func.give.hourHeader_onAddPage_hidingAttributes(itemElement);
-    }
-    else
     if( viewPage.contains(itemElement)){
         app.component.item.func.give.dayHeader_onViewPage_hidingAttributes(itemElement);
-        app.component.item.func.give.hourHeader_onViewPage_hidingAttributes(itemElement);
     };
+    app.component.item.func.give.field_hidingAttributes(itemElement);
+    app.component.item.func.give.hourHeader_hidingAttributes();
+    app.component.item.func.give.tile_hidingAttributes(itemElement);
+    app.component.item.func.give.trash_hidingAttributes(itemElement);
     /* state - selected OFF */
     app.component.item.state.selected = [false, false, null];
 };
@@ -902,15 +898,14 @@ app.component.item.func.transition.removeItem = async()=>{
     let viewPage    = document.querySelector(".viewPage");
     /* Page dependend func - give header attributes & remove blurTile */
     if( addPage.contains(itemElement)){
-        app.component.item.func.give.hourHeader_onAddPage_hidingAttributes(itemElement);
         app.component.item.func.remove.blurTile();
     }
     else
     if( viewPage.contains(itemElement)){
         app.component.item.func.give.dayHeader_onViewPage_hidingAttributes(itemElement);
-        app.component.item.func.give.hourHeader_onViewPage_hidingAttributes(itemElement);
         app.component.item.func.remove.blurTile_fromViewPage();
     };
+    app.component.item.func.give.hourHeader_hidingAttributes();
     /* remove - items from both pages - must happen after conditional tests for attributes */
     app.component.item.func.remove.item_fromAddPage();
     app.component.item.func.remove.item_fromViewPage();
@@ -941,15 +936,14 @@ app.component.item.func.transition.showItem = (itemElement)=>{
         let addPage  = document.querySelector(".addPage");
         let viewPage = document.querySelector(".viewPage");
         if( addPage.contains(itemElement)){
-            app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withItem(itemElement);
             app.component.item.func.makeAppend.blurTile_toAddPage();
         }
         else
         if( viewPage.contains(itemElement)){
             app.component.item.func.give.dayHeader_onViewPage_showingAttributes(itemElement);
-            app.component.item.func.give.hourHeader_onViewPage_showingAttributes(itemElement);
             app.component.item.func.makeAppend.blurTile_toViewPage();
         };
+        app.component.item.func.give.hourHeader_hidingAttributes();
     };
 };
 
