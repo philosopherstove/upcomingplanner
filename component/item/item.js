@@ -218,6 +218,7 @@ app.component.item.func.give.field_hidingAttributes = (itemElement)=>{
         field.classList.add("background_main");
         field.classList.remove("background_white");
         field.setAttribute("readonly", "readonly");
+        field.blur();
 };
 
 app.component.item.func.give.field_showingAttributes = (itemElement)=>{
@@ -841,7 +842,8 @@ TRANSITION
 **********/
 app.component.item.func.transition.createItem = async(timeSlot)=>{
     if( app.component.item.state.selected[0] === false
-    &&  app.component.pageTurner.state.preventClick === false){ // pageTurner can't be preventing click
+    &&  app.component.pageTurner.state.preventClick === false // pageTurner can't be preventing click
+    ){
         await app.component.item.func.makeAppend.itemNew_toAddPage(timeSlot);
         let itemElement = timeSlot.nextElementSibling.children[0];
         app.component.item.func.makeAppend.blurTile(itemElement);
