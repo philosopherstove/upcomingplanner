@@ -661,6 +661,9 @@ app.component.item.func.post.item_toDataStore = async()=>{
                 app.component.dayDropper.func.makeAppend.menuItems();
                 app.component.item.func.makeAppend.item_toViewPage();
                 app.component.item.func.give.dayInfo_onViewPage_updatedInfo(Number(itemElement.getAttribute("dayId")));
+                let delay_forKeyboardExitOnMobile = setTimeout(()=>{
+                    app.component.timeSlot.func.give.scrollBall_heightAttributes();
+                },300);
             }
             /* Update Old Item */
             else{
@@ -670,9 +673,6 @@ app.component.item.func.post.item_toDataStore = async()=>{
                 app.component.item.func.give.itemField_value();
 
             };
-            let delay_forKeyboardExitOnMobile = setTimeout(()=>{
-                app.component.timeSlot.func.give.scrollBall_heightAttributes();
-            },300);
             app.component.item.func.remove.blurTile();
             app.component.item.func.transition.hideItem(); // needs to fire after createSet.itemObj, because the transition turns state off
         }
