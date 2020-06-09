@@ -52,8 +52,7 @@ app.component.item.func.make.dayTextString = (dayId)=>{
 app.component.item.func.make.hourHeaderHTML = (itemObj)=>{
 app.component.item.func.make.itemHTML = (itemObj)=>{
 MAKEAPPEND
-app.component.item.func.makeAppend.blurTile_toAddPage = ()=>{
-app.component.item.func.makeAppend.blurTile_toViewPage = ()=>{
+app.component.item.func.makeAppend.blurTile = (itemElement)=>{
 app.component.item.func.makeAppend.item_toAddPage = (itemObj)=>{
 app.component.item.func.makeAppend.item_toViewPage = async()=>{
 app.component.item.func.makeAppend.itemNew_toAddPage = (timeSlot)=>{
@@ -447,16 +446,17 @@ app.component.item.func.make.itemHTML = (itemObj)=>{
 /*********
 MAKEAPPEND
 **********/
-app.component.item.func.makeAppend.blurTile_toAddPage = ()=>{
-    let html = `<div class="blurTile" onclick="app.component.item.func.post.item_toDataStore()"></div>`;
-    let addPage = document.querySelector(".addPage");
-        addPage.insertAdjacentHTML("afterbegin", html);
-};
-
-app.component.item.func.makeAppend.blurTile_toViewPage = ()=>{
-    let html = `<div class="blurTile" onclick="app.component.item.func.post.item_toDataStore()"></div>`;
+app.component.item.func.makeAppend.blurTile = (itemElement)=>{
+    let html     = `<div class="blurTile" onclick="app.component.item.func.post.item_toDataStore()"></div>`;
+    let addPage  = document.querySelector(".addPage");
     let viewPage = document.querySelector(".viewPage");
+    if( addPage.contains(itemElement)){
+        addPage.insertAdjacentHTML("afterbegin", html);
+    }
+    else
+    if( viewPage.contains(itemElement)){
         viewPage.insertAdjacentHTML("afterbegin", html);
+    };
 };
 
 app.component.item.func.makeAppend.item_toAddPage = (itemObj)=>{
@@ -775,7 +775,7 @@ app.component.item.func.set.itemObj_inItemObjs = (selectedObj, fieldValue)=>{
     return new Promise((resolve)=>{
         for(i in app.component.item.objs){
             let obj = app.component.item.objs[i];
-            if(obj.associated.createdId === selectedObj.associated.createdId){
+            if( obj.associated.createdId === selectedObj.associated.createdId){
                 obj.setting.text = fieldValue;
                 resolve();
                 return;
@@ -855,10 +855,10 @@ app.component.item.func.transition.createItem = async(timeSlot)=>{
     if( app.component.item.state.selected[0] === false
     &&  app.component.pageTurner.state.preventClick === false){ // pageTurner can't be preventing click
         await app.component.item.func.makeAppend.itemNew_toAddPage(timeSlot);
-        let item = timeSlot.nextElementSibling.children[0];
-        app.component.item.func.makeAppend.blurTile_toAddPage();
+        let itemElement = timeSlot.nextElementSibling.children[0];
+        app.component.item.func.makeAppend.blurTile(itemElement);
         app.component.item.func.give.field_focus(timeSlot);
-        app.component.item.func.give.hourHeader_showingAttributes(item);
+        app.component.item.func.give.hourHeader_showingAttributes(itemElement);
         /* state - selected ON */
         app.component.item.state.selected = [true, false, item];
     };
@@ -920,16 +920,11 @@ app.component.item.func.transition.showItem = (itemElement)=>{
         app.component.item.func.give.hourHeader_showingAttributes(itemElement);
         app.component.item.func.give.tile_showingAttributes(itemElement);
         app.component.item.func.give.trash_showingAttributes(itemElement);
+        app.component.item.func.makeAppend.blurTile(itemElement);
         /* Page dependent func */
-        let addPage  = document.querySelector(".addPage");
         let viewPage = document.querySelector(".viewPage");
-        if( addPage.contains(itemElement)){
-            app.component.item.func.makeAppend.blurTile_toAddPage();
-        }
-        else
         if( viewPage.contains(itemElement)){
             app.component.item.func.give.dayHeader_onViewPage_showingAttributes(itemElement);
-            app.component.item.func.makeAppend.blurTile_toViewPage();
         };
     };
 };
