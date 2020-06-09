@@ -134,24 +134,35 @@ VIEW PAGE
     color: var(--blue_1);
 }
 
+
 .hourHeader {
-    position: relative;
-    margin-top: 15px;
     color: var(--blue_1);
     font-family: Avenir Next;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: -0.5px;
 }
-
-.dayBlock .dayHeader .colorRed,
-.dayBlock .hourHeader.colorRed {
+.addPage .hourHeader {
+    display: flex;
+    width: 17%;
+}
+.viewPage .hourHeader {
+    position: relative;
+    margin-top: 15px;
+}
+.viewPage .dayHeader .colorRed,
+.viewPage .hourHeader.colorRed {
     color: var(--red);
 }
 
-.hourHeader > span:nth-of-type(2) {
+
+.addPage .hourHeader > span:nth-of-type(2) {
+    margin-left: 4px;
+}
+.viewPage .hourHeader > span:nth-of-type(2) {
     margin-left: 1px;
 }
+
 
 .dayText,
 .dayInfo {

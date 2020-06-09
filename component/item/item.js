@@ -34,9 +34,8 @@ app.component.item.func.give.field_focus = (timeSlot)=>{
 app.component.item.func.give.field_hidingAttributes = (itemElement)=>{
 app.component.item.func.give.field_showingAttributes = (itemElement)=>{
 app.component.item.func.give.hourHeader_hidingAttributes = (itemElement)=>{
-app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withItem = (itemElement)=>{
+app.component.item.func.give.hourHeader_showingAttributes = (itemElement)=>{
 app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withTimeSlot = (timeSlot)=>{
-app.component.item.func.give.hourHeader_onViewPage_showingAttributes = (itemElement)=>{
 app.component.item.func.give.itemField_value = ()=>{
 app.component.item.func.give.tile_hidingAttributes = (itemElement)=>{
 app.component.item.func.give.tile_showingAttributes = (itemElement)=>{
@@ -228,36 +227,40 @@ app.component.item.func.give.field_showingAttributes = (itemElement)=>{
 };
 
 app.component.item.func.give.hourHeader_hidingAttributes = (itemElement)=>{
-    let addPage  = document.querySelector(".addPage");
-    let viewPage = document.querySelector(".viewPage");
+    let addPage    = document.querySelector(".addPage");
+    let viewPage   = document.querySelector(".viewPage");
+    let hourId     = itemElement.getAttribute("hourId");
+    let hourHeader = null;
     if( addPage.contains(itemElement)){
-        let timeHeader = itemElement.parentNode.previousElementSibling.children[0];
-            timeHeader.classList.remove("zIndex2");
+        hourHeader = document.querySelector(`.addPage .hourHeader[hourId="${hourId}"]`);
     }
     else
     if( viewPage.contains(itemElement)){
-        let dayId        = itemElement.getAttribute("dayId");
-        let hourId       = itemElement.getAttribute("hourId");
-        let headerOfItem = document.querySelector(`.viewPage .hourHeader[dayId="${dayId}"][hourId="${hourId}"]`);
-            headerOfItem.classList.remove("zIndex2");
+        let dayId  = itemElement.getAttribute("dayId");
+        hourHeader = document.querySelector(`.viewPage .hourHeader[dayId="${dayId}"][hourId="${hourId}"]`);
     };
+    hourHeader.classList.remove("zIndex2");
 };
 
-app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withItem = (itemElement)=>{
-    let headerTime = itemElement.parentNode.previousElementSibling.children[0];
-        headerTime.classList.add("zIndex2");
+app.component.item.func.give.hourHeader_showingAttributes = (itemElement)=>{
+    let addPage    = document.querySelector(".addPage");
+    let viewPage   = document.querySelector(".viewPage");
+    let hourId     = itemElement.getAttribute("hourId");
+    let hourHeader = null;
+    if( addPage.contains(itemElement)){
+        hourHeader = document.querySelector(`.addPage .hourHeader[hourId="${hourId}"]`);
+    }
+    else
+    if( viewPage.contains(itemElement)){
+        let dayId  = itemElement.getAttribute("dayId");
+        hourHeader = document.querySelector(`.viewPage .hourHeader[dayId="${dayId}"][hourId="${hourId}"]`);
+    };
+    hourHeader.classList.add("zIndex2");
 };
 
 app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withTimeSlot = (timeSlot)=>{
     let headerTime = timeSlot.children[0];
         headerTime.classList.add("zIndex2");
-};
-
-app.component.item.func.give.hourHeader_onViewPage_showingAttributes = (itemElement)=>{
-    let dayId        = itemElement.getAttribute("dayId");
-    let hourId       = itemElement.getAttribute("hourId");
-    let headerOfItem = document.querySelector(`.viewPage .hourHeader[dayId="${dayId}"][hourId="${hourId}"]`);
-        headerOfItem.classList.add("zIndex2");
 };
 
 app.component.item.func.give.itemField_value = ()=>{
@@ -883,7 +886,7 @@ app.component.item.func.transition.hideItem = ()=>{
         app.component.item.func.give.dayHeader_onViewPage_hidingAttributes(itemElement);
     };
     app.component.item.func.give.field_hidingAttributes(itemElement);
-    app.component.item.func.give.hourHeader_hidingAttributes();
+    app.component.item.func.give.hourHeader_hidingAttributes(itemElement);
     app.component.item.func.give.tile_hidingAttributes(itemElement);
     app.component.item.func.give.trash_hidingAttributes(itemElement);
     /* state - selected OFF */
@@ -905,7 +908,7 @@ app.component.item.func.transition.removeItem = async()=>{
         app.component.item.func.give.dayHeader_onViewPage_hidingAttributes(itemElement);
         app.component.item.func.remove.blurTile_fromViewPage();
     };
-    app.component.item.func.give.hourHeader_hidingAttributes();
+    app.component.item.func.give.hourHeader_hidingAttributes(itemElement);
     /* remove - items from both pages - must happen after conditional tests for attributes */
     app.component.item.func.remove.item_fromAddPage();
     app.component.item.func.remove.item_fromViewPage();
@@ -930,6 +933,7 @@ app.component.item.func.transition.showItem = (itemElement)=>{
         /* state - selected ON */
         app.component.item.state.selected = [true, false, itemElement];
         app.component.item.func.give.field_showingAttributes(itemElement);
+        app.component.item.func.give.hourHeader_showingAttributes(itemElement);
         app.component.item.func.give.tile_showingAttributes(itemElement);
         app.component.item.func.give.trash_showingAttributes(itemElement);
         /* Page dependent func */
@@ -943,7 +947,6 @@ app.component.item.func.transition.showItem = (itemElement)=>{
             app.component.item.func.give.dayHeader_onViewPage_showingAttributes(itemElement);
             app.component.item.func.makeAppend.blurTile_toViewPage();
         };
-        app.component.item.func.give.hourHeader_hidingAttributes();
     };
 };
 
