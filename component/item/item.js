@@ -28,7 +28,7 @@ app.component.item.func.delete.itemObj_fromLocalStorage = ()=>{
 app.component.item.func.delete.oldItemObjs_fromItemObjs = ()=>{
 GIVE
 app.component.item.func.give.dayHeader_hidingAttributes = (itemElement)=>{
-app.component.item.func.give.dayHeader_onViewPage_showingAttributes = (itemElement)=>{
+app.component.item.func.give.dayHeader_showingAttributes = (itemElement)=>{
 app.component.item.func.give.dayInfo_onViewPage_updatedInfo = async(dayId)=>{
 app.component.item.func.give.field_focus = (timeSlot)=>{
 app.component.item.func.give.field_hidingAttributes = (itemElement)=>{
@@ -191,10 +191,13 @@ app.component.item.func.give.dayHeader_hidingAttributes = (itemElement)=>{
     };
 };
 
-app.component.item.func.give.dayHeader_onViewPage_showingAttributes = (itemElement)=>{
-    let dayId     = itemElement.getAttribute("dayId");
-    let dayHeader = document.querySelector(`.dayBlock[dayId="${dayId}"]`).children[0];
-        dayHeader.classList.add("zIndex2");
+app.component.item.func.give.dayHeader_showingAttributes = (itemElement)=>{
+    let viewPage  = document.querySelector(".viewPage");
+    if( viewPage.contains(itemElement)){
+        let dayId     = itemElement.getAttribute("dayId");
+        let dayHeader = document.querySelector(`.dayBlock[dayId="${dayId}"]`).children[0];
+            dayHeader.classList.add("zIndex2");
+    };
 };
 
 app.component.item.func.give.dayInfo_onViewPage_updatedInfo = async(dayId)=>{
@@ -661,7 +664,7 @@ app.component.item.func.post.item_toDataStore = async()=>{
                 app.component.dayDropper.func.makeAppend.menuItems();
                 app.component.item.func.makeAppend.item_toViewPage();
                 app.component.item.func.give.dayInfo_onViewPage_updatedInfo(Number(itemElement.getAttribute("dayId")));
-                let delay_forKeyboardExitOnMobile = setTimeout(()=>{
+                let delay_forMobileKeyboardExit = setTimeout(()=>{
                     app.component.timeSlot.func.give.scrollBall_heightAttributes();
                 },300);
             }
@@ -864,16 +867,16 @@ app.component.item.func.transition.removeItem = async()=>{
     event.stopPropagation();
     let itemElement = app.component.item.state.selected[2];
     let dayId       = Number(itemElement.getAttribute("dayId"));
+    /* delete - itemObj */
+    await app.component.item.func.delete.itemObj();
     /* remove */
     app.component.item.func.remove.blurTile();
     app.component.item.func.remove.item();
-    /* delete - itemObj */
-    await app.component.item.func.delete.itemObj();
     /* give  */
     app.component.item.func.give.dayHeader_hidingAttributes(itemElement);
     app.component.item.func.give.hourHeader_hidingAttributes(itemElement);
     app.component.item.func.give.dayInfo_onViewPage_updatedInfo(dayId); // must happen after remove
-    let delay_forKeyboardExitOnMobile = setTimeout(()=>{
+    let delay_forMobileKeyboardExit = setTimeout(()=>{
         app.component.timeSlot.func.give.scrollBall_heightAttributes(); // must happen after remove
     },300);
     /* makeAppend */
@@ -889,16 +892,12 @@ app.component.item.func.transition.showItem = (itemElement)=>{
     &&  app.component.pageTurner.state.preventClick === false){ // pageTurner can't be preventing click
         /* state - selected ON */
         app.component.item.state.selected = [true, false, itemElement];
+        app.component.item.func.give.dayHeader_showingAttributes(itemElement);
         app.component.item.func.give.field_showingAttributes(itemElement);
         app.component.item.func.give.hourHeader_showingAttributes(itemElement);
         app.component.item.func.give.tile_showingAttributes(itemElement);
         app.component.item.func.give.trash_showingAttributes(itemElement);
         app.component.item.func.makeAppend.blurTile(itemElement);
-        /* Page dependent func */
-        let viewPage = document.querySelector(".viewPage");
-        if( viewPage.contains(itemElement)){
-            app.component.item.func.give.dayHeader_onViewPage_showingAttributes(itemElement);
-        };
     };
 };
 
