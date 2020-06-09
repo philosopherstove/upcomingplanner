@@ -62,7 +62,6 @@ POST
 app.component.item.func.post.item_toDataStore = async()=>{
 REMOVE
 app.component.item.func.remove.blurTile = ()=>{
-app.component.item.func.remove.blurTile_fromViewPage = ()=>{
 app.component.item.func.remove.dayHeader = (dayId)=>{
 app.component.item.func.remove.hourHeader = (hourId)=>{
 app.component.item.func.remove.item = ()=>{
@@ -659,7 +658,6 @@ app.component.item.func.post.item_toDataStore = async()=>{
                 app.component.dayDropper.func.makeAppend.menuItems();
                 app.component.item.func.makeAppend.item_toViewPage();
                 app.component.item.func.give.dayInfo_onViewPage_updatedInfo(Number(itemElement.getAttribute("dayId")));
-                app.component.item.func.remove.blurTile();
                 let delay_forKeyboardExitOnMobile = setTimeout(()=>{
                     app.component.timeSlot.func.give.scrollBall_heightAttributes();
                 },300);
@@ -670,20 +668,11 @@ app.component.item.func.post.item_toDataStore = async()=>{
                 await app.component.item.func.set.itemObj_inItemObjs(itemObj, fieldValue);
                 await app.component.item.func.set.itemObj_inLocalStorage(itemObj, fieldValue);
                 app.component.item.func.give.itemField_value();
-                /* Page dependent func */
-                let addPage  = document.querySelector(".addPage");
-                let viewPage = document.querySelector(".viewPage");
-                if( addPage.contains(itemElement)){
-                    app.component.item.func.remove.blurTile();
-                    let delay_forKeyboardExitOnMobile = setTimeout(()=>{
-                        app.component.timeSlot.func.give.scrollBall_heightAttributes();
-                    },300);
-                }
-                else
-                if( viewPage.contains(itemElement)){
-                    app.component.item.func.remove.blurTile_fromViewPage();
-                };
+                let delay_forKeyboardExitOnMobile = setTimeout(()=>{
+                    app.component.timeSlot.func.give.scrollBall_heightAttributes();
+                },300);
             };
+            app.component.item.func.remove.blurTile();
             app.component.item.func.transition.hideItem(); // needs to fire after createSet.itemObj, because the transition turns state off
         }
         else
@@ -699,13 +688,8 @@ app.component.item.func.post.item_toDataStore = async()=>{
 /*****
 REMOVE
 ******/
-app.component.item.func.remove.blurTile = ()=>{
-    let blurTile = document.querySelector(".addPage .blurTile");
-        blurTile.remove();
-};
-
-app.component.item.func.remove.blurTile_fromViewPage = ()=>{
-    let blurTile = document.querySelector(".viewPage .blurTile");
+app.component.item.func.remove.blurTile = (itemElement)=>{
+    let blurTile = document.querySelector(".blurTile");
         blurTile.remove();
 };
 
@@ -882,28 +866,22 @@ app.component.item.func.transition.removeItem = async()=>{
     event.stopPropagation();
     let itemElement = app.component.item.state.selected[2];
     let dayId       = Number(itemElement.getAttribute("dayId"));
-    let addPage     = document.querySelector(".addPage");
     let viewPage    = document.querySelector(".viewPage");
-    /* Page dependend func - give header attributes & remove blurTile */
-    if( addPage.contains(itemElement)){
-        app.component.item.func.remove.blurTile();
-    }
-    else
     if( viewPage.contains(itemElement)){
         app.component.item.func.give.dayHeader_onViewPage_hidingAttributes(itemElement);
-        app.component.item.func.remove.blurTile_fromViewPage();
     };
     app.component.item.func.give.hourHeader_hidingAttributes(itemElement);
-    /* remove - items from both pages - must happen after conditional tests for attributes */
+    /* remove */
+    app.component.item.func.remove.blurTile();
     app.component.item.func.remove.item();
     /* delete - itemObj */
     await app.component.item.func.delete.itemObj();
-    /* give - dayInfoOnViewPage & scrollBall - must happen after item removal */
+    /* give - must happen after remove */
     app.component.item.func.give.dayInfo_onViewPage_updatedInfo(dayId);
     let delay_forKeyboardExitOnMobile = setTimeout(()=>{
         app.component.timeSlot.func.give.scrollBall_heightAttributes();
     },300);
-    /* makeAppend - dropperText, menuItems */
+    /* makeAppend - must happen after remove */
     app.component.dayDropper.func.makeAppend.dropperText(app.component.dayDropper.setting.day[0]);
     app.component.dayDropper.func.makeAppend.menuItems();
     /* state - selected OFF */
