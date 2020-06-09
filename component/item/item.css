@@ -46,16 +46,6 @@ div.hideItemTile {
 	outline: none;
 }
 
-.minValues {
-	width: 16px;
-	height: 36px;
-	color: var(--blue_1);
-	font-family: var(--font_main);
-	font-size: 13px;
-	font-weight: 500;
-	letter-spacing: 0.2px;
-}
-
 .trashIcon {
 	width: 16px;
 	height: 16px;
