@@ -48,7 +48,7 @@ app.component.item.func.is.itemsUnderViewPageHour = ()=>{
 app.component.item.func.is.objExist = ()=>{
 MAKE
 app.component.item.func.make.dayHeaderHTML = (itemObj)=>{
-app.component.item.func.make.dayTextString_fromDayId = (dayId)=>{
+app.component.item.func.make.dayTextString = (dayId)=>{
 app.component.item.func.make.hourHeaderHTML = (itemObj)=>{
 app.component.item.func.make.itemHTML = (itemObj)=>{
 MAKEAPPEND
@@ -378,7 +378,7 @@ app.component.item.func.make.dayHeaderHTML = (itemObj)=>{
     return new Promise(async(resolve)=>{
         let currentDayId              = app.component.dayDropper.func.get.day()[0];
         let dayId                     = itemObj.associated.day;
-        let dayText                   = app.component.item.func.make.dayTextString_fromDayId(dayId);
+        let dayText                   = app.component.item.func.make.dayTextString(dayId);
         let numberOfItemsForDayString = await app.component.dayDropper.func.make.numberOfItemsForDayString(dayId);
         let daysUntilString           = app.component.dayDropper.func.make.daysUntilString(dayId);
         let colorRed                  = "";
@@ -395,7 +395,7 @@ app.component.item.func.make.dayHeaderHTML = (itemObj)=>{
     });
 };
 
-app.component.item.func.make.dayTextString_fromDayId = (dayId)=>{
+app.component.item.func.make.dayTextString = (dayId)=>{
     let dateString = `${new Date(dayId)}`;
     let splits     = dateString.split(" ");
     let month      = splits[1];
