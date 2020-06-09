@@ -35,7 +35,6 @@ app.component.item.func.give.field_hidingAttributes = (itemElement)=>{
 app.component.item.func.give.field_showingAttributes = (itemElement)=>{
 app.component.item.func.give.hourHeader_hidingAttributes = (itemElement)=>{
 app.component.item.func.give.hourHeader_showingAttributes = (itemElement)=>{
-app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withTimeSlot = (timeSlot)=>{
 app.component.item.func.give.itemField_value = ()=>{
 app.component.item.func.give.tile_hidingAttributes = (itemElement)=>{
 app.component.item.func.give.tile_showingAttributes = (itemElement)=>{
@@ -255,11 +254,6 @@ app.component.item.func.give.hourHeader_showingAttributes = (itemElement)=>{
         hourHeader = document.querySelector(`.viewPage .hourHeader[dayId="${dayId}"][hourId="${hourId}"]`);
     };
     hourHeader.classList.add("zIndex2");
-};
-
-app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withTimeSlot = (timeSlot)=>{
-    let headerTime = timeSlot.children[0];
-        headerTime.classList.add("zIndex2");
 };
 
 app.component.item.func.give.itemField_value = ()=>{
@@ -861,11 +855,11 @@ app.component.item.func.transition.createItem = async(timeSlot)=>{
     if( app.component.item.state.selected[0] === false
     &&  app.component.pageTurner.state.preventClick === false){ // pageTurner can't be preventing click
         await app.component.item.func.makeAppend.itemNew_toAddPage(timeSlot);
+        let item = timeSlot.nextElementSibling.children[0];
         app.component.item.func.makeAppend.blurTile_toAddPage();
         app.component.item.func.give.field_focus(timeSlot);
-        app.component.item.func.give.hourHeader_onAddPage_showingAttributes_withTimeSlot(timeSlot);
+        app.component.item.func.give.hourHeader_showingAttributes(item);
         /* state - selected ON */
-        let item = timeSlot.nextElementSibling.children[0];
         app.component.item.state.selected = [true, false, item];
     };
 };
