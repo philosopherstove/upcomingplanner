@@ -27,7 +27,7 @@ app.component.item.func.delete.itemObj_fromItemObjs = ()=>{
 app.component.item.func.delete.itemObj_fromLocalStorage = ()=>{
 app.component.item.func.delete.oldItemObjs_fromItemObjs = ()=>{
 GIVE
-app.component.item.func.give.dayHeader_onViewPage_hidingAttributes = (itemElement)=>{
+app.component.item.func.give.dayHeader_hidingAttributes = (itemElement)=>{
 app.component.item.func.give.dayHeader_onViewPage_showingAttributes = (itemElement)=>{
 app.component.item.func.give.dayInfo_onViewPage_updatedInfo = async(dayId)=>{
 app.component.item.func.give.field_focus = (timeSlot)=>{
@@ -182,10 +182,13 @@ app.component.item.func.delete.oldItemObjs_fromItemObjs = ()=>{
 /***
 GIVE
 ****/
-app.component.item.func.give.dayHeader_onViewPage_hidingAttributes = (itemElement)=>{
-    let dayId     = itemElement.getAttribute("dayId");
-    let dayHeader = document.querySelector(`.dayBlock[dayId="${dayId}"]`).children[0];
-        dayHeader.classList.remove("zIndex2");
+app.component.item.func.give.dayHeader_hidingAttributes = (itemElement)=>{
+    let viewPage  = document.querySelector(".viewPage");
+    if( viewPage.contains(itemElement)){
+        let dayId     = itemElement.getAttribute("dayId");
+        let dayHeader = document.querySelector(`.dayBlock[dayId="${dayId}"]`).children[0];
+            dayHeader.classList.remove("zIndex2");
+    };
 };
 
 app.component.item.func.give.dayHeader_onViewPage_showingAttributes = (itemElement)=>{
@@ -850,10 +853,7 @@ app.component.item.func.transition.createItem = async(timeSlot)=>{
 
 app.component.item.func.transition.hideItem = ()=>{
     let itemElement = app.component.item.state.selected[2];
-    let viewPage    = document.querySelector(".viewPage");
-    if( viewPage.contains(itemElement)){
-        app.component.item.func.give.dayHeader_onViewPage_hidingAttributes(itemElement);
-    };
+    app.component.item.func.give.dayHeader_hidingAttributes(itemElement);
     app.component.item.func.give.field_hidingAttributes(itemElement);
     app.component.item.func.give.hourHeader_hidingAttributes(itemElement);
     app.component.item.func.give.tile_hidingAttributes(itemElement);
@@ -866,24 +866,21 @@ app.component.item.func.transition.removeItem = async()=>{
     event.stopPropagation();
     let itemElement = app.component.item.state.selected[2];
     let dayId       = Number(itemElement.getAttribute("dayId"));
-    let viewPage    = document.querySelector(".viewPage");
-    if( viewPage.contains(itemElement)){
-        app.component.item.func.give.dayHeader_onViewPage_hidingAttributes(itemElement);
-    };
-    app.component.item.func.give.hourHeader_hidingAttributes(itemElement);
     /* remove */
     app.component.item.func.remove.blurTile();
     app.component.item.func.remove.item();
     /* delete - itemObj */
     await app.component.item.func.delete.itemObj();
-    /* give - must happen after remove */
-    app.component.item.func.give.dayInfo_onViewPage_updatedInfo(dayId);
+    /* give  */
+    app.component.item.func.give.dayHeader_hidingAttributes(itemElement);
+    app.component.item.func.give.hourHeader_hidingAttributes(itemElement);
+    app.component.item.func.give.dayInfo_onViewPage_updatedInfo(dayId); // must happen after remove
     let delay_forKeyboardExitOnMobile = setTimeout(()=>{
-        app.component.timeSlot.func.give.scrollBall_heightAttributes();
+        app.component.timeSlot.func.give.scrollBall_heightAttributes(); // must happen after remove
     },300);
-    /* makeAppend - must happen after remove */
-    app.component.dayDropper.func.makeAppend.dropperText(app.component.dayDropper.setting.day[0]);
-    app.component.dayDropper.func.makeAppend.menuItems();
+    /* makeAppend */
+    app.component.dayDropper.func.makeAppend.dropperText(app.component.dayDropper.setting.day[0]); // must happen after remove
+    app.component.dayDropper.func.makeAppend.menuItems(); // must happen after remove
     /* state - selected OFF */
     app.component.item.state.selected = [false, false, null];
 };
