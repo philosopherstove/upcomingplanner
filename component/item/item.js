@@ -67,8 +67,7 @@ app.component.item.func.remove.blurTile = ()=>{
 app.component.item.func.remove.blurTile_fromViewPage = ()=>{
 app.component.item.func.remove.dayHeader = (dayId)=>{
 app.component.item.func.remove.hourHeader = (hourId)=>{
-app.component.item.func.remove.item_fromAddPage = ()=>{
-app.component.item.func.remove.item_fromViewPage = ()=>{
+app.component.item.func.remove.item = ()=>{
 RETRIEVE
 app.component.item.func.retrieve.itemObj_withCreatedId = (createdId)=>{
 app.component.item.func.retrieve.itemObjs = ()=>{
@@ -726,39 +725,31 @@ app.component.item.func.remove.hourHeader = (dayId, hourId)=>{
         hourHeader.remove();
 };
 
-app.component.item.func.remove.item_fromAddPage = ()=>{
-    let itemId = app.component.item.state.selected[2].getAttribute("createdId");
-    let itemFromAddPage = document.querySelector(`.itemTile[createdId="${itemId}"]`);
-    if( itemFromAddPage !== null){
-        itemFromAddPage.remove();
-    };
-};
-
-app.component.item.func.remove.item_fromViewPage = ()=>{
+app.component.item.func.remove.item = ()=>{
     return new Promise((resolve)=>{
-        let createdId               = Number(app.component.item.state.selected[2].getAttribute("createdId"));
-        let itemElementFromViewPage = document.querySelector(`.viewPage .itemTile[createdId="${createdId}"]`);
-        if( itemElementFromViewPage === null){
+        let createdId       = Number(app.component.item.state.selected[2].getAttribute("createdId"));
+        let item_onAddPage  = document.querySelector(`.addPage .itemTile[createdId="${createdId}"]`);
+            item_onAddPage.remove();
+        let item_onViewPage = document.querySelector(`.viewPage .itemTile[createdId="${createdId}"]`);
+        if( item_onViewPage === null){
             resolve();
             return;
-        };
-        let dayId                   = Number(itemElementFromViewPage.getAttribute("dayId"));
-        let hourId                  = Number(itemElementFromViewPage.getAttribute("hourId"));
-        if (itemElementFromViewPage === null){ // need to avoid in case of removing an as yet to be created item(pre-submission)
-            resolve();
-        };
-        itemElementFromViewPage.remove();
-        if( app.component.item.func.is.itemsUnderViewPageHour() === false){
-            app.component.item.func.remove.hourHeader(dayId, hourId);
-            resolve();
-        };
-        if( app.component.item.func.is.itemsUnderViewPageDay() === false){
-            app.component.item.func.remove.dayHeader(dayId)
-            resolve();
+        }
+        else{
+            let dayId  = Number(item_onViewPage.getAttribute("dayId"));
+            let hourId = Number(item_onViewPage.getAttribute("hourId"));
+            item_onViewPage.remove();
+            if( app.component.item.func.is.itemsUnderViewPageHour() === false){
+                app.component.item.func.remove.hourHeader(dayId, hourId);
+                resolve();
+            };
+            if( app.component.item.func.is.itemsUnderViewPageDay() === false){
+                app.component.item.func.remove.dayHeader(dayId)
+                resolve();
+            };
         };
     });
 };
-// above function needs improvement. It works, but should promise to check itemsUnderViewPageHour, then check hoursUnderViewPageDay, then resolve
 
 /*******
 RETRIEVE
@@ -910,8 +901,7 @@ app.component.item.func.transition.removeItem = async()=>{
     };
     app.component.item.func.give.hourHeader_hidingAttributes(itemElement);
     /* remove - items from both pages - must happen after conditional tests for attributes */
-    app.component.item.func.remove.item_fromAddPage();
-    app.component.item.func.remove.item_fromViewPage();
+    app.component.item.func.remove.item();
     /* delete - itemObj */
     await app.component.item.func.delete.itemObj();
     /* give - dayInfoOnViewPage & scrollBall - must happen after item removal */
