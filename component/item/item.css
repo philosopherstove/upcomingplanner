@@ -23,24 +23,12 @@ div.hideItemTile {
 
 .minuteBlock {
     width: 40px;
-    /* position: relative; */
     position: absolute;
-    left: 16px;;
+    left: 18px;
     font-family: Seravek;
     font-weight: 500;
     color: var(--blue_1);
-
-    /* border: 1px solid blue; */
 }
-
-/* .minuteBlock
-> span {
-    letter-spacing: 19px;
-    position: absolute;
-    top: 6px;
-    left: 1px;
-    font-size: 18px;
-} */
 
 .minute {
     width: 30px;
@@ -81,7 +69,7 @@ div.hideItemTile {
     height: 67px;
     position: absolute;
     top: -54px;
-    left: -14px;
+    left: -16px;
     background-image: url("minuteMenu.svg");
 }
 
@@ -164,7 +152,7 @@ p.selected::after {
 	width: 64%;
 	height: 22px;
 	margin-top: 7px;
-	margin-left: 19.9%;
+	margin-left: 19.3%;
 	padding: 2px;
 	font-family: var(--font_main);
 	font-size: 13px;
@@ -172,6 +160,11 @@ p.selected::after {
 	letter-spacing: 0.2px;
 	overflow-x: hidden;
 	outline: none;
+}
+@media (max-width:359px){
+    .itemField {
+        margin-left: 20.5%;
+    }
 }
 
 .trashIcon {

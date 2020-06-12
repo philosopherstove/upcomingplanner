@@ -231,7 +231,7 @@ app.component.item.func.give.blurTileItem_hidingAttributes = ()=>{
     let addPage          = document.querySelector(".addPage");
     let viewPage         = document.querySelector(".viewPage");
     if( addPage.contains(itemElement)){
-        var blurTileItem = document.querySelector(`.addPage .blurTileItem[createdId="${createdId}"]`);
+        var blurTileItem = document.querySelector(`.addPage span[class="blurTile_item"][createdId="${createdId}"]`);
     }
     else
     if( viewPage.contains(itemElement)){
