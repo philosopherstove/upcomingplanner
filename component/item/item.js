@@ -65,6 +65,7 @@ MAKE
 app.component.item.func.make.dayHeaderHTML = (itemObj)=>{
 app.component.item.func.make.hourHeaderHTML = (itemObj)=>{
 app.component.item.func.make.itemHTML = (itemObj, timeSlot)=>{
+app.component.item.func.make.minuteBlock = (createdId, dayId, minuteId)=>{
 MAKEAPPEND
 app.component.item.func.makeAppend.blurTile = (itemElement)=>{
 app.component.item.func.makeAppend.item_toAddPage = (itemObj)=>{
@@ -364,11 +365,11 @@ app.component.item.func.give.minute_hidingAttributes = (itemElement)=>{
         if( minuteId == 0){
             minute.innerHTML = "";
             minute.classList.add("dot");
-            minute.classList.remove("selected");
         }
         else{
             minute.innerHTML = minuteId;
         }
+        minute.classList.remove("selected");
         minute.setAttribute("minuteId", minuteId);
     };
 };
@@ -587,14 +588,22 @@ app.component.item.func.make.hourHeaderHTML = (itemObj)=>{
     return html;
 };
 
+app.component.item.func.get.item_class = ()=>{
+    let currentDayId = app.component.dayDropper.func.get.day()[0];
+    let colorRed     = "";
+    if( currentDayId === dayId){
+        var itemClass = "colorRed";
+    };
+};
+
 app.component.item.func.make.itemHTML = (itemObj, timeSlot)=>{
     if( itemObj === "new"){
-        var createdId  = Date.now();
-        var dayId      = app.component.dayDropper.setting.day[0];
-        var hourId     = Number(timeSlot.children[0].getAttribute("hourId"));
-        var minuteId   = 0;
-        var itemText   = "";
-        var itemClass  = "itemTile zIndex2";
+        var createdId    = Date.now();
+        var dayId        = app.component.dayDropper.setting.day[0];
+        var hourId       = Number(timeSlot.children[0].getAttribute("hourId"));
+        var minuteId     = 0;
+        var itemText     = "";
+        var itemClass    = "itemTile zIndex2";
         var fieldClass = "itemField background_item";
         var readonly   = "";
     }
@@ -610,7 +619,7 @@ app.component.item.func.make.itemHTML = (itemObj, timeSlot)=>{
     }
     let html = `
         <div class="${itemClass}" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" minuteId="${minuteId}" onclick="app.component.item.func.transition.showItem(this)">
-            ${app.component.item.func.make.minuteBlock(createdId, minuteId)}
+            ${app.component.item.func.make.minuteBlock(createdId, dayId, minuteId)}
             <input class="${fieldClass}" value="${itemText}" ${readonly} onkeyup="app.component.item.func.post.item_toDataStore()" spellcheck="false">
             <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem()"></div>
             <span class="blurTile_item displayNone" createdId="${createdId}" onclick="app.component.item.func.event.click_blurTileItem()"></span>
@@ -619,7 +628,7 @@ app.component.item.func.make.itemHTML = (itemObj, timeSlot)=>{
     return html;
 };
 
-app.component.item.func.make.minuteBlock = (createdId, minuteId)=>{
+app.component.item.func.make.minuteBlock = (createdId, dayId, minuteId)=>{
     if( Number(minuteId) === 0){
         var minuteClass = `minute dot`;
         var minuteText  = "";
@@ -627,6 +636,10 @@ app.component.item.func.make.minuteBlock = (createdId, minuteId)=>{
     else{
         var minuteClass = `minute`;
         var minuteText  = minuteId;
+    };
+    let currentDayId    = app.component.dayDropper.func.get.day()[0];
+    if( currentDayId === dayId){
+        minuteClass    += " colorRed";
     };
     let html =  `
         <div class="minuteBlock">
