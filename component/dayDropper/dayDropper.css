@@ -92,7 +92,7 @@
 }
 
 .dropdownMenu_innerWrapper p:nth-of-type(odd){
-	background-color: rgb(240,246,252);
+	background-color: var(--blue_2);
 }
 
 .dropdownMenu_innerWapper p:nth-of-type(even){

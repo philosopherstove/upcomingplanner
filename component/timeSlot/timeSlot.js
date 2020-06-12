@@ -16,8 +16,6 @@ app.component.timeSlot.func.init.component = async()=>{
 MAKE
 app.component.timeSlot.func.make.AMorPMString = (hr)=>{
 app.component.timeSlot.func.make.hour12Number = (hr)=>{
-app.component.timeSlot.func.make.minItems = ()=>{
-app.component.timeSlot.func.make.monthsHTML = ()=>{
 app.component.timeSlot.func.make.timeSlotHTML = (hr, hr12, AMorPM)=>{
 MAKEAPPEND
 app.component.timeSlot.func.makeAppend.timeSlots = ()=>{
@@ -110,31 +108,6 @@ app.component.timeSlot.func.make.hour12Number = (hr)=>{
         return hr;
     };
 };
-
-// app.component.timeSlot.func.make.minItems = ()=>{
-//     return new Promise((resolve)=>{
-//         let html = "";
-//         let minuteNumbers = ["--", "10", "15", "20", "30", "40", "45", "50"];
-//         for(let i = 0; i < minuteNumbers.length; i++){
-//             let number = minuteNumbers[i];
-//             html += `<p>${number}</p>`;
-//             if(i === minuteNumbers.length - 1){ // end of loop
-//                 resolve(html);
-//             };
-//         };
-//     });
-// };
-
-app.component.timeSlot.func.make.monthsHTML = ()=>{
-    let months         = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    let now_dateString = new Date();
-        now_dateString = now_dateString.toString();
-    let splits         = now_dateString.split(" ");
-    let month          = splits[1];
-
-
-};
-app.component.timeSlot.func.make.monthsHTML();
 
 app.component.timeSlot.func.make.timeSlotHTML = (hr, hr12, AMorPM)=>{
     let spacingClass = "";

@@ -5,6 +5,8 @@ app.component.item.state.selected  = [false, false, null];
 app.component.item.func            = {};
 app.component.item.func.createSet  = {};
 app.component.item.func.delete     = {};
+app.component.item.func.event      = {};
+app.component.item.func.get        = {};
 app.component.item.func.give       = {};
 app.component.item.func.init       = {};
 app.component.item.func.is         = {};
@@ -13,7 +15,6 @@ app.component.item.func.makeAppend = {};
 app.component.item.func.post       = {};
 app.component.item.func.remove     = {};
 app.component.item.func.retrieve   = {};
-app.component.item.func.set        = {};
 app.component.item.func.sort       = {};
 app.component.item.func.transition = {};
 app.component.item.func.update     = {};
@@ -26,7 +27,15 @@ app.component.item.func.delete.itemObj = ()=>{
 app.component.item.func.delete.itemObj_fromItemObjs = ()=>{
 app.component.item.func.delete.itemObj_fromLocalStorage = ()=>{
 app.component.item.func.delete.oldItemObjs_fromItemObjs = ()=>{
+EVENT
+app.component.item.func.event.click_blurTileItem = ()=>{
+app.component.item.func.event.click_minute = ()=>{
+app.component.item.func.event.click_minuteSelect = async()=>{
+GET
+app.component.item.func.get.dayText = (dayId)=>{
 GIVE
+app.component.item.func.give.blurTileItem_hidingAttributes = ()=>{
+app.component.item.func.give.blurTileItem_showingAttributes = ()=>{
 app.component.item.func.give.dayHeader_hidingAttributes = (itemElement)=>{
 app.component.item.func.give.dayHeader_showingAttributes = (itemElement)=>{
 app.component.item.func.give.dayInfo_onViewPage_updatedInfo = async(dayId)=>{
@@ -36,6 +45,12 @@ app.component.item.func.give.field_showingAttributes = (itemElement)=>{
 app.component.item.func.give.hourHeader_hidingAttributes = (itemElement)=>{
 app.component.item.func.give.hourHeader_showingAttributes = (itemElement)=>{
 app.component.item.func.give.itemField_value = ()=>{
+app.component.item.func.give.minute_hidingAttributes = (itemElement)=>{
+app.component.item.func.give.minute_showingAttributes = (itemElement)=>{
+app.component.item.func.give.minute_value = (itemId, minuteId)=>{
+app.component.item.func.give.minuteMenu_hidingAttributes = (itemElement)=>{
+app.component.item.func.give.minuteMenu_showingAttributes = (itemElement)=>{
+app.component.item.func.give.selectedMinute_border = (createdId, minuteId)=>{
 app.component.item.func.give.tile_hidingAttributes = (itemElement)=>{
 app.component.item.func.give.tile_showingAttributes = (itemElement)=>{
 app.component.item.func.give.trash_hidingAttributes = (itemElement)=>{
@@ -45,17 +60,15 @@ app.component.item.func.init.component = async()=>{
 IS
 app.component.item.func.is.itemsUnderViewPageDay = ()=>{
 app.component.item.func.is.itemsUnderViewPageHour = ()=>{
-app.component.item.func.is.objExist = ()=>{
+app.component.item.func.is.objExist = (itemId)=>{
 MAKE
 app.component.item.func.make.dayHeaderHTML = (itemObj)=>{
-app.component.item.func.make.dayTextString = (dayId)=>{
 app.component.item.func.make.hourHeaderHTML = (itemObj)=>{
-app.component.item.func.make.itemHTML = (itemObj)=>{
+app.component.item.func.make.itemHTML = (itemObj, timeSlot)=>{
 MAKEAPPEND
 app.component.item.func.makeAppend.blurTile = (itemElement)=>{
 app.component.item.func.makeAppend.item_toAddPage = (itemObj)=>{
 app.component.item.func.makeAppend.item_toViewPage = async()=>{
-app.component.item.func.makeAppend.itemNew_toAddPage = (timeSlot)=>{
 app.component.item.func.makeAppend.items_onAddPage_forDay = (dayId)=>{
 app.component.item.func.makeAppend.items_onViewPage = async()=>{
 POST
@@ -68,9 +81,6 @@ app.component.item.func.remove.item = ()=>{
 RETRIEVE
 app.component.item.func.retrieve.itemObj_withCreatedId = (createdId)=>{
 app.component.item.func.retrieve.itemObjs = ()=>{
-SET
-app.component.item.func.set.itemObj_inItemObjs = (selectedObj, fieldValue)=>{
-app.component.item.func.set.itemObj_inLocalStorage = (selectedObj, fieldValue)=>{
 SORT
 app.component.item.func.sort.byDay_hour_ms = (a, b)=>{
 app.component.item.func.sort.itemObjs_byTime = ()=>{
@@ -80,6 +90,8 @@ app.component.item.func.transition.hideItem = ()=>{
 app.component.item.func.transition.removeItem = async()=>{
 app.component.item.func.transition.showItem = (itemElement)=>{
 UPDATE
+app.component.item.func.update.itemObj_inItemObjs = (selectedObj, fieldValue)=>{
+app.component.item.func.update.itemObj_inLocalStorage = (selectedObj, fieldValue)=>{
 app.component.item.func.update.itemObjs_inLocalStorage = ()=>{
 */
 
@@ -91,7 +103,8 @@ app.component.item.func.createSet.itemObj = (item)=>{
         obj.associated           = {};
         obj.associated.createdId = Number(item.getAttribute("createdId"));
         obj.associated.day       = app.component.dayDropper.setting.day[0];
-        obj.associated.timeSlot  = item.parentNode.previousElementSibling.children[0].getAttribute("hourId"); // 24hr
+        obj.associated.hour      = Number(item.parentNode.previousElementSibling.children[0].getAttribute("hourId")); // 24hr
+        obj.associated.minute    = 0;
         obj.setting              = {};
         obj.setting.text         = item.children[1].value;
         obj.state                = {};
@@ -179,11 +192,71 @@ app.component.item.func.delete.oldItemObjs_fromItemObjs = ()=>{
     });
 };
 
+/****
+EVENT
+*****/
+app.component.item.func.event.click_blurTileItem = ()=>{
+    app.component.item.func.give.blurTileItem_hidingAttributes();
+    app.component.item.func.give.minuteMenu_hidingAttributes();
+};
+
+app.component.item.func.event.click_minute = ()=>{
+    if( app.component.item.state.selected[0] === true){
+        app.component.item.func.give.minuteMenu_showingAttributes();
+        app.component.item.func.give.blurTileItem_showingAttributes();
+    };
+};
+
+app.component.item.func.event.click_minuteSelect = async()=>{
+    event.stopPropagation();
+    let createdId   = Number(event.target.getAttribute("createdId"));
+    let minuteId    = Number(event.target.getAttribute("minuteId"));
+    let selectedObj = (await app.component.item.func.is.objExist(createdId))[1];
+    /* update */
+    await app.component.item.func.update.itemObj_inItemObjs({selectedObj: selectedObj, minuteId: minuteId});
+    await app.component.item.func.update.itemObj_inLocalStorage({selectedObj: selectedObj, minuteId: minuteId});
+    /* give */
+    app.component.item.func.give.blurTileItem_hidingAttributes();
+    app.component.item.func.give.minute_value(createdId, minuteId);
+    app.component.item.func.give.minuteMenu_hidingAttributes();
+    app.component.item.func.give.selectedMinute_border(createdId, minuteId);
+};
+
 /***
 GIVE
 ****/
+app.component.item.func.give.blurTileItem_hidingAttributes = ()=>{
+    let itemElement      = app.component.item.state.selected[2];
+    let createdId        = itemElement.getAttribute("createdId");
+    let addPage          = document.querySelector(".addPage");
+    let viewPage         = document.querySelector(".viewPage");
+    if( addPage.contains(itemElement)){
+        var blurTileItem = document.querySelector(`.addPage .blurTileItem[createdId="${createdId}"]`);
+    }
+    else
+    if( viewPage.contains(itemElement)){
+        var blurTileItem = document.querySelector(`.viewPage span[class="blurTile_item"][createdId="${createdId}"]`);
+    };
+    blurTileItem.classList.add("displayNone");
+};
+
+app.component.item.func.give.blurTileItem_showingAttributes = ()=>{
+    let itemElement  = app.component.item.state.selected[2];
+    let createdId    = app.component.item.state.selected[2].getAttribute("createdId");
+    let addPage      = document.querySelector(".addPage");
+    let viewPage     = document.querySelector(".viewPage");
+    if( addPage.contains(itemElement)){
+        var blurTile = document.querySelector(`.addPage .blurTile_item[createdId="${createdId}"]`);
+    }
+    else
+    if( viewPage.contains(itemElement)){
+        var blurTile = document.querySelector(`.viewPage .blurTile_item[createdId="${createdId}"]`);
+    };
+    blurTile.classList.remove("displayNone");
+};
+
 app.component.item.func.give.dayHeader_hidingAttributes = (itemElement)=>{
-    let viewPage  = document.querySelector(".viewPage");
+    let viewPage      = document.querySelector(".viewPage");
     if( viewPage.contains(itemElement)){
         let dayId     = itemElement.getAttribute("dayId");
         let dayHeader = document.querySelector(`.dayBlock[dayId="${dayId}"]`).children[0];
@@ -192,7 +265,7 @@ app.component.item.func.give.dayHeader_hidingAttributes = (itemElement)=>{
 };
 
 app.component.item.func.give.dayHeader_showingAttributes = (itemElement)=>{
-    let viewPage  = document.querySelector(".viewPage");
+    let viewPage      = document.querySelector(".viewPage");
     if( viewPage.contains(itemElement)){
         let dayId     = itemElement.getAttribute("dayId");
         let dayHeader = document.querySelector(`.dayBlock[dayId="${dayId}"]`).children[0];
@@ -216,14 +289,14 @@ app.component.item.func.give.field_focus = (timeSlot)=>{
 app.component.item.func.give.field_hidingAttributes = (itemElement)=>{
     let field = itemElement.children[1];
         field.classList.add("background_main");
-        field.classList.remove("background_white");
+        field.classList.remove("background_item");
         field.setAttribute("readonly", "readonly");
         field.blur();
 };
 
 app.component.item.func.give.field_showingAttributes = (itemElement)=>{
     let field = itemElement.children[1];
-        field.classList.add("background_white");
+        field.classList.add("background_item");
         field.classList.remove("background_main");
         field.removeAttribute("readonly");
         field.blur();
@@ -272,6 +345,97 @@ app.component.item.func.give.itemField_value = ()=>{
     };
 };
 
+app.component.item.func.give.minute_hidingAttributes = (itemElement)=>{
+    let addPage    = document.querySelector(".addPage");
+    let viewPage   = document.querySelector(".viewPage");
+    if( addPage.contains(itemElement)){
+        var minute = document.querySelector(`.addPage .minute[createdId="${itemElement.getAttribute('createdId')}"]`);
+    }
+    else
+    if( viewPage.contains(itemElement)){
+        var minute = document.querySelector(`.viewPage .minute[createdId="${itemElement.getAttribute('createdId')}"]`);
+    };
+    minute.classList.remove("selected");
+    /* 0 -> dot */
+    if(Number(minute.getAttribute("minuteId")) === 0){
+        minute.innerHTML = "";
+        minute.classList.add("dot");
+    };
+};
+
+app.component.item.func.give.minute_showingAttributes = (itemElement)=>{
+    let addPage  = document.querySelector(".addPage");
+    let viewPage = document.querySelector(".viewPage");
+    if( addPage.contains(itemElement)){
+        var minute = document.querySelector(`.addPage .minute[createdId="${itemElement.getAttribute('createdId')}"]`);
+    }
+    else
+    if( viewPage.contains(itemElement)){
+        var minute = document.querySelector(`.viewPage .minute[createdId="${itemElement.getAttribute('createdId')}"]`);
+    };
+    minute.classList.add("selected");
+    /* dot -> 0 */
+    if(Number(minute.getAttribute("minuteId")) === 0){
+        minute.innerHTML = "0";
+        minute.classList.remove("dot");
+    };
+};
+
+app.component.item.func.give.minute_value = (itemId, minuteId)=>{
+    let minuteElements = document.querySelectorAll(`.minute[createdId="${itemId}"]`);
+    for(x of minuteElements){
+        x.innerHTML = minuteId;
+        x.setAttribute("minuteId", minuteId);
+    };
+};
+
+app.component.item.func.give.minuteMenu_hidingAttributes = ()=>{
+    let itemElement = app.component.item.state.selected[2];
+    let createdId   = itemElement.getAttribute("createdId");
+    let addPage     = document.querySelector(".addPage");
+    let viewPage    = document.querySelector(".viewPage");
+    let minuteMenu  = null;
+    if( addPage.contains(itemElement)){
+        minuteMenu  = document.querySelector(`.addPage .minuteMenu[createdId="${createdId}"]`);
+    }
+    else
+    if( viewPage.contains(itemElement)){
+        minuteMenu  = document.querySelector(`.viewPage .minuteMenu[createdId="${createdId}"]`);
+    };
+    minuteMenu.classList.add("displayNone");
+};
+
+app.component.item.func.give.minuteMenu_showingAttributes = ()=>{
+    let itemElement = app.component.item.state.selected[2];
+    let createdId   = itemElement.getAttribute("createdId");
+    let addPage     = document.querySelector(".addPage");
+    let viewPage    = document.querySelector(".viewPage");
+    let minuteMenu  = null;
+    if( addPage.contains(itemElement)){
+        minuteMenu  = document.querySelector(`.addPage .minuteMenu[createdId="${createdId}"]`);
+    }
+    else
+    if( viewPage.contains(itemElement)){
+        minuteMenu  = document.querySelector(`.viewPage .minuteMenu[createdId="${createdId}"]`);
+    };
+    minuteMenu.classList.add("zIndex2");
+    minuteMenu.classList.remove("displayNone");
+};
+
+app.component.item.func.give.selectedMinute_border = (createdId, minuteId)=>{
+    let selectedMinuteElements   = [];
+    let unselectedMinuteElements = [];
+    let minuteElements           = document.querySelectorAll(`.minutesWrapper > p[createdId="${createdId}"]`);
+    for(x of minuteElements){
+        if( Number(x.getAttribute("minuteId")) === minuteId){
+            x.classList.add("selected");
+        }
+        else{
+            x.classList.remove("selected");
+        };
+    };
+};
+
 app.component.item.func.give.tile_hidingAttributes = (itemElement)=>{
     itemElement.classList.add("hideItemTile");
     itemElement.classList.remove("zIndex2");
@@ -317,7 +481,7 @@ app.component.item.func.is.itemsUnderViewPageDay = ()=>{
     let dayId                        = Number(app.component.item.state.selected[2].getAttribute("dayId"));
     let hourId                       = Number(app.component.item.state.selected[2].getAttribute("hourId"));
     let itemsUnderDayHeader_viewPage = document.querySelectorAll(`.viewPage div.itemTile[dayId="${dayId}"]`);
-    if( itemsUnderDayHeader_viewPage.length === 0){ // no items under  hourHeader
+    if( itemsUnderDayHeader_viewPage.length === 0){ // no items under dayHeader
         return false;
     }
     else{
@@ -363,12 +527,12 @@ app.component.item.func.make.dayHeaderHTML = (itemObj)=>{
     return new Promise(async(resolve)=>{
         let currentDayId              = app.component.dayDropper.func.get.day()[0];
         let dayId                     = itemObj.associated.day;
-        let dayText                   = app.component.item.func.make.dayTextString(dayId);
+        let dayText                   = app.component.item.func.get.dayText(dayId);
         let numberOfItemsForDayString = await app.component.dayDropper.func.make.numberOfItemsForDayString(dayId);
         let daysUntilString           = app.component.dayDropper.func.make.daysUntilString(dayId);
         let colorRed                  = "";
         if( currentDayId === dayId){
-            colorRed = "colorRed";
+            colorRed                  = "colorRed";
         };
         let html = `
             <div class="dayHeader" onclick="app.component.item.func.post.item_toDataStore()">
@@ -380,7 +544,7 @@ app.component.item.func.make.dayHeaderHTML = (itemObj)=>{
     });
 };
 
-app.component.item.func.make.dayTextString = (dayId)=>{
+app.component.item.func.get.dayText = (dayId)=>{
     let dateString = `${new Date(dayId)}`;
     let splits     = dateString.split(" ");
     let month      = splits[1];
@@ -393,7 +557,7 @@ app.component.item.func.make.dayTextString = (dayId)=>{
 app.component.item.func.make.hourHeaderHTML = (itemObj)=>{
     let currentDayId = app.component.dayDropper.func.get.day()[0];
     let dayId        = itemObj.associated.day;
-    let hourId       = itemObj.associated.timeSlot;
+    let hourId       = itemObj.associated.hour;
     let AMorPM       = app.component.timeSlot.func.make.AMorPMString(hourId);
     let hr_12        = app.component.timeSlot.func.make.hour12Number(hourId);
     let colorRed     = "";
@@ -413,20 +577,74 @@ app.component.item.func.make.hourHeaderHTML = (itemObj)=>{
     return html;
 };
 
-app.component.item.func.make.itemHTML = (itemObj)=>{
-    let createdId = itemObj.associated.createdId;
-    let dayId     = itemObj.associated.day;
-    let hourId    = itemObj.associated.timeSlot;
-    let itemText  = itemObj.setting.text;
+app.component.item.func.make.itemHTML = (itemObj, timeSlot)=>{
+    if( itemObj === "new"){
+        var createdId  = Date.now();
+        var dayId      = app.component.dayDropper.setting.day[0];
+        var hourId     = Number(timeSlot.children[0].getAttribute("hourId"));
+        var minuteId   = 0;
+        var itemText   = "";
+        var itemClass  = "itemTile zIndex2";
+        var fieldClass = "itemField background_item";
+        var readonly   = "";
+    }
+    else{
+        var createdId  = itemObj.associated.createdId;
+        var dayId      = itemObj.associated.day;
+        var hourId     = itemObj.associated.hour;
+        var minuteId   = itemObj.associated.minute;
+        var itemText   = itemObj.setting.text;
+        var itemClass  = "itemTile hideItemTile";
+        var fieldClass = "itemField background_main";
+        var readonly   = "readonly";
+    }
     let html = `
-        <div class="itemTile hideItemTile" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem(this)">
-            <span class="dot"></span>
-            <input class="itemField background_main" value="${itemText}" onkeyup="app.component.item.func.post.item_toDataStore()" spellcheck="false" readonly>
+        <div class="${itemClass}" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" minuteId="${minuteId}" onclick="app.component.item.func.transition.showItem(this)">
+            ${app.component.item.func.make.minuteBlock(createdId, minuteId)}
+            <input class="${fieldClass}" value="${itemText}" ${readonly} onkeyup="app.component.item.func.post.item_toDataStore()" spellcheck="false">
             <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem()"></div>
+            <span class="blurTile_item displayNone" createdId="${createdId}" onclick="app.component.item.func.event.click_blurTileItem()"></span>
         </div>
     `;
     return html;
 };
+
+app.component.item.func.make.minuteBlock = (createdId, minuteId)=>{
+    if( Number(minuteId) === 0){
+        var minuteClass = `minute dot`;
+        var minuteText  = "";
+    }
+    else{
+        var minuteClass = `minute`;
+        var minuteText  = minuteId;
+    };
+    let html =  `
+        <div class="minuteBlock">
+            <p class="${minuteClass}" createdId="${createdId}" minuteId="${minuteId}" onclick="app.component.item.func.event.click_minute()">${minuteText}</p>
+            <div class="minuteMenu displayNone" createdId="${createdId}">
+                <span class="visibilityBacking">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+                <div class="minutesWrapper">
+                    <p createdId="${createdId}" minuteId="0"  onclick="app.component.item.func.event.click_minuteSelect()">0</p>
+                    <p createdId="${createdId}" minuteId="10" onclick="app.component.item.func.event.click_minuteSelect()">10</p>
+                    <p createdId="${createdId}" minuteId="15" onclick="app.component.item.func.event.click_minuteSelect()">15</p>
+                    <p createdId="${createdId}" minuteId="20" onclick="app.component.item.func.event.click_minuteSelect()">20</p>
+                    <p createdId="${createdId}" minuteId="30" onclick="app.component.item.func.event.click_minuteSelect()">30</p>
+                    <p createdId="${createdId}" minuteId="40" onclick="app.component.item.func.event.click_minuteSelect()">40</p>
+                    <p createdId="${createdId}" minuteId="45" onclick="app.component.item.func.event.click_minuteSelect()">45</p>
+                    <p createdId="${createdId}" minuteId="50" onclick="app.component.item.func.event.click_minuteSelect()">50</p>
+                </div>
+            </div>
+        </div>
+    `;
+    return html;
+};
+
 
 /*********
 MAKEAPPEND
@@ -446,7 +664,7 @@ app.component.item.func.makeAppend.blurTile = (itemElement)=>{
 
 app.component.item.func.makeAppend.item_toAddPage = (itemObj)=>{
     let html     = app.component.item.func.make.itemHTML(itemObj);
-    let hourId   = itemObj.associated.timeSlot;
+    let hourId   = itemObj.associated.hour;
     let slotBody = document.querySelector(".timeSlots").children[0].children[hourId].children[0].nextElementSibling; // hourId used to locate correct slotBody to append to
         slotBody.insertAdjacentHTML("beforeend", html);
 };
@@ -455,7 +673,7 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     let createdId  = Number(app.component.item.state.selected[2].getAttribute("createdId"));
     let itemObj    = await app.component.item.func.retrieve.itemObj_withCreatedId(createdId);
     let dayId      = itemObj.associated.day;
-    let hourId     = itemObj.associated.timeSlot;
+    let hourId     = itemObj.associated.hour;
     let dayBlocks  = document.querySelectorAll('.dayBlock');
     let dayBlock   = document.querySelector(`.dayBlock[dayId="${dayId}"]`);
     let hourHeader = document.querySelector(`.hourHeader[dayId="${dayId}"][hourId="${hourId}"]`);
@@ -530,24 +748,6 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     };
 };
 
-app.component.item.func.makeAppend.itemNew_toAddPage = (timeSlot)=>{
-    return new Promise((resolve)=>{
-        let createdId = Date.now();
-        let dayId     = app.component.dayDropper.setting.day[0];
-        let hourId    = Number(timeSlot.children[0].getAttribute("hourId"));
-        let html = `
-            <div class="itemTile zIndex2" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.transition.showItem(this)">
-                <span class="dot"></span>
-                <input class="itemField background_white" spellcheck="false" onkeyup="app.component.item.func.post.item_toDataStore()">
-                <div class="trashIcon" onclick="app.component.item.func.transition.removeItem()"></div>
-            </div>
-        `;
-        let slotBody = timeSlot.nextElementSibling;
-            slotBody.insertAdjacentHTML("afterbegin", html);
-        resolve();
-    });
-};
-
 app.component.item.func.makeAppend.items_onAddPage_forDay = (dayId)=>{
     return new Promise((resolve)=>{
         for(let i = app.component.item.objs.length-1; i > -1; i--){
@@ -571,7 +771,7 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
     for(let i in app.component.item.objs){
         let itemObj = app.component.item.objs[i];
         let dayId   = itemObj.associated.day;
-        let hourId  = Number(itemObj.associated.timeSlot);
+        let hourId  = Number(itemObj.associated.hour);
         if( setDay === null){ // first iteration
             setDay  = dayId;
             setHour = hourId;
@@ -650,8 +850,10 @@ app.component.item.func.post.item_toDataStore = async()=>{
             /* Update Old Item */
             else{
                 let itemObj = isObjExist[1];
-                await app.component.item.func.set.itemObj_inItemObjs(itemObj, fieldValue);
-                await app.component.item.func.set.itemObj_inLocalStorage(itemObj, fieldValue);
+                // await app.component.item.func.update.itemObj_inItemObjs(itemObj, fieldValue);
+                // await app.component.item.func.update.itemObj_inLocalStorage(itemObj, fieldValue);
+                await app.component.item.func.update.itemObj_inItemObjs({selectedObj: itemObj, fieldValue: fieldValue});
+                await app.component.item.func.update.itemObj_inLocalStorage({selectedObj: itemObj, fieldValue: fieldValue});
                 app.component.item.func.give.itemField_value();
 
             };
@@ -738,39 +940,6 @@ app.component.item.func.retrieve.itemObjs = ()=>{
     });
 };
 
-/**
-SET
-***/
-app.component.item.func.set.itemObj_inItemObjs = (selectedObj, fieldValue)=>{
-    return new Promise((resolve)=>{
-        for(i in app.component.item.objs){
-            let obj = app.component.item.objs[i];
-            if( obj.associated.createdId === selectedObj.associated.createdId){
-                obj.setting.text = fieldValue;
-                resolve();
-                return;
-            };
-        };
-    });
-};
-
-app.component.item.func.set.itemObj_inLocalStorage = (selectedObj, fieldValue)=>{
-    return new Promise((resolve)=>{
-        let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
-        let localStorageItemObjs = localStorageObj.items;
-        for(i in localStorageItemObjs){
-            let obj = localStorageItemObjs[i];
-            if( obj.associated.createdId === selectedObj.associated.createdId){
-                obj.setting.text      = fieldValue;
-                localStorageObj.items = localStorageItemObjs;
-                window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
-                resolve();
-                return;
-            };
-        };
-    });
-};
-
 /***
 SORT
 ****/
@@ -825,7 +994,9 @@ app.component.item.func.transition.createItem = async(timeSlot)=>{
     if( app.component.item.state.selected[0] === false
     &&  app.component.pageTurner.state.preventClick === false // pageTurner can't be preventing click
     ){
-        await app.component.item.func.makeAppend.itemNew_toAddPage(timeSlot);
+        let html     = app.component.item.func.make.itemHTML("new", timeSlot);
+        let slotBody = timeSlot.nextElementSibling;
+            slotBody.insertAdjacentHTML("afterbegin", html);
         let itemElement = timeSlot.nextElementSibling.children[0];
         app.component.item.func.makeAppend.blurTile(itemElement);
         app.component.item.func.give.field_focus(timeSlot);
@@ -840,6 +1011,7 @@ app.component.item.func.transition.hideItem = ()=>{
     app.component.item.func.give.dayHeader_hidingAttributes(itemElement);
     app.component.item.func.give.field_hidingAttributes(itemElement);
     app.component.item.func.give.hourHeader_hidingAttributes(itemElement);
+    app.component.item.func.give.minute_hidingAttributes(itemElement);
     app.component.item.func.give.tile_hidingAttributes(itemElement);
     app.component.item.func.give.trash_hidingAttributes(itemElement);
     /* state - selected OFF */
@@ -879,6 +1051,7 @@ app.component.item.func.transition.showItem = (itemElement)=>{
         app.component.item.func.give.dayHeader_showingAttributes(itemElement);
         app.component.item.func.give.field_showingAttributes(itemElement);
         app.component.item.func.give.hourHeader_showingAttributes(itemElement);
+        app.component.item.func.give.minute_showingAttributes(itemElement);
         app.component.item.func.give.tile_showingAttributes(itemElement);
         app.component.item.func.give.trash_showingAttributes(itemElement);
         app.component.item.func.makeAppend.blurTile(itemElement);
@@ -888,6 +1061,76 @@ app.component.item.func.transition.showItem = (itemElement)=>{
 /*****
 UPDATE
 ******/
+// app.component.item.func.update.itemObj_inItemObjs = (selectedObj, fieldValue)=>{
+//     return new Promise((resolve)=>{
+//         for(i in app.component.item.objs){
+//             let obj = app.component.item.objs[i];
+//             if( obj.associated.createdId === selectedObj.associated.createdId){
+//                 obj.setting.text = fieldValue;
+//                 resolve();
+//                 return;
+//             };
+//         };
+//     });
+// };
+
+app.component.item.func.update.itemObj_inItemObjs = ({selectedObj, fieldValue, minuteId}={selectedObj: selectedObj, fieldValue: fieldValue, minuteId: minuteId})=>{
+    return new Promise((resolve)=>{
+        for(i in app.component.item.objs){
+            let obj = app.component.item.objs[i];
+            if( obj.associated.createdId === selectedObj.associated.createdId){
+                if( fieldValue !== undefined){
+                    obj.setting.text = fieldValue;
+                };
+                if( minuteId !== undefined){
+                    obj.associated.minute = minuteId;
+                };
+                resolve();
+                return;
+            };
+        };
+    });
+};
+
+// app.component.item.func.update.itemObj_inLocalStorage = (selectedObj, fieldValue)=>{
+//     return new Promise((resolve)=>{
+//         let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
+//         let localStorageItemObjs = localStorageObj.items;
+//         for(i in localStorageItemObjs){
+//             let obj = localStorageItemObjs[i];
+//             if( obj.associated.createdId === selectedObj.associated.createdId){
+//                 obj.setting.text      = fieldValue;
+//                 localStorageObj.items = localStorageItemObjs;
+//                 window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
+//                 resolve();
+//                 return;
+//             };
+//         };
+//     });
+// };
+
+app.component.item.func.update.itemObj_inLocalStorage = ({selectedObj, fieldValue, minuteId}={selectedObj: selectedObj, fieldValue: fieldValue, minuteId: minuteId})=>{
+    return new Promise((resolve)=>{
+        let localStorageObj      = JSON.parse(localStorage.upcomingPlanner);
+        let localStorageItemObjs = localStorageObj.items;
+        for(i in localStorageItemObjs){
+            let obj = localStorageItemObjs[i];
+            if( obj.associated.createdId === selectedObj.associated.createdId){
+                if( fieldValue !== undefined){
+                    obj.setting.text = fieldValue;
+                };
+                if( minuteId !== undefined){
+                    obj.associated.minute = minuteId;
+                };
+                localStorageObj.items = localStorageItemObjs;
+                window.localStorage.setItem("upcomingPlanner", JSON.stringify(localStorageObj));
+                resolve();
+                return;
+            };
+        };
+    });
+};
+
 app.component.item.func.update.itemObjs_inLocalStorage = ()=>{
     let localStorageObj   = JSON.parse(localStorage.upcomingPlanner);
     localStorageObj.items = app.component.item.objs;

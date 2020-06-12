@@ -2,8 +2,8 @@
 	background-color: var(--background_main);
 }
 
-.background_white {
-	background-color: white;
+.background_item {
+    background-color: var(--grey_2);
 }
 
 .itemTile {
@@ -12,24 +12,152 @@
     width: 100%;
     height: 36px;
 	border-radius: 6px;
-	background-color: white;
+    background: var(--grey_2);
 	box-shadow: 0 0.75px 0.75px 0 rgba(0,0,0,0.2);
 }
 div.hideItemTile {
-	background-color: rgba(0,0,0,0);
+    background-color: var(--background_main);
 	box-shadow: none;
 }
 
-.dot {
-	display: block;
+
+.minuteBlock {
+    width: 40px;
+    /* position: relative; */
+    position: absolute;
+    left: 16px;;
+    font-family: Seravek;
+    font-weight: 500;
+    color: var(--blue_1);
+
+    /* border: 1px solid blue; */
+}
+
+/* .minuteBlock
+> span {
+    letter-spacing: 19px;
+    position: absolute;
+    top: 6px;
+    left: 1px;
+    font-size: 18px;
+} */
+
+.minute {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 4px;
+    text-align: center;
+    line-height: 30px;
+    font-size: 14px;
+}
+
+.minute::before {
+    displayNone
+}
+
+.minute.selected::before {
+    content: "()";
+    letter-spacing: 19px;
+    position: absolute;
+    top: -2px;
+    left: -1px;
+    font-size: 18px;
+}
+
+.minute.dot {
+    display: block;
 	position: absolute;
-	top: 16px;
-	width: 4px;
-	height: 4px;
-	margin-left: 9.7%;
-	background-image: url('dot.svg');
-	background-repeat: no-repeat;
-	background-size: contain;
+    top: 16px;
+    margin-left: 33%;
+    width: 4px;
+    height: 4px;
+    border-radius: 10px;
+    background-color: black;
+}
+
+.minuteMenu {
+    width: 200px;
+    height: 67px;
+    position: absolute;
+    top: -54px;
+    left: -14px;
+    background-image: url("minuteMenu.svg");
+}
+
+.minuteMenu
+.visibilityBacking {
+    position: absolute;
+    display: flex;
+    margin-top: 5px;
+    margin-left: 6px;
+}
+
+.minuteMenu
+.visibilityBacking
+span {
+    margin-left: 20px;
+    width: 20px;
+    height: 48px;
+    background-color: var(--blue_2);
+}
+.minuteMenu
+.visibilityBacking
+span:nth-child(1) {
+    width: 14px;
+    margin-left: 0;
+    border-radius: 6px 0 0 6px;
+}
+
+.minutesWrapper {
+    display: flex;
+    position: absolute;
+    font-size: 15px;
+}
+
+.minutesWrapper
+p {
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    position: relative;
+}
+.minutesWrapper
+p:nth-child(odd){
+    margin-top: 30px;
+}
+.minutesWrapper
+p:nth-child(even){
+    margin-top: 9px;
+}
+.minutesWrapper
+p:nth-child(1){
+    margin-left: 21px;
+}
+.minutesWrapper
+p.selected {
+    color: black;
+    font-weight: 500;
+}
+.minutesWrapper
+p.selected::before {
+    content: "min";
+    position: absolute;
+    top: 70%;
+    left: 1px;
+    font-size: 11px;
+    letter-spacing: 0.16px;
+    color: black;
+}
+.minutesWrapper
+p.selected::after {
+    content: "()";
+    position: absolute;
+    top: -3px;
+    left: -6px;
+    font-size: 18px;
+    letter-spacing: 19px;
+    color: black;
 }
 
 .itemField {
@@ -54,4 +182,12 @@ div.hideItemTile {
 	background-image: url('trashIcon.svg');
 	background-repeat: no-repeat;
 	background-size: contain;
+}
+
+.blurTile_item {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }

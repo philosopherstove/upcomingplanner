@@ -3,7 +3,9 @@ Classes and Reset
 *****************/
 :root {
 	--blue_1:          rgb(0,119,181);
+    --blue_2:          rgb(240,246,252);
 	--grey:            rgb(176,192,205);
+    --grey_2:          rgb(247,247,247);
 	--red:             rgb(202,48,67);
 
 	--background_main: rgb(236,236,236);
