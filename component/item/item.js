@@ -357,43 +357,42 @@ app.component.item.func.give.itemField_value = ()=>{
 };
 
 app.component.item.func.give.minute_hidingAttributes = (itemElement)=>{
-    let addPage    = document.querySelector(".addPage");
-    let viewPage   = document.querySelector(".viewPage");
-    if( addPage.contains(itemElement)){
-        var minute = document.querySelector(`.addPage .minute[createdId="${itemElement.getAttribute('createdId')}"]`);
-    }
-    else
-    if( viewPage.contains(itemElement)){
-        var minute = document.querySelector(`.viewPage .minute[createdId="${itemElement.getAttribute('createdId')}"]`);
-    };
-    minute.classList.remove("selected");
-    /* 0 -> dot */
-    if(Number(minute.getAttribute("minuteId")) === 0){
-        minute.innerHTML = "";
-        minute.classList.add("dot");
+    let createdId            = app.component.item.state.selected[2].getAttribute("createdId");
+    let minuteId             = app.component.item.state.selected[2].getAttribute("minuteId");
+    let minuteElements       = document.querySelectorAll(`.minute[createdId="${createdId}"]`);
+    for(minute of minuteElements){
+        if( minuteId == 0){
+            minute.innerHTML = "";
+            minute.classList.add("dot");
+            minute.classList.remove("selected");
+        }
+        else{
+            minute.innerHTML = minuteId;
+        }
+        minute.setAttribute("minuteId", minuteId);
     };
 };
 
 app.component.item.func.give.minute_showingAttributes = (itemElement)=>{
-    let addPage  = document.querySelector(".addPage");
-    let viewPage = document.querySelector(".viewPage");
-    if( addPage.contains(itemElement)){
-        var minute = document.querySelector(`.addPage .minute[createdId="${itemElement.getAttribute('createdId')}"]`);
-    }
-    else
-    if( viewPage.contains(itemElement)){
-        var minute = document.querySelector(`.viewPage .minute[createdId="${itemElement.getAttribute('createdId')}"]`);
-    };
-    minute.classList.add("selected");
-    /* dot -> 0 */
-    if(Number(minute.getAttribute("minuteId")) === 0){
-        minute.innerHTML = "0";
-        minute.classList.remove("dot");
+    let createdId            = app.component.item.state.selected[2].getAttribute("createdId");
+    let minuteId             = app.component.item.state.selected[2].getAttribute("minuteId");
+    let minuteElements       = document.querySelectorAll(`.minute[createdId="${createdId}"]`);
+    for(minute of minuteElements){
+        if( minuteId == 0){
+            minute.innerHTML = "0";
+            minute.classList.remove("dot");
+        }
+        else{
+            minute.innerHTML = minuteId;
+            minute.classList.add("selected");
+        }
+        minute.setAttribute("minuteId", minuteId);
     };
 };
 
 app.component.item.func.give.minute_value = (itemId, minuteId)=>{
     let minuteElements = document.querySelectorAll(`.minute[createdId="${itemId}"]`);
+    console.log(minuteElements,"minuteElements");
     for(x of minuteElements){
         x.innerHTML = minuteId;
         x.setAttribute("minuteId", minuteId);
