@@ -202,8 +202,11 @@ app.component.item.func.event.click_blurTileItem = ()=>{
 
 app.component.item.func.event.click_minute = ()=>{
     if( app.component.item.state.selected[0] === true){
+        let createdId = Number(app.component.item.state.selected[2].getAttribute("createdId"));
+        let minuteId  = Number(app.component.item.state.selected[2].getAttribute("minuteId"));
         app.component.item.func.give.minuteMenu_showingAttributes();
         app.component.item.func.give.blurTileItem_showingAttributes();
+        app.component.item.func.give.selectedMinute_border(createdId, minuteId);
     };
 };
 
@@ -216,6 +219,7 @@ app.component.item.func.event.click_minuteSelect = async()=>{
     await app.component.item.func.update.itemObj_inItemObjs({selectedObj: selectedObj, minuteId: minuteId});
     await app.component.item.func.update.itemObj_inLocalStorage({selectedObj: selectedObj, minuteId: minuteId});
     /* give */
+    app.component.item.func.give.item_minuteId(createdId, minuteId);
     app.component.item.func.give.blurTileItem_hidingAttributes();
     app.component.item.func.give.minute_value(createdId, minuteId);
     app.component.item.func.give.minuteMenu_hidingAttributes();
@@ -332,6 +336,13 @@ app.component.item.func.give.hourHeader_showingAttributes = (itemElement)=>{
         hourHeader = document.querySelector(`.viewPage .hourHeader[dayId="${dayId}"][hourId="${hourId}"]`);
     };
     hourHeader.classList.add("zIndex2");
+};
+
+app.component.item.func.give.item_minuteId = (createdId, minuteId)=>{
+    let items = document.querySelectorAll(`.itemTile[createdId="${createdId}"]`);
+    for(x of items){
+        x.setAttribute("minuteId", minuteId);
+    };
 };
 
 app.component.item.func.give.itemField_value = ()=>{
@@ -569,7 +580,7 @@ app.component.item.func.make.hourHeaderHTML = (itemObj)=>{
         spacingClass = "spacing";
     };
     let html = `
-        <p class="hourHeader ${colorRed}" dayId="${dayId}" hourId="${hourId}">
+        <p class="hourHeader ${colorRed}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.post.item_toDataStore()">
             <span class="${spacingClass}">${hr_12}</span>
             <span>${AMorPM}</span>
         </p>
@@ -833,7 +844,9 @@ app.component.item.func.post.item_toDataStore = async()=>{
         &&( event.key === "Enter" ||
             event.target.classList.contains("blurTile") ||
             event.target.classList.contains("dayText") ||
-            event.target.classList.contains("dayInfo") )
+            event.target.classList.contains("dayInfo") ||
+            event.target.classList.contains("hourHeader") ||
+            event.target.parentNode.classList.contains("hourHeader") )
         ){
             let isObjExist = await app.component.item.func.is.objExist(itemElement.getAttribute("createdId"));
             /* Create New Item */
