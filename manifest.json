@@ -1,0 +1,16 @@
+{
+    "name": "Upcoming Planner",
+    "short_name": "Upcoming Planner",
+    "icons": [
+        {
+            "src": "icon.png",
+            "sizes": "192x192",
+            "type": "icon.png"
+        }
+    ],
+    "start_url": "index.html",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "red",
+    "theme_color": "blue"
+}
