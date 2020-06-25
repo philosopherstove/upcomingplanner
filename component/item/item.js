@@ -598,16 +598,18 @@ app.component.item.func.get.item_class = ()=>{
 
 app.component.item.func.make.itemHTML = (itemObj, timeSlot)=>{
     if( itemObj === "new"){
-        var createdId    = Date.now();
-        var dayId        = app.component.dayDropper.setting.day[0];
-        var hourId       = Number(timeSlot.children[0].getAttribute("hourId"));
-        var minuteId     = 0;
-        var itemText     = "";
-        var itemClass    = "itemTile zIndex2";
+        var isNew      = true;
+        var createdId  = Date.now();
+        var dayId      = app.component.dayDropper.setting.day[0];
+        var hourId     = Number(timeSlot.children[0].getAttribute("hourId"));
+        var minuteId   = 0;
+        var itemText   = "";
+        var itemClass  = "itemTile zIndex2";
         var fieldClass = "itemField background_item";
         var readonly   = "";
     }
     else{
+        var isNew      = false;
         var createdId  = itemObj.associated.createdId;
         var dayId      = itemObj.associated.day;
         var hourId     = itemObj.associated.hour;
@@ -619,7 +621,7 @@ app.component.item.func.make.itemHTML = (itemObj, timeSlot)=>{
     }
     let html = `
         <div class="${itemClass}" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" minuteId="${minuteId}" onclick="app.component.item.func.transition.showItem(this)">
-            ${app.component.item.func.make.minuteBlock(createdId, dayId, minuteId)}
+            ${app.component.item.func.make.minuteBlock(createdId, dayId, minuteId, isNew)}
             <input class="${fieldClass}" value="${itemText}" ${readonly} onkeyup="app.component.item.func.post.item_toDataStore()" spellcheck="false">
             <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem()"></div>
             <span class="blurTile_item displayNone" createdId="${createdId}" onclick="app.component.item.func.event.click_blurTileItem()"></span>
@@ -628,8 +630,10 @@ app.component.item.func.make.itemHTML = (itemObj, timeSlot)=>{
     return html;
 };
 
-app.component.item.func.make.minuteBlock = (createdId, dayId, minuteId)=>{
-    if( Number(minuteId) === 0){
+app.component.item.func.make.minuteBlock = (createdId, dayId, minuteId, isNew)=>{
+    if( Number(minuteId) === 0
+    &&  isNew === false
+    ){
         var minuteClass = `minute dot`;
         var minuteText  = "";
     }
