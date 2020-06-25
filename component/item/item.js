@@ -1,6 +1,7 @@
 app.component.item                 = {};
 app.component.item.objs            = [];
 app.component.item.state           = {};
+app.component.item.state.creating  = [false, null];
 app.component.item.state.selected  = [false, false, null];
 app.component.item.func            = {};
 app.component.item.func.createSet  = {};
@@ -621,7 +622,7 @@ app.component.item.func.make.itemHTML = (itemObj, timeSlot)=>{
     }
     let html = `
         <div class="${itemClass}" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" minuteId="${minuteId}" onclick="app.component.item.func.transition.showItem(this)">
-            ${app.component.item.func.make.minuteBlock(createdId, dayId, minuteId, isNew)}
+            ${app.component.item.func.make.minuteBlock(createdId, dayId, minuteId)}
             <input class="${fieldClass}" value="${itemText}" ${readonly} onkeyup="app.component.item.func.post.item_toDataStore()" spellcheck="false">
             <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem()"></div>
             <span class="blurTile_item displayNone" createdId="${createdId}" onclick="app.component.item.func.event.click_blurTileItem()"></span>
@@ -630,9 +631,9 @@ app.component.item.func.make.itemHTML = (itemObj, timeSlot)=>{
     return html;
 };
 
-app.component.item.func.make.minuteBlock = (createdId, dayId, minuteId, isNew)=>{
+app.component.item.func.make.minuteBlock = (createdId, dayId, minuteId)=>{
     if( Number(minuteId) === 0
-    &&  isNew === false
+    &&  app.component.item.state.creating[0] === false
     ){
         var minuteClass = `minute dot`;
         var minuteText  = "";
@@ -875,6 +876,7 @@ app.component.item.func.post.item_toDataStore = async()=>{
                 let delay_forMobileKeyboardExit = setTimeout(()=>{
                     app.component.timeSlot.func.give.scrollBall_heightAttributes();
                 },300);
+                app.component.item.state.creating = [false, null];
             }
             /* Update Old Item */
             else{
@@ -1023,6 +1025,8 @@ app.component.item.func.transition.createItem = async(timeSlot)=>{
     if( app.component.item.state.selected[0] === false
     &&  app.component.pageTurner.state.preventClick === false // pageTurner can't be preventing click
     ){
+        /* state - creating ON */
+        app.component.item.state.creating = [true, {}];
         let html     = app.component.item.func.make.itemHTML("new", timeSlot);
         let slotBody = timeSlot.nextElementSibling;
             slotBody.insertAdjacentHTML("afterbegin", html);
