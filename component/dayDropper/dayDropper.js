@@ -330,7 +330,7 @@ app.component.dayDropper.func.make.numberOfItemsForDayString = (ms)=>{
             let numberOfItems = 0;
             for(i in app.component.item.objs){
                 let obj = app.component.item.objs[i];
-                if( obj.associated.day === ms){
+                if( obj.associated.dayId === ms){
                     numberOfItems++;
                 };
                 if( Number(i) === app.component.item.objs.length -1){ // end of loop
