@@ -1,58 +1,88 @@
-app.component.item                 = {};
-app.component.item.objs            = [];
-app.component.item.state           = {};
-app.component.item.state.creating  = [false, null];
-app.component.item.state.selected  = [false, false, null];
+/***
+ITEM
+****/
+app.component.item = {};
+/***
+OBJS
+****/
+app.component.item.objs = [];
+/****
+STATE
+*****/
+app.component.item.state          = {};
+app.component.item.state.creating = [false, false, null];
+app.component.item.state.selected = [false, false, null];
+/***
+FUNC
+****/
 app.component.item.func            = {};
-app.component.item.func.append     = {};
+/*********
+data CRUDS
+**********/
+app.component.item.func.create     = {}; // C
 app.component.item.func.createSet  = {};
-app.component.item.func.delete     = {};
+app.component.item.func.retrieve   = {}; // R
+app.component.item.func.update     = {}; // U
+app.component.item.func.delete     = {}; // D
+app.component.item.func.set        = {}; // S
+/*********
+view CRUDS
+**********/
+app.component.item.func.make       = {}; // C
+app.component.item.func.makeAppend = {};
+app.component.item.func.get        = {}; // R
+app.component.item.func.give       = {}; // U
+app.component.item.func.remove     = {}; // D
+app.component.item.func.append     = {}; // S
+/****
+other
+*****/
 app.component.item.func.event      = {};
-app.component.item.func.get        = {};
-app.component.item.func.give       = {};
 app.component.item.func.init       = {};
 app.component.item.func.is         = {};
-app.component.item.func.make       = {};
-app.component.item.func.makeAppend = {};
-app.component.item.func.post       = {};
-app.component.item.func.remove     = {};
-app.component.item.func.retrieve   = {};
 app.component.item.func.sort       = {};
 app.component.item.func.transition = {};
-app.component.item.func.update     = {};
 
-/* func hotkeys:
-*********
-APPEND
-CREATESET
-DELETE
-EVENT
-GET
-GIVE
-INIT
-IS
-MAKE
-MAKEAPPEND
-POST
-REMOVE
-RETRIEVE
-SORT
-TRANSITION
-UPDATE
+
+/* func hotkeys
+
 **********
-APPEND
-app.component.item.func.append.itemTiles_sameHour_sorted = ()=>{
+data CRUDS
+**********
+CREATE
+
 CREATESET
 app.component.item.func.createSet.itemObj = (item)=>{
+RETRIEVE
+app.component.item.func.retrieve.itemObj_withCreatedId = (createdId)=>{
+app.component.item.func.retrieve.itemObjs = ()=>{
+UPDATE
+app.component.item.func.update.itemObj_inItemObjs = (selectedObj, fieldValue)=>{
+app.component.item.func.update.itemObj_inLocalStorage = (selectedObj, fieldValue)=>{
+app.component.item.func.update.itemObjs_inLocalStorage = ()=>{
 DELETE
 app.component.item.func.delete.itemObj = ()=>{
 app.component.item.func.delete.itemObj_fromItemObjs = ()=>{
 app.component.item.func.delete.itemObj_fromLocalStorage = ()=>{
 app.component.item.func.delete.oldItemObjs_fromItemObjs = ()=>{
-EVENT
-app.component.item.func.event.click_blurTileItem = ()=>{
-app.component.item.func.event.click_minute = ()=>{
-app.component.item.func.event.click_minuteSelect = async()=>{
+SET
+
+
+**********
+view CRUDS
+**********
+MAKE
+app.component.item.func.make.dayHeaderHTML = (itemObj)=>{
+app.component.item.func.make.hourHeaderHTML = (itemObj)=>{
+app.component.item.func.make.itemHTML = (itemObj, timeSlot)=>{
+app.component.item.func.make.minuteBlock = (createdId, dayId, hourId, minuteId)=>{
+MAKEAPPEND
+app.component.item.func.makeAppend.blurTile = (itemElement)=>{
+app.component.item.func.makeAppend.item_toAddPage = (itemObj, location)=>{
+app.component.item.func.makeAppend.item_toViewPage = async()=>{
+app.component.item.func.makeAppend.item_toViewPage_afterSort = (obj)=>{
+app.component.item.func.makeAppend.items_onAddPage_forDay = (dayId)=>{
+app.component.item.func.makeAppend.items_onViewPage = async()=>{
 GET
 app.component.item.func.get.dayText = (dayId)=>{
 GIVE
@@ -77,34 +107,28 @@ app.component.item.func.give.tile_hidingAttributes = (itemElement)=>{
 app.component.item.func.give.tile_showingAttributes = (itemElement)=>{
 app.component.item.func.give.trash_hidingAttributes = (itemElement)=>{
 app.component.item.func.give.trash_showingAttributes = (itemElement)=>{
+REMOVE
+app.component.item.func.remove.blurTile = ()=>{
+app.component.item.func.remove.dayHeader = (dayId)=>{
+app.component.item.func.remove.hourHeader = (hourId)=>{
+app.component.item.func.remove.item = ()=>{
+APPEND
+app.component.item.func.append.itemTiles_resortedByMinute = ()=>{
+
+*****
+other
+*****
+EVENT
+app.component.item.func.event.click_blurTileItem = ()=>{
+app.component.item.func.event.click_minute = ()=>{
+app.component.item.func.event.click_minuteSelect = async()=>{
+app.component.item.func.event.postItem = async()=>{
 INIT
 app.component.item.func.init.component = async()=>{
 IS
 app.component.item.func.is.itemsUnderViewPageDay = ()=>{
 app.component.item.func.is.itemsUnderViewPageHour = ()=>{
 app.component.item.func.is.objExist = (itemId)=>{
-MAKE
-app.component.item.func.make.dayHeaderHTML = (itemObj)=>{
-app.component.item.func.make.hourHeaderHTML = (itemObj)=>{
-app.component.item.func.make.itemHTML = (itemObj, timeSlot)=>{
-app.component.item.func.make.minuteBlock = (createdId, dayId, minuteId)=>{
-MAKEAPPEND
-app.component.item.func.makeAppend.blurTile = (itemElement)=>{
-app.component.item.func.makeAppend.item_toAddPage = (itemObj, location)=>{
-app.component.item.func.makeAppend.item_toViewPage = async()=>{
-app.component.item.func.makeAppend.item_toViewPage_afterSort = (obj)=>{
-app.component.item.func.makeAppend.items_onAddPage_forDay = (dayId)=>{
-app.component.item.func.makeAppend.items_onViewPage = async()=>{
-POST
-app.component.item.func.post.item_toDataStore = async()=>{
-REMOVE
-app.component.item.func.remove.blurTile = ()=>{
-app.component.item.func.remove.dayHeader = (dayId)=>{
-app.component.item.func.remove.hourHeader = (hourId)=>{
-app.component.item.func.remove.item = ()=>{
-RETRIEVE
-app.component.item.func.retrieve.itemObj_withCreatedId = (createdId)=>{
-app.component.item.func.retrieve.itemObjs = ()=>{
 SORT
 app.component.item.func.sort.byDay_hour_ms = (a, b)=>{
 app.component.item.func.sort.itemObjs_byTime = ()=>{
@@ -113,21 +137,19 @@ app.component.item.func.transition.createItem = async(timeSlot)=>{
 app.component.item.func.transition.hideItem = ()=>{
 app.component.item.func.transition.removeItem = async()=>{
 app.component.item.func.transition.showItem = (itemElement)=>{
-UPDATE
-app.component.item.func.update.itemObj_inItemObjs = (selectedObj, fieldValue)=>{
-app.component.item.func.update.itemObj_inLocalStorage = (selectedObj, fieldValue)=>{
-app.component.item.func.update.itemObjs_inLocalStorage = ()=>{
 */
+
 
 /*****
 APPEND
 ******/
-app.component.item.func.append.itemTiles_sameHour_sorted = ()=>{
-    let dayId              = Number(app.component.item.state.selected[2].getAttribute("dayId"));
-    let hourId             = Number(app.component.item.state.selected[2].getAttribute("hourId"));
-    let itemTiles_sameHour = document.querySelectorAll(`.itemTile[dayId="${dayId}"][hourId="${hourId}"]`);
-    // remove - itemTiles_sameHour
-    for(x of itemTiles_sameHour){
+// resort append
+app.component.item.func.append.itemTiles_resortedByMinute = ()=>{
+    let dayId     = Number(app.component.item.state.selected[2].getAttribute("dayId"));
+    let hourId    = Number(app.component.item.state.selected[2].getAttribute("hourId"));
+    let itemTiles = document.querySelectorAll(`.itemTile[dayId="${dayId}"][hourId="${hourId}"]`);
+    // remove - itemTiles
+    for(x of itemTiles){
         x.remove();
     };
     // makeAppend - items for itemObjs matching day and hour id,
@@ -136,15 +158,17 @@ app.component.item.func.append.itemTiles_sameHour_sorted = ()=>{
         if( obj.associated.dayId === dayId
         &&  obj.associated.hourId === hourId){
             app.component.item.func.makeAppend.item_toAddPage(obj, "beforeend");
-        };
-    };
-    for(let i = app.component.item.objs.length -1; i > -1; i--){
-        let obj = app.component.item.objs[i];
-        if( obj.associated.dayId === dayId
-        &&  obj.associated.hourId === hourId){
             app.component.item.func.makeAppend.item_toViewPage_afterSort(obj);
         };
     };
+
+    // for(let i = app.component.item.objs.length -1; i > -1; i--){ // reverse traverse
+    //     let obj = app.component.item.objs[i];
+    //     if( obj.associated.dayId === dayId
+    //     &&  obj.associated.hourId === hourId){
+    //         app.component.item.func.makeAppend.item_toViewPage_afterSort(obj);
+    //     };
+    // };
 
     // ... tricky thing is there are two appendDestinations, Q/ so how do you know which items go on which page?
     // ... A/ the itemObjs themselves contain day and hour id, so start a tally of append destinations
@@ -157,7 +181,6 @@ app.component.item.func.append.itemTiles_sameHour_sorted = ()=>{
 CREATESET
 *********/
 app.component.item.func.createSet.itemObj = (item)=>{
-    console.log(item);
     let obj                      = {};
         obj.associated           = {};
         obj.associated.createdId = Number(item.getAttribute("createdId"));
@@ -274,8 +297,9 @@ app.component.item.func.event.click_minuteSelect = async()=>{
     let createdId = Number(event.target.getAttribute("createdId"));
     let minuteId  = Number(event.target.getAttribute("minuteId"));
     if( app.component.item.state.creating[0] === true){
-        let selectedObj = app.component.item.state.creating[1];
-            selectedObj.minuteId = minuteId;
+        // console.log('unneeded');
+        // let selectedObj = app.component.item.state.creating[2];
+            // selectedObj.minuteId = minuteId;
     }
     else{
         let selectedObj = (await app.component.item.func.is.objExist(createdId))[1];
@@ -291,6 +315,52 @@ app.component.item.func.event.click_minuteSelect = async()=>{
     app.component.item.func.give.minute_value(createdId, minuteId);
     app.component.item.func.give.minuteMenu_hidingAttributes();
     app.component.item.func.give.selectedMinute_border(createdId, minuteId);
+};
+
+app.component.item.func.event.postItem = async()=>{
+    event.stopPropagation();
+    if( app.component.item.state.selected[0] === true){
+        let itemElement = app.component.item.state.selected[2];
+        let fieldValue  = itemElement.children[1].value;
+        if( fieldValue.trim().length > 0
+        &&( event.key === "Enter"
+        ||  event.target.classList.contains("blurTile")
+        ||  event.target.classList.contains("dayText")
+        ||  event.target.classList.contains("dayInfo")
+        ||  event.target.classList.contains("hourHeader")
+        ||  event.target.parentNode.classList.contains("hourHeader") )
+        ){
+            let isObjExist = await app.component.item.func.is.objExist(itemElement.getAttribute("createdId"));
+            /* Create New Item */
+            if( isObjExist[0] === false){
+                app.component.item.func.createSet.itemObj(itemElement); // add to objs array and data store
+                app.component.dayDropper.func.makeAppend.dropperText(app.component.dayDropper.setting.day[0]);
+                app.component.dayDropper.func.makeAppend.menuItems();
+                app.component.item.func.makeAppend.item_toViewPage();
+                app.component.item.func.give.dayInfo_onViewPage_updatedInfo(Number(itemElement.getAttribute("dayId")));
+                let delay_forMobileKeyboardExit = setTimeout(()=>{
+                    app.component.timeSlot.func.give.scrollBall_heightAttributes();
+                },300);
+            }
+            /* Update Old Item */
+            else{
+                console.log('if no change, why update?');
+                let itemObj = isObjExist[1];
+                await app.component.item.func.update.itemObj_inItemObjs({selectedObj: itemObj, fieldValue: fieldValue});
+                await app.component.item.func.update.itemObj_inLocalStorage({selectedObj: itemObj, fieldValue: fieldValue});
+                app.component.item.func.give.itemField_value();
+            };
+            app.component.item.func.remove.blurTile();
+            app.component.item.func.transition.hideItem(); // needs to fire after createSet.itemObj, because the transition turns state off
+        }
+        else
+        if( fieldValue.trim().length === 0
+        &&( event.key === "Enter" ||
+            event.target.classList.contains("blurTile"))
+        ){
+            app.component.item.func.transition.removeItem();
+        };
+    };
 };
 
 /***
@@ -611,7 +681,7 @@ app.component.item.func.make.dayHeaderHTML = (itemObj)=>{
             colorRed                  = "colorRed";
         };
         let html = `
-            <div class="dayHeader" onclick="app.component.item.func.post.item_toDataStore()">
+            <div class="dayHeader" onclick="app.component.item.func.event.postItem()">
                 <p class="dayText ${colorRed}">${dayText}</p>
                 <p class="dayInfo ${colorRed}">(${numberOfItemsForDayString}${daysUntilString})</p>
             </div>
@@ -645,7 +715,7 @@ app.component.item.func.make.hourHeaderHTML = (itemObj)=>{
         spacingClass = "spacing";
     };
     let html = `
-        <p class="hourHeader ${colorRed}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.post.item_toDataStore()">
+        <p class="hourHeader ${colorRed}" dayId="${dayId}" hourId="${hourId}" onclick="app.component.item.func.event.postItem()">
             <span class="${spacingClass}">${hr_12}</span>
             <span>${AMorPM}</span>
         </p>
@@ -662,8 +732,7 @@ app.component.item.func.get.item_class = ()=>{
 };
 
 app.component.item.func.make.itemHTML = (itemObj, timeSlot)=>{
-    if( itemObj === "new"){
-        var isNew      = true;
+    if( app.component.item.state.creating[0] === true){
         var createdId  = Date.now();
         var dayId      = app.component.dayDropper.setting.day[0];
         var hourId     = Number(timeSlot.children[0].getAttribute("hourId"));
@@ -674,7 +743,6 @@ app.component.item.func.make.itemHTML = (itemObj, timeSlot)=>{
         var readonly   = "";
     }
     else{
-        var isNew      = false;
         var createdId  = itemObj.associated.createdId;
         var dayId      = itemObj.associated.dayId;
         var hourId     = itemObj.associated.hourId;
@@ -687,7 +755,7 @@ app.component.item.func.make.itemHTML = (itemObj, timeSlot)=>{
     let html = `
         <div class="${itemClass}" createdId="${createdId}" dayId="${dayId}" hourId="${hourId}" minuteId="${minuteId}" onclick="app.component.item.func.transition.showItem(this)">
             ${app.component.item.func.make.minuteBlock(createdId, dayId, hourId, minuteId)}
-            <input class="${fieldClass}" value="${itemText}" ${readonly} onkeyup="app.component.item.func.post.item_toDataStore()" spellcheck="false">
+            <input class="${fieldClass}" value="${itemText}" ${readonly} onkeyup="app.component.item.func.event.postItem()" spellcheck="false">
             <div class="trashIcon displayNone" onclick="app.component.item.func.transition.removeItem()"></div>
             <span class="blurTile_item displayNone" createdId="${createdId}" onclick="app.component.item.func.event.click_blurTileItem()"></span>
         </div>
@@ -696,12 +764,14 @@ app.component.item.func.make.itemHTML = (itemObj, timeSlot)=>{
 };
 
 app.component.item.func.make.minuteBlock = (createdId, dayId, hourId, minuteId)=>{
+    // Case 1 - minute 0 & not creating
     if( Number(minuteId) === 0
     &&  app.component.item.state.creating[0] === false
     ){
         var minuteClass = `minute dot`;
         var minuteText  = "";
     }
+    // Case 2 - else - covers creating item or minuteId not 0
     else{
         var minuteClass = `minute`;
         var minuteText  = minuteId;
@@ -742,7 +812,7 @@ app.component.item.func.make.minuteBlock = (createdId, dayId, hourId, minuteId)=
 MAKEAPPEND
 **********/
 app.component.item.func.makeAppend.blurTile = (itemElement)=>{
-    let html     = `<div class="blurTile" onclick="app.component.item.func.post.item_toDataStore()"></div>`;
+    let html     = `<div class="blurTile" onclick="app.component.item.func.event.postItem()"></div>`;
     let addPage  = document.querySelector(".addPage");
     let viewPage = document.querySelector(".viewPage");
     if( addPage.contains(itemElement)){
@@ -847,18 +917,23 @@ app.component.item.func.makeAppend.item_toViewPage = async()=>{
     };
 };
 
+// problems:
+// should not fire in cases where creating a fresh new item
 app.component.item.func.makeAppend.item_toViewPage_afterSort = (obj)=>{
-    let html                   = app.component.item.func.make.itemHTML(obj);
-    let dayId                  = Number(obj.associated.dayId);
-    let hourId                 = Number(obj.associated.hourId);
-    let hourHeader             = document.querySelector(`.viewPage .hourHeader[dayId="${dayId}"][hourId="${hourId}"]`);
-    let elementAfterHourHeader = hourHeader.nextElementSibling;
-    if( elementAfterHourHeader !== null){
-        elementAfterHourHeader.insertAdjacentHTML("beforebegin", html);
+    let html                      = app.component.item.func.make.itemHTML(obj);
+    let dayId                     = Number(obj.associated.dayId);
+    let hourId                    = Number(obj.associated.hourId);
+    let dayBlock                  = document.querySelector(`.viewPage .dayBlock[dayId="${dayId}"]`);
+    let hourHeader                = document.querySelector(`.viewPage .hourHeader[dayId="${dayId}"][hourId="${hourId}"]`);
+    let hourHeaderAfterHourHeader = hourHeader.nextElementSibling;
+
+    if( hourHeaderAfterHourHeader !== null
+    &&  hourHeaderAfterHourHeader.classList.contains("hourHeader") // can see an hourHeader after relevant hourHeader
+    ){
+        hourHeaderAfterHourHeader.insertAdjacentHTML("beforebegin", html);
     }
     else{
-        let parentDayBlock = hourHeader.parentNode;
-            parentDayBlock.insertAdjacentHTML("beforeend", html);
+        dayBlock.insertAdjacentHTML("beforeend", html);
     };
 };
 
@@ -931,55 +1006,6 @@ app.component.item.func.makeAppend.items_onViewPage = async()=>{
             `;
             let viewPage = document.querySelector(".viewPage");
                 viewPage.insertAdjacentHTML("afterbegin", html);
-        };
-    };
-};
-
-/***
-POST
-****/
-app.component.item.func.post.item_toDataStore = async()=>{
-    event.stopPropagation();
-    if( app.component.item.state.selected[0] === true){
-        let itemElement = app.component.item.state.selected[2];
-        let fieldValue  = itemElement.children[1].value;
-        if( fieldValue.trim().length > 0
-        &&( event.key === "Enter" ||
-            event.target.classList.contains("blurTile") ||
-            event.target.classList.contains("dayText") ||
-            event.target.classList.contains("dayInfo") ||
-            event.target.classList.contains("hourHeader") ||
-            event.target.parentNode.classList.contains("hourHeader") )
-        ){
-            let isObjExist = await app.component.item.func.is.objExist(itemElement.getAttribute("createdId"));
-            /* Create New Item */
-            if( isObjExist[0] === false){
-                app.component.item.func.createSet.itemObj(itemElement); // add to objs array and data store
-                app.component.dayDropper.func.makeAppend.dropperText(app.component.dayDropper.setting.day[0]);
-                app.component.dayDropper.func.makeAppend.menuItems();
-                app.component.item.func.makeAppend.item_toViewPage();
-                app.component.item.func.give.dayInfo_onViewPage_updatedInfo(Number(itemElement.getAttribute("dayId")));
-                let delay_forMobileKeyboardExit = setTimeout(()=>{
-                    app.component.timeSlot.func.give.scrollBall_heightAttributes();
-                },300);
-                app.component.item.state.creating = [false, null];
-            }
-            /* Update Old Item */
-            else{
-                let itemObj = isObjExist[1];
-                await app.component.item.func.update.itemObj_inItemObjs({selectedObj: itemObj, fieldValue: fieldValue});
-                await app.component.item.func.update.itemObj_inLocalStorage({selectedObj: itemObj, fieldValue: fieldValue});
-                app.component.item.func.give.itemField_value();
-            };
-            app.component.item.func.remove.blurTile();
-            app.component.item.func.transition.hideItem(); // needs to fire after createSet.itemObj, because the transition turns state off
-        }
-        else
-        if( fieldValue.trim().length === 0
-        &&( event.key === "Enter" ||
-            event.target.classList.contains("blurTile"))
-        ){
-            app.component.item.func.transition.removeItem();
         };
     };
 };
@@ -1122,12 +1148,17 @@ app.component.item.func.transition.createItem = async(timeSlot)=>{
     &&  app.component.pageTurner.state.preventClick === false // pageTurner can't be preventing click
     ){
         /* state - creating ON */
-        app.component.item.state.creating = [true, {}];
-        let html     = app.component.item.func.make.itemHTML("new", timeSlot);
+        app.component.item.state.creating = [true, false, {}]; // must be before make itemHTML, because new item depends on creating state
+        /* make - item */
+        let html     = app.component.item.func.make.itemHTML(null, timeSlot);
+        /* append - item */
         let slotBody = timeSlot.nextElementSibling;
             slotBody.insertAdjacentHTML("afterbegin", html);
+        /* can get itemElement like this after append */
         let itemElement = timeSlot.nextElementSibling.children[0];
+        /* makeAppend - blurTile */
         app.component.item.func.makeAppend.blurTile(itemElement);
+        /* give - field focus, hourHeader_showingAttr */
         app.component.item.func.give.field_focus(timeSlot);
         app.component.item.func.give.hourHeader_showingAttributes(itemElement);
         /* state - selected ON */
@@ -1144,13 +1175,18 @@ app.component.item.func.transition.hideItem = ()=>{
     app.component.item.func.give.tile_hidingAttributes(itemElement);
     app.component.item.func.give.trash_hidingAttributes(itemElement);
 
-    console.log('here');
+    console.log('transition.hideItem', app.component.item.state.creating, 'creating');
     // // if there has been a minute order change
-    app.component.item.func.append.itemTiles_sameHour_sorted();
+    // // and not a new item for that day-hour
+    if( app.component.item.state.creating[0] === false){
+        app.component.item.func.append.itemTiles_resortedByMinute();
+    };
 
     /* state - selected OFF */
     app.component.item.state.selected = [false, false, null];
+    app.component.item.state.creating = [false, false, null];
 };
+// app.component.item.is.
 
 app.component.item.func.transition.removeItem = async()=>{
     event.stopPropagation();
